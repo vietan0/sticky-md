@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { UserContext } from '../contexts/UserContext';
 import { auth } from '../firebase';
 import Settings from './icons/Settings';
-import LogOut from './icons/LogOut';
+import SignOut from './icons/SignOut';
 
 export default function SettingCorner() {
   const currentUser = useContext(UserContext);
@@ -24,8 +24,8 @@ export default function SettingCorner() {
             onClick={async () => await signOut(auth)}
             className="p-2 rounded flex gap-2 hover:bg-slate-800 cursor-pointer"
           >
-            <LogOut />
-            <span>Log Out</span>
+            <SignOut />
+            <span>Sign Out</span>
           </Item>
           <Arrow className="fill-slate-900" />
         </Content>

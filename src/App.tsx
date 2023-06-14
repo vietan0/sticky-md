@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Home from './routes/Home';
-import LogIn from './routes/LogIn';
+import SignIn from './routes/SignIn';
 import SignUp from './routes/SignUp';
 import Main from './routes/Main';
 import Profile from './routes/Profile';
@@ -15,7 +15,7 @@ export default function App() {
           <Route index element={<Main />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

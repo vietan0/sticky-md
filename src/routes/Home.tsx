@@ -5,10 +5,10 @@ import { UserContext } from '../contexts/UserContext';
 
 export default function Home() {
   const currentUser = useContext(UserContext);
-
+  
   const nav = useNavigate();
   useEffect(() => {
-    if (!currentUser) nav('/login');
+    if (!currentUser) nav('/signin');
   }, [currentUser, nav]);
 
   return (

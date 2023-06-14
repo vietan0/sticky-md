@@ -1,18 +1,11 @@
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function Main() {
-  const markdownH2 = `## Just a link: [React](https://reactjs.com)`;
-  const markdownList = `- hey \n - jude`;
   return (
     <main className="p-8">
-      <ReactMarkdown
-        children={markdownH2}
-        className="text-lg font-bold"
-      />
-      <ReactMarkdown
-        children={markdownList}
-        className=""
-      />
+      <Md remarkPlugins={[remarkGfm]}>## Just a link: [React](https://reactjs.com)</Md>
+      <Md remarkPlugins={[remarkGfm]}>Test strikethrough: ~~completed~~</Md>
     </main>
   );
 }

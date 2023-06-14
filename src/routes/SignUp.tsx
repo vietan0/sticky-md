@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { emailSignUp } from '../firebase';
+import { emailSignUp, githubProvider, googleProvider, oAuthSignIn } from '../firebase';
 import { UserContext } from '../contexts/UserContext';
 import Lock from '../components/icons/Lock';
 import Mail from '../components/icons/Mail';
@@ -73,19 +73,25 @@ export default function SignUp() {
       </form>
       <span className="text-sm text-center">or</span>
       <div className="flex flex-col gap-3 justify-center">
-        <button className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800">
+        <button
+          onClick={async () => await oAuthSignIn(googleProvider)}
+          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+        >
           <Google className="w-5" />
-          <span>Log in with Google</span>
+          <span>Sign in with Google</span>
         </button>
-        <button className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800">
+        <button
+          onClick={async () => await oAuthSignIn(githubProvider)}
+          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+        >
           <Github className="w-5" />
-          <span>Log in with Github</span>
+          <span>Sign in with Github</span>
         </button>
       </div>
       <span className="text-center">
         Already have an account?{' '}
-        <Link to="/login" className="text-blue-500">
-          Log In
+        <Link to="/signin" className="text-blue-500">
+          Sign In
         </Link>
       </span>
     </div>

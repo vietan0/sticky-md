@@ -8,11 +8,9 @@ export default function SearchBar() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-  console.log(watch('search')); // watch input value by passing the name of it
 
   return (
     <form id="SearchBar" onSubmit={handleSubmit(onSubmit)} className="flex-grow max-w-lg">

@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { emailSignIn } from '../firebase';
+import { emailSignIn, githubProvider, googleProvider, oAuthSignIn } from '../firebase';
 import { UserContext } from '../contexts/UserContext';
 import Lock from '../components/icons/Lock';
 import Mail from '../components/icons/Mail';
@@ -13,9 +13,9 @@ type Inputs = {
   email: string;
   password: string;
 };
-export default function LogIn() {
+export default function SignIn() {
   const currentUser = useContext(UserContext);
-
+  
   const nav = useNavigate();
   const {
     register,
@@ -31,16 +31,16 @@ export default function LogIn() {
   };
 
   useEffect(() => {
-    if (currentUser) nav('/');
+    if (typeof currentUser === 'object') nav('/');
   }, [currentUser, nav]);
 
   return (
     <div
-      id="LogIn"
+      id="SignIn"
       className="shadow-2xl flex flex-col gap-4 xs:m-auto rounded-lg p-4 xs:p-8 pb-12 xs:outline xs:outline-slate-300 xs:dark:outline-slate-800"
     >
       <HomeLink className="mb-2" />
-      <p className="text-xl font-bold mb-6">Log In</p>
+      <p className="text-xl font-bold mb-6">Sign In</p>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col gap-4">
         <label htmlFor="email" className="relative">
           <Mail className="absolute top-2 left-2" />
@@ -68,18 +68,24 @@ export default function LogIn() {
           onClick={handleSubmit(onSubmit, onError)}
           className="text-white bg-blue-800 hover:bg-blue-900 rounded px-4 py-2"
         >
-          Log In
+          Sign In
         </button>
       </form>
       <span className="text-sm text-center">or</span>
       <div className="flex flex-col gap-3 justify-center">
-        <button className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800">
+        <button
+          onClick={async () => await oAuthSignIn(googleProvider)}
+          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+        >
           <Google className="w-5" />
-          <span>Log in with Google</span>
+          <span>Sign in with Google</span>
         </button>
-        <button className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800">
+        <button
+          onClick={async () => await oAuthSignIn(githubProvider)}
+          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+        >
           <Github className="w-5" />
-          <span>Log in with Github</span>
+          <span>Sign in with Github</span>
         </button>
       </div>
       <span className="text-center">

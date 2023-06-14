@@ -1,6 +1,6 @@
 import IconProps from './IconProps';
 
-export default function LogOut({ className }: IconProps) {
+export default function SignOut({ className }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
