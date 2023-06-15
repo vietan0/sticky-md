@@ -7,9 +7,9 @@ interface HomeLinkProps {
 
 export default function HomeLink({ className }: HomeLinkProps) {
   return (
-    <Link to="/" className={`flex gap-2 items-center ${className}`}>
+    <Link to="/" className={`flex items-center gap-2 ${className}`}>
       <Logo />
-      <span className="font-medium tracking-tight whitespace-nowrap">Sticky MD</span>
+      <span className="whitespace-nowrap font-medium tracking-tight">Sticky MD</span>
     </Link>
   );
 }

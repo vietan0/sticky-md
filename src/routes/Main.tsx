@@ -1,11 +1,16 @@
-import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useState } from 'react';
 
 export default function Main() {
-  return (
-    <main className="p-8">
-      <Md remarkPlugins={[remarkGfm]}>## Just a link: [React](https://reactjs.com)</Md>
-      <Md remarkPlugins={[remarkGfm]}>Test strikethrough: ~~completed~~</Md>
-    </main>
+  // const mdContent = `## Just a link: [React](https://reactjs.com)\nTest strikethrough: ~~completed~~`;
+  const [writingNote, setWritingNote] = useState(false);
+
+  const writingNoteArea = (
+    <form action="" className="max-w-lg m-auto">
+      <input type="text" name="title" />
+      <textarea name="" rows={3} placeholder="Add note..." className="input-global p-4" />
+      <button>Add</button>
+    </form>
   );
+
+  return <main className="p-8"></main>;
 }

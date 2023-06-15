@@ -1,28 +1,28 @@
 import { useContext } from 'react';
 import { Root, Trigger, Portal, Content, Arrow, Item } from '@radix-ui/react-dropdown-menu';
-import { signOut } from 'firebase/auth';
+import { User, signOut } from 'firebase/auth';
 import { UserContext } from '../contexts/UserContext';
-import { auth } from '../firebase';
+import { auth } from '../firebase/auth';
 import Settings from './icons/Settings';
 import SignOut from './icons/SignOut';
 
 export default function SettingCorner() {
-  const currentUser = useContext(UserContext);
+  const currentUser = useContext(UserContext) as User;
 
   return (
     <Root>
-      <Trigger className="px-4 py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-800 rounded">
-        {currentUser?.displayName || currentUser?.email}
+      <Trigger className="rounded bg-slate-100 px-4 py-2 hover:bg-slate-800 dark:bg-slate-900">
+        {currentUser.displayName || currentUser.email}
       </Trigger>
       <Portal>
-        <Content align="end" className="rounded bg-slate-900 p-2 flex flex-col">
-          <Item className="p-2 rounded flex gap-2 hover:bg-slate-800 cursor-pointer">
+        <Content align="end" className="flex flex-col rounded bg-slate-900 p-2">
+          <Item className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-800">
             <Settings />
             <span>Settings</span>
           </Item>
           <Item
             onClick={async () => await signOut(auth)}
-            className="p-2 rounded flex gap-2 hover:bg-slate-800 cursor-pointer"
+            className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-800"
           >
             <SignOut />
             <span>Sign Out</span>

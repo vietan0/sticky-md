@@ -6,3 +6,7 @@
 :root {
   color-scheme: light dark;
 }
+
+.input-global {
+  @apply w-full rounded bg-slate-200 dark:bg-slate-900 placeholder:text-slate-50
+}

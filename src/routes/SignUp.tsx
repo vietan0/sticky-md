@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { emailSignUp, githubProvider, googleProvider, oAuthSignIn } from '../firebase';
+import { emailSignUp, githubProvider, googleProvider, oAuthSignIn } from '../firebase/auth';
 import { UserContext } from '../contexts/UserContext';
 import Lock from '../components/icons/Lock';
 import Mail from '../components/icons/Mail';
@@ -49,7 +49,7 @@ export default function SignUp() {
             type="email"
             placeholder="Email"
             {...register('email', { required: true })}
-            className="bg-slate-200 dark:bg-slate-900 placeholder:text-slate-500 px-4 py-2 pl-12 rounded w-full"
+            className="input-global px-4 py-2 pl-12"
           />
         </label>
         <label htmlFor="password" className="relative">
@@ -58,7 +58,7 @@ export default function SignUp() {
             type="password"
             placeholder="Password"
             {...register('password', { required: true })}
-            className="bg-slate-200 dark:bg-slate-900 placeholder:text-slate-500 px-4 py-2 pl-12 rounded w-full"
+            className="input-global px-4 py-2 pl-12"
           />
         </label>
         {errors.email && <span>Email is required</span>}

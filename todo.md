@@ -1,4 +1,5 @@
 # Todo: (linear order)
+*remember: break every problem down to actionable steps*
 
 - [x] choose a flavor --> Github
 - [x] design basic routing
@@ -13,4 +14,10 @@
 - [x] home redirects to login if not
 - [x] make `remark-gfm` work
 - [x] fix flash-of-login before home page
+- [x] Firestore Basics
+  - [x] know how to CREATE
+  - [x] know how to READ
+  - [x] know how to UPDATE
+  - [x] know how to DELETE
+  - > *collection is auto-created when first document is added, no need to manually create empty collection*
 - [ ] make markdown rendered in real time (use `contenteditable`?)

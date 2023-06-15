@@ -8,7 +8,10 @@ import NotFound from './routes/NotFound';
 
 export default function App() {
   return (
-    <div id="App" className="flex flex-col xs:justify-center min-h-screen bg-white dark:bg-slate-950">
+    <div
+      id="App"
+      className="flex min-h-screen flex-col bg-white dark:bg-slate-950 xs:justify-center"
+    >
       <h1 className="sr-only">Sticky MD</h1>
       <Routes>
         <Route path="/" element={<Home />}>

@@ -9,6 +9,7 @@
 - [ ] code blocks themes (like ray.so)
 - [ ] dragging animation (Framer)
 - [ ] link preview
+- [ ] can display modified time as local time
 - [ ] have a trash
 - [ ] sync on cloud
 - [ ] offline support
