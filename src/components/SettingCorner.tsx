@@ -12,7 +12,7 @@ export default function SettingCorner() {
   return (
     <Root>
       <Trigger className="rounded bg-slate-100 px-4 py-3 hover:bg-slate-800 dark:bg-slate-900">
-        {currentUser.displayName || currentUser.email}
+        {currentUser?.displayName || currentUser?.email}
       </Trigger>
       <Portal>
         <Content align="end" className="flex flex-col rounded bg-slate-900 p-2">

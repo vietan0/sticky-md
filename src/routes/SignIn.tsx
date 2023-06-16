@@ -25,9 +25,9 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     emailSignIn(data.email, data.password);
   };
-  const onError: SubmitErrorHandler<Inputs> = (errors, e) => {
+  const onError: SubmitErrorHandler<Inputs> = (errors, event) => {
     console.error('submit error!');
-    console.log(errors, e);
+    console.log(errors, event);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function SignIn() {
       <p className="mb-6 text-xl font-bold">Sign In</p>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col gap-4">
         <label htmlFor="email" className="relative">
-          <Mail className="absolute left-2 top-2" />
+          <Mail className="h-6 w-6 absolute left-2 top-2" />
           <input
             id="email"
             type="email"
@@ -53,7 +53,7 @@ export default function SignIn() {
           />
         </label>
         <label htmlFor="password" className="relative">
-          <Lock className="absolute left-2 top-2" />
+          <Lock className="h-6 w-6 absolute left-2 top-2" />
           <input
             type="password"
             placeholder="Password"
