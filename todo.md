@@ -19,5 +19,11 @@
   - [x] know how to READ
   - [x] know how to UPDATE
   - [x] know how to DELETE
-  - > *collection is auto-created when first document is added, no need to manually create empty collection*
-- [ ] make markdown rendered in real time (use `contenteditable`?)
+  - > collection is auto-created when first document is added, no need to manually create empty collection*
+- [x] build add-note area UI
+- [ ] build add-note logic:
+  - [x] press `Esc` will create note
+  - [x] press `Enter` will NOT create note
+  - [ ] figure out labels logic
+- [ ] render notes from Firestore to `<Masonry />`
+- [ ] make markdown rendered in real time

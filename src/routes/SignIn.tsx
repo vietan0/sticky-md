@@ -37,28 +37,28 @@ export default function SignIn() {
   return (
     <div
       id="SignIn"
-      className="shadow-2xl flex flex-col gap-4 xs:m-auto rounded-lg p-4 xs:p-8 pb-12 xs:outline xs:outline-slate-300 xs:dark:outline-slate-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-2xl xs:m-auto xs:p-8 xs:outline xs:outline-slate-300 xs:dark:outline-slate-800"
     >
       <HomeLink className="mb-2" />
-      <p className="text-xl font-bold mb-6">Sign In</p>
+      <p className="mb-6 text-xl font-bold">Sign In</p>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col gap-4">
         <label htmlFor="email" className="relative">
-          <Mail className="absolute top-2 left-2" />
+          <Mail className="absolute left-2 top-2" />
           <input
             id="email"
             type="email"
             placeholder="Email"
             {...register('email', { required: true })}
-            className="input-global px-4 py-2 pl-12"
+            className="input-global rounded px-4 py-2 pl-12"
           />
         </label>
         <label htmlFor="password" className="relative">
-          <Lock className="absolute top-2 left-2" />
+          <Lock className="absolute left-2 top-2" />
           <input
             type="password"
             placeholder="Password"
             {...register('password', { required: true })}
-            className="input-global px-4 py-2 pl-12"
+            className="input-global rounded px-4 py-2 pl-12"
           />
         </label>
         {errors.email && <span>Email is required</span>}
@@ -66,23 +66,23 @@ export default function SignIn() {
         <button
           type="submit"
           onClick={handleSubmit(onSubmit, onError)}
-          className="text-white bg-blue-800 hover:bg-blue-900 rounded px-4 py-2"
+          className="rounded bg-blue-800 px-4 py-2 text-white hover:bg-blue-900"
         >
           Sign In
         </button>
       </form>
-      <span className="text-sm text-center">or</span>
-      <div className="flex flex-col gap-3 justify-center">
+      <span className="text-center text-sm">or</span>
+      <div className="flex flex-col justify-center gap-3">
         <button
           onClick={async () => await oAuthSignIn(googleProvider)}
-          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-slate-200 dark:hover:bg-slate-800"
         >
           <Google className="w-5" />
           <span>Sign in with Google</span>
         </button>
         <button
           onClick={async () => await oAuthSignIn(githubProvider)}
-          className="hover:bg-slate-200 dark:hover:bg-slate-800 p-2 flex gap-4 rounded outline outline-1 outline-blue-800"
+          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-slate-200 dark:hover:bg-slate-800"
         >
           <Github className="w-5" />
           <span>Sign in with Github</span>

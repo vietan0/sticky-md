@@ -49,7 +49,7 @@ export default function SignUp() {
             type="email"
             placeholder="Email"
             {...register('email', { required: true })}
-            className="input-global px-4 py-2 pl-12"
+            className="input-global rounded px-4 py-2 pl-12"
           />
         </label>
         <label htmlFor="password" className="relative">
@@ -58,7 +58,7 @@ export default function SignUp() {
             type="password"
             placeholder="Password"
             {...register('password', { required: true })}
-            className="input-global px-4 py-2 pl-12"
+            className="input-global rounded px-4 py-2 pl-12"
           />
         </label>
         {errors.email && <span>Email is required</span>}

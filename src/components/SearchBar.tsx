@@ -15,12 +15,12 @@ export default function SearchBar() {
   return (
     <form id="SearchBar" onSubmit={handleSubmit(onSubmit)} className="max-w-lg flex-grow">
       <label htmlFor="search" className="relative inline-block w-full">
-        <Search className="absolute left-3 top-3" />
+        <Search className="absolute left-3 top-3 h-6 w-6" />
         <input
           id="search"
           placeholder="Search"
           {...register('search')}
-          className="input-global px-6 py-3 pl-12"
+          className="input-global rounded px-6 py-3 pl-12"
         />
       </label>
     </form>

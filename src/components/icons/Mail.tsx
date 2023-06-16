@@ -1,4 +1,4 @@
-import IconProps from './IconProps';
+import IconProps from '../../types/IconProps';
 
 export default function Mail({ className }: IconProps) {
   return (
@@ -8,7 +8,7 @@ export default function Mail({ className }: IconProps) {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={`h-6 w-6 ${className}`}
+      className={className}
     >
       <path
         strokeLinecap="round"

@@ -1,16 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import WriteArea from '../components/WriteArea';
+import WriteAreaPrompt from '../components/WriteAreaPrompt';
+import Masonry from '../components/Masonry';
 
 export default function Main() {
-  // const mdContent = `## Just a link: [React](https://reactjs.com)\nTest strikethrough: ~~completed~~`;
-  const [writingNote, setWritingNote] = useState(false);
+  const [isWriting, setIsWriting] = useState(false);
 
-  const writingNoteArea = (
-    <form action="" className="max-w-lg m-auto">
-      <input type="text" name="title" />
-      <textarea name="" rows={3} placeholder="Add note..." className="input-global p-4" />
-      <button>Add</button>
-    </form>
+  useEffect(() => {
+    function toggleIsWriting() {
+      setIsWriting(false);
+    }
+    document.addEventListener('click', toggleIsWriting);
+
+    return () => {
+      document.removeEventListener('click', toggleIsWriting);
+    };
+  }, []);
+
+  return (
+    <main className="flex flex-col items-center gap-8 p-8">
+      {isWriting ? <WriteArea setIsWriting={setIsWriting}/> : <WriteAreaPrompt setIsWriting={setIsWriting} />}
+      <Masonry />
+    </main>
   );
-
-  return <main className="p-8"></main>;
 }
