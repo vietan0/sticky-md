@@ -1,5 +1,6 @@
 # Todo: (linear order)
-*remember: break every problem down to actionable steps*
+
+_remember: break every problem down to actionable steps_
 
 - [x] choose a flavor --> Github
 - [x] design basic routing
@@ -19,11 +20,12 @@
   - [x] know how to READ
   - [x] know how to UPDATE
   - [x] know how to DELETE
-  - > collection is auto-created when first document is added, no need to manually create empty collection*
+  - > collection is auto-created when first document is added, no need to manually create empty collection\*
 - [x] build add-note area UI
-- [ ] build add-note logic:
+- [x] build add-note logic:
   - [x] press `Esc` will create note
   - [x] press `Enter` will NOT create note
-  - [ ] figure out labels logic
-- [ ] render notes from Firestore to `<Masonry />`
-- [ ] make markdown rendered in real time
+- [x] create user when signed up (Supabase)
+- [x] upload note (Supabase)
+- [x] fetch notes to display in `<Masonry />` (Supabase)
+- [ ] show popup when type `#`

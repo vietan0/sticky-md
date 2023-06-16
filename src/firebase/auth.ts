@@ -7,7 +7,7 @@ import {
   getAuth,
   signInWithPopup,
 } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'; // Required for side-effects
+import { createUser } from '../supabase/users';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,7 +24,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
@@ -33,8 +32,8 @@ async function emailSignUp(email: string, password: string) {
   try {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     console.log('signed up with email!');
-    console.log(userCred);
-    const { user } = userCred; // The signed-in user info
+    const { uid } = userCred.user;
+    createUser(uid);
   } catch (error) {
     console.log('sign up with email failed!');
     console.log(error);
@@ -57,12 +56,12 @@ async function oAuthSignIn(provider: GoogleAuthProvider | GithubAuthProvider) {
   try {
     const result = await signInWithPopup(auth, provider);
     console.log('signed in with oauth!');
-    console.log(result);
-    const { user } = result; // The signed-in user info
+    const { uid } = result.user;
+    createUser(uid);
   } catch (error) {
     console.log('sign in with oauth failed!');
     console.log(error);
   }
 }
 
-export { auth, db, emailSignUp, emailSignIn, oAuthSignIn, githubProvider, googleProvider };
+export { auth, emailSignUp, emailSignIn, oAuthSignIn, githubProvider, googleProvider };
