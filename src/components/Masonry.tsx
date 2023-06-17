@@ -33,7 +33,10 @@ export default function Masonry() {
   const allNotesRendered = allNotes.map((note) => <NoteCard note={note} key={note.note_id} />);
 
   return (
-    <div id="masonry" className="h-[300px] w-full rounded-lg outline outline-slate-800">
+    <div
+      id="masonry"
+      className="grid w-full grid-cols-3 gap-4"
+    >
       {allNotesRendered}
     </div>
   );
