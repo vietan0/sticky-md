@@ -49,7 +49,7 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
   const labelsPopup = (
     <Root
       style={{ position: 'absolute' }} // to override Radix
-      className="left-20 top-20 h-56 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700"
+      className="left-20 top-20 max-h-56 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 drop-shadow dark:bg-slate-900 dark:outline-slate-700"
     >
       <Viewport className="h-full w-full rounded">
         <div className="grid grid-cols-1 divide-y divide-slate-700 py-1">
@@ -91,7 +91,7 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
       }}
       onSubmit={handleSubmit(onSubmit)}
       onKeyDown={handleEscape}
-      className="relative mx-auto mb-8 flex max-w-lg flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
+      className="relative mx-auto mb-8 flex max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
       <input
         type="text"
@@ -120,7 +120,7 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
         ))}
       </div>
       {labelsPopupOpen && labelsPopup}
-      <div id="add-stuffs" className="flex items-center gap-2">
+      <div className="add-stuffs flex items-center gap-2">
         <button
           type="button"
           className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800"
