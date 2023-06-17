@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import WriteArea from '../components/WriteArea';
 import WriteAreaPrompt from '../components/WriteAreaPrompt';
 import Masonry from '../components/Masonry';
+import AllLabelsContextProvider from '../contexts/AllLabelsContext';
 
 export default function Main() {
   const [isWriting, setIsWriting] = useState(false);
@@ -18,9 +19,15 @@ export default function Main() {
   }, []);
 
   return (
-    <main className="p-8">
-      {isWriting ? <WriteArea setIsWriting={setIsWriting}/> : <WriteAreaPrompt setIsWriting={setIsWriting} />}
-      <Masonry />
-    </main>
+    <AllLabelsContextProvider>
+      <main className="p-8">
+        {isWriting ? (
+          <WriteArea setIsWriting={setIsWriting} />
+        ) : (
+          <WriteAreaPrompt setIsWriting={setIsWriting} />
+        )}
+        <Masonry />
+      </main>
+    </AllLabelsContextProvider>
   );
 }

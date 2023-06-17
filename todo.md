@@ -28,4 +28,8 @@ _remember: break every problem down to actionable steps_
 - [x] create user when signed up (Supabase)
 - [x] upload note (Supabase)
 - [x] fetch notes to display in `<Masonry />` (Supabase)
-- [ ] show popup when type `#`
+- [x] show labels popup when type `#`
+- [x] hide labels popup when type `Esc`
+- [x] can select labels from popup
+- [ ] start recording keystrokes after `#` appears
+- [ ] hide labels popup when type `Space`
