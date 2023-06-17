@@ -31,5 +31,7 @@ _remember: break every problem down to actionable steps_
 - [x] show labels popup when type `#`
 - [x] hide labels popup when type `Esc`
 - [x] can select labels from popup
+- [x] listen to DB in real-time
+- [ ] build `NoteCard` UI
 - [ ] start recording keystrokes after `#` appears
 - [ ] hide labels popup when type `Space`

@@ -2,7 +2,11 @@ import NoteUploadData from '../types/NoteUploadData';
 import supabase from './connect';
 
 async function getAllNotes(uid: string) {
-  const { data, error } = await supabase.from('notes').select('*').eq('user_id', uid);
+  const { data, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('user_id', uid)
+    .order('created_at', { ascending: false });
   if (error) console.error(error);
   return data;
 }
