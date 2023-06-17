@@ -8,5 +8,5 @@
 }
 
 .input-global {
-  @apply w-full bg-slate-200 dark:bg-slate-900 placeholder:text-slate-500
+  @apply w-full bg-slate-100 dark:bg-slate-900 placeholder:text-slate-500
 }

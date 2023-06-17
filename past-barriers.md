@@ -18,3 +18,8 @@ Problems, bugs and lessons learned when building this project.
 - Solution: turns out `typeof null` is `object`. WTF Javascript?
 
 ### 4. If possible, use a icon library w/ JSX syntax, not raw .svg (cleaner, shorter code)
+
+### 5. How to useRef alongside react-hook-form (possible conflict)
+- [Solution](https://www.react-hook-form.com/faqs/#Howtosharerefusage)
+
+### 6. How to display a popup at caret position in an input field

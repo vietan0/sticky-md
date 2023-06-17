@@ -18,7 +18,7 @@ export default function Main() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center gap-8 p-8">
+    <main className="p-8">
       {isWriting ? <WriteArea setIsWriting={setIsWriting}/> : <WriteAreaPrompt setIsWriting={setIsWriting} />}
       <Masonry />
     </main>

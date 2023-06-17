@@ -35,22 +35,21 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
       }}
       onSubmit={handleSubmit(onSubmit)}
       onKeyDown={handleKeyDown}
-      className="max-w-lg overflow-hidden rounded-lg bg-slate-900"
+      className="relative mx-auto mb-8 flex max-w-lg flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
       <input
         type="text"
         placeholder="Title"
         {...register('title')}
-        className="input-global p-4 pb-2 font-semibold focus:outline-none"
+        className="input-global font-semibold focus:outline-none"
       />
       <textarea
         rows={3}
         autoFocus
         placeholder="Write something…"
-        {...register('content')}
-        className="input-global resize-none px-4 py-2 focus:outline-none"
+        className="input-global resize-none py-2 focus:outline-none"
       />
-      <div id="add-stuffs" className="flex items-center gap-2 p-4">
+      <div id="add-stuffs" className="flex items-center gap-2">
         <button
           type="button"
           className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800"
