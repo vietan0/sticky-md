@@ -20,7 +20,7 @@ _remember: break every problem down to actionable steps_
   - [x] know how to READ
   - [x] know how to UPDATE
   - [x] know how to DELETE
-  - > collection is auto-created when first document is added, no need to manually create empty collection\*
+  - > collection is auto-created when first document is added, no need to manually create empty collection
 - [x] build add-note area UI
 - [x] build add-note logic:
   - [x] press `Esc` will create note
@@ -33,5 +33,10 @@ _remember: break every problem down to actionable steps_
 - [x] can select labels from popup
 - [x] listen to DB in real-time
 - [x] add delete button (`NoteCard`)
-- [ ] start recording keystrokes after `#` appears
-- [ ] hide labels popup when type `Space`
+- [x] start recording keystrokes after `#` appears
+- [ ] labelsPopup:
+  - [x] hide when type `Space`
+  - [x] only show `Add new label` button if non of db's labels match `extractedLabel`
+  - [ ] autofocus first element
+  - [ ] can use arrows (or Tab) to navigate
+  - [ ] press Enter will add to list
