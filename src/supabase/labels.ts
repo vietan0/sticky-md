@@ -10,4 +10,11 @@ async function getAllLabels(uid: string) {
   return data;
 }
 
-export { getAllLabels };
+async function createLabels(newLabelsOnly: string[], user_id: string) {
+  const { data, error } = await supabase
+    .from('labels')
+    .insert(newLabelsOnly.map((label_name) => ({ label_name, user_id })));
+  if (error) console.error(error);
+}
+
+export { getAllLabels, createLabels };

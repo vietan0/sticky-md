@@ -2,6 +2,7 @@ import { Root, Viewport, Scrollbar, Thumb } from '@radix-ui/react-scroll-area';
 import { useContext } from 'react';
 import { AllLabelsContext } from '../contexts/AllLabelsContext';
 import LabelDbData from '../types/LabelDbData';
+import labelExists from '../utils/labelExists';
 import Plus from './icons/Plus';
 
 export default function LabelSuggestions({
@@ -14,9 +15,6 @@ export default function LabelSuggestions({
   addToLabelList: (label_name: string) => void;
 }) {
   const allLabels = useContext(AllLabelsContext);
-  const labelNotExisted = (label: string) =>
-    !allLabels.some(({ label_name }) => label_name === label);
-
   const regularLabelButton = (label: string, i: number) => (
     <button
       key={label}
@@ -46,7 +44,7 @@ export default function LabelSuggestions({
   );
   const labelElems = labelsList.map((elem, i) => {
     if (typeof elem === 'string') {
-      if (labelNotExisted(elem)) return addNewLabelButton(elem, i);
+      if (!labelExists(elem, allLabels)) return addNewLabelButton(elem, i);
     } else return regularLabelButton(elem.label_name, i);
   });
 

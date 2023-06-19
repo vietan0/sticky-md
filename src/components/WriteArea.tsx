@@ -5,6 +5,8 @@ import { UserContext } from '../contexts/UserContext';
 import { createNote } from '../supabase/notes';
 import { AllLabelsContext } from '../contexts/AllLabelsContext';
 import LabelDbData from '../types/LabelDbData';
+import labelExists from '../utils/labelExists';
+import { createLabels } from '../supabase/labels';
 import Color from './icons/Color';
 import Ellipsis from './icons/Ellipsis';
 import LabelButton from './LabelButton';
@@ -14,6 +16,7 @@ import LabelSuggestions from './LabelSuggestions';
 
 export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
   const currentUser = useContext(UserContext) as User;
+  const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
   const [labelsPopupOpen, setLabelsPopupOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -31,16 +34,24 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
     user_id: currentUser.uid,
   };
 
+  function uploadToDb() {
+    if (noteUploadData.title !== '' || noteUploadData.content !== '') {
+      createNote(noteUploadData);
+      const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
+      createLabels(newLabels, noteUploadData.user_id);
+      setIsWriting(false); // close WriteArea
+    }
+  }
+
   const formHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createNote(noteUploadData); // submit
+    uploadToDb();
   };
 
   const formHandleEscape = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Escape') {
       if (!labelsPopupOpen) {
-        createNote(noteUploadData); // submit
-        setIsWriting(false); // close WriteArea
+        uploadToDb();
       } else setLabelsPopupOpen(false);
     }
   };
@@ -61,7 +72,6 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
     contentArea.current?.focus();
   };
 
-  const allLabels = useContext(AllLabelsContext);
   const filteredLabels = allLabels.filter(({ label_name }) => label_name.match(extractedLabel));
   let labelsList = [...filteredLabels] as (LabelDbData | string)[];
   if (extractedLabel) {

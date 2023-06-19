@@ -42,3 +42,4 @@ _remember: break every problem down to actionable steps_
   - [x] `Up`/`Down` will cycle through `filteredLabels`
   - [x] `Tab` will accept suggestion
   - [x] can cycle through `extractedLabel`
+- [x] handle insert labels logic (Supabase)
