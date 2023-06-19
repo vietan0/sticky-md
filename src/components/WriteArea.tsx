@@ -1,6 +1,5 @@
 import { useState, useContext, useRef } from 'react';
 import { User } from 'firebase/auth';
-import { Root, Viewport, Scrollbar, Thumb, Corner } from '@radix-ui/react-scroll-area';
 import NoteUploadData from '../types/NoteUploadData';
 import { UserContext } from '../contexts/UserContext';
 import { createNote } from '../supabase/notes';
@@ -10,10 +9,10 @@ import Ellipsis from './icons/Ellipsis';
 import LabelButton from './LabelButton';
 import Label from './icons/Label';
 import ContentArea from './ContentArea';
+import LabelSuggestions from './LabelSuggestions';
 
 export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
   const currentUser = useContext(UserContext) as User;
-  const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
   const [labelsPopupOpen, setLabelsPopupOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -61,49 +60,11 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
     contentArea.current?.focus();
   };
 
-  const extractedLabelIsUnique = allLabels.some(({ label_name }) => label_name === extractedLabel);
-
-  const addNewLabelButton = (
-    <button
-      type="button"
-      onClick={() => addToLabelList(extractedLabel)}
-      className="px-4 py-2 text-left text-[13px] hover:bg-slate-700 focus:bg-slate-800 focus:outline-none"
-    >
-      + Add <span className="font-bold">{extractedLabel}</span>
-    </button>
-  );
-
-  const labelsPopup = (
-    <Root
-      style={{ position: 'absolute' }} // to override Radix
-      className="left-80 top-20 max-h-64 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 drop-shadow dark:bg-slate-900 dark:outline-slate-700"
-    >
-      <Viewport className="h-full w-full rounded">
-        <div autoFocus className="grid grid-cols-1 divide-y divide-slate-700 py-1">
-          {allLabels
-            .filter(({ label_name }) => label_name.match(extractedLabel))
-            .map(({ label_name }) => (
-              <button
-                key={label_name}
-                type="button"
-                onClick={() => addToLabelList(label_name)}
-                className="px-4 py-2 text-left text-[13px] hover:bg-slate-700 focus:bg-slate-800 focus:outline-none"
-              >
-                {label_name}
-              </button>
-            ))}
-          {extractedLabel && !extractedLabelIsUnique && addNewLabelButton}
-        </div>
-      </Viewport>
-      <Scrollbar
-        orientation="vertical"
-        className="flex touch-none select-none bg-slate-100 p-0.5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col dark:bg-slate-900"
-      >
-        <Thumb className="relative flex-1 rounded-full bg-slate-400  before:absolute before:left-1/2 before:top-1/2 before:h-full before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] dark:bg-slate-600" />
-      </Scrollbar>
-      <Corner className="bg-slate-800" />
-    </Root>
-  );
+  const allLabels = useContext(AllLabelsContext);
+  const filteredLabels = allLabels
+    .filter(({ label_name }) => label_name.match(extractedLabel))
+    .map(({ label_name }) => label_name);
+  const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
 
   return (
     <form
@@ -132,13 +93,22 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
         setLabelsToAdd={setLabelsToAdd}
         isRecordingLabel={isRecordingLabel}
         setIsRecordingLabel={setIsRecordingLabel}
-        labelsPopupOpen={labelsPopupOpen}
         setLabelsPopupOpen={setLabelsPopupOpen}
         contentHashtagPos={contentHashtagPos}
         setContentHashtagPos={setContentHashtagPos}
         contentArea={contentArea}
+        focusedLabelIndex={focusedLabelIndex}
+        setFocusedLabelIndex={setFocusedLabelIndex}
+        filteredLabels={filteredLabels}
       />
-      {labelsPopupOpen && labelsPopup}
+      {labelsPopupOpen && (
+        <LabelSuggestions
+          extractedLabel={extractedLabel}
+          filteredLabels={filteredLabels}
+          focusedLabelIndex={focusedLabelIndex}
+          addToLabelList={addToLabelList}
+        />
+      )}
       <div id="labels" className="flex gap-2">
         {labelsToAdd.map((label) => (
           <LabelButton key={label} label={label} />

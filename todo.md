@@ -37,6 +37,8 @@ _remember: break every problem down to actionable steps_
 - [ ] labelsPopup:
   - [x] hide when type `Space`
   - [x] only show `Add new label` button if non of db's labels match `extractedLabel`
-  - [ ] autofocus first element
-  - [ ] can use arrows (or Tab) to navigate
-  - [ ] press Enter will add to list
+  - [x] autofocus first element
+  - [x] other keys will still type in textarea
+  - [x] `Up`/`Down` will cycle through `filteredLabels`
+  - [x] `Tab` will accept suggestion
+  - [ ] can cycle through `extractedLabel`

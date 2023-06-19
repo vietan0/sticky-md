@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import LabelDbData from '../types/LabelDbData';
 
 export default function ContentArea({
   content,
@@ -9,14 +10,30 @@ export default function ContentArea({
   setLabelsToAdd,
   isRecordingLabel,
   setIsRecordingLabel,
-  labelsPopupOpen,
   setLabelsPopupOpen,
   contentHashtagPos,
   setContentHashtagPos,
   contentArea,
+  focusedLabelIndex,
+  setFocusedLabelIndex,
+  filteredLabels,
 }: {
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  extractedLabel: string;
+  setExtractedLabel: React.Dispatch<React.SetStateAction<string>>;
+  labelsToAdd: string[];
+  setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>;
+  isRecordingLabel: boolean;
+  setIsRecordingLabel: React.Dispatch<React.SetStateAction<boolean>>;
+  setLabelsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  contentHashtagPos: number;
+  setContentHashtagPos: React.Dispatch<React.SetStateAction<number>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  contentArea: any;
+  focusedLabelIndex: number;
+  setFocusedLabelIndex: React.Dispatch<React.SetStateAction<number>>;
+  filteredLabels: string[];
 }) {
   const [spacePos, setSpacePos] = useState(-1);
   const [cursorPos, setCursorPos] = useState(0);
@@ -40,13 +57,26 @@ export default function ContentArea({
       }
     }
     if (e.key === 'Tab') {
+      e.preventDefault();
       if (extractedLabel) {
         // hit 'Tab' will add label to list
-        e.preventDefault();
-        setLabelsToAdd(
-          (prev: string[]) => (prev.includes(extractedLabel) ? prev : [...prev, extractedLabel]),
-          // ternary is to avoid duplicates
-        );
+        {
+          setLabelsToAdd((prev: string[]) => {
+            // suggested label have higher priority over extracted label
+            const accepted =
+              filteredLabels.length > 0 ? filteredLabels[focusedLabelIndex] : extractedLabel;
+            return prev.includes(accepted) ? prev : [...prev, accepted];
+          });
+        }
+        setIsRecordingLabel(false);
+        setLabelsPopupOpen(false);
+        setContent((prev: string) => prev.slice(0, contentHashtagPos));
+        setExtractedLabel('');
+      } else {
+        setLabelsToAdd((prev: string[]) => {
+          const accepted = filteredLabels[focusedLabelIndex];
+          return prev.includes(accepted) ? prev : [...prev, accepted];
+        });
         setIsRecordingLabel(false);
         setLabelsPopupOpen(false);
         setContent((prev: string) => prev.slice(0, contentHashtagPos));
@@ -59,6 +89,20 @@ export default function ContentArea({
       setLabelsPopupOpen(false);
       setExtractedLabel('');
     }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setFocusedLabelIndex(
+        // if already first, cycle up to last index
+        (prev: number) => (prev === 0 ? filteredLabels.length - 1 : prev - 1),
+      );
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setFocusedLabelIndex(
+        // if already last, cycle to top
+        (prev: number) => (prev >= filteredLabels.length - 1 ? 0 : prev + 1),
+      );
+    }
   };
 
   useEffect(() => {
@@ -68,13 +112,18 @@ export default function ContentArea({
       // cursorPos doesn't help anything right now, can remove
       setCursorPos(contentArea.current.selectionStart);
     });
-  }, []);
+  }, [contentArea]);
 
   useEffect(() => {
     if (isRecordingLabel) {
       setExtractedLabel(content.slice(contentHashtagPos + 1, content.length));
     }
   }, [contentHashtagPos, cursorPos, content, setExtractedLabel, isRecordingLabel]);
+
+  useEffect(() => {
+    // update focused row
+    setFocusedLabelIndex(0);
+  }, [filteredLabels.length, setFocusedLabelIndex]);
 
   return (
     <>
