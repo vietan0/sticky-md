@@ -4,6 +4,7 @@ import NoteUploadData from '../types/NoteUploadData';
 import { UserContext } from '../contexts/UserContext';
 import { createNote } from '../supabase/notes';
 import { AllLabelsContext } from '../contexts/AllLabelsContext';
+import LabelDbData from '../types/LabelDbData';
 import Color from './icons/Color';
 import Ellipsis from './icons/Ellipsis';
 import LabelButton from './LabelButton';
@@ -61,9 +62,11 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
   };
 
   const allLabels = useContext(AllLabelsContext);
-  const filteredLabels = allLabels
-    .filter(({ label_name }) => label_name.match(extractedLabel))
-    .map(({ label_name }) => label_name);
+  const filteredLabels = allLabels.filter(({ label_name }) => label_name.match(extractedLabel));
+  let labelsList = [...filteredLabels] as (LabelDbData | string)[];
+  if (extractedLabel) {
+    labelsList = [...filteredLabels, extractedLabel];
+  }
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
 
   return (
@@ -99,13 +102,12 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
         contentArea={contentArea}
         focusedLabelIndex={focusedLabelIndex}
         setFocusedLabelIndex={setFocusedLabelIndex}
-        filteredLabels={filteredLabels}
+        labelsList={labelsList}
       />
       {labelsPopupOpen && (
         <LabelSuggestions
-          extractedLabel={extractedLabel}
-          filteredLabels={filteredLabels}
           focusedLabelIndex={focusedLabelIndex}
+          labelsList={labelsList}
           addToLabelList={addToLabelList}
         />
       )}

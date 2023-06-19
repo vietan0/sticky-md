@@ -34,11 +34,11 @@ _remember: break every problem down to actionable steps_
 - [x] listen to DB in real-time
 - [x] add delete button (`NoteCard`)
 - [x] start recording keystrokes after `#` appears
-- [ ] labelsPopup:
+- [x] labelsPopup:
   - [x] hide when type `Space`
   - [x] only show `Add new label` button if non of db's labels match `extractedLabel`
   - [x] autofocus first element
   - [x] other keys will still type in textarea
   - [x] `Up`/`Down` will cycle through `filteredLabels`
   - [x] `Tab` will accept suggestion
-  - [ ] can cycle through `extractedLabel`
+  - [x] can cycle through `extractedLabel`

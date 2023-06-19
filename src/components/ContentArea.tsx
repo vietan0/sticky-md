@@ -16,7 +16,7 @@ export default function ContentArea({
   contentArea,
   focusedLabelIndex,
   setFocusedLabelIndex,
-  filteredLabels,
+  labelsList,
 }: {
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
@@ -33,7 +33,7 @@ export default function ContentArea({
   contentArea: any;
   focusedLabelIndex: number;
   setFocusedLabelIndex: React.Dispatch<React.SetStateAction<number>>;
-  filteredLabels: string[];
+  labelsList: (LabelDbData | string)[];
 }) {
   const [spacePos, setSpacePos] = useState(-1);
   const [cursorPos, setCursorPos] = useState(0);
@@ -60,22 +60,23 @@ export default function ContentArea({
       e.preventDefault();
       if (extractedLabel) {
         // hit 'Tab' will add label to list
-        {
-          setLabelsToAdd((prev: string[]) => {
-            // suggested label have higher priority over extracted label
-            const accepted =
-              filteredLabels.length > 0 ? filteredLabels[focusedLabelIndex] : extractedLabel;
-            return prev.includes(accepted) ? prev : [...prev, accepted];
-          });
-        }
+        setLabelsToAdd((prev: string[]) => {
+          // suggested label have higher priority over extracted label
+          const target = labelsList.length > 0 ? labelsList[focusedLabelIndex] : extractedLabel;
+          if (typeof target === 'string') {
+            return prev.includes(target) ? prev : [...prev, target];
+          } else {
+            return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
+          }
+        });
         setIsRecordingLabel(false);
         setLabelsPopupOpen(false);
         setContent((prev: string) => prev.slice(0, contentHashtagPos));
         setExtractedLabel('');
       } else {
         setLabelsToAdd((prev: string[]) => {
-          const accepted = filteredLabels[focusedLabelIndex];
-          return prev.includes(accepted) ? prev : [...prev, accepted];
+          const target = labelsList[focusedLabelIndex] as LabelDbData;
+          return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
         });
         setIsRecordingLabel(false);
         setLabelsPopupOpen(false);
@@ -93,14 +94,14 @@ export default function ContentArea({
       e.preventDefault();
       setFocusedLabelIndex(
         // if already first, cycle up to last index
-        (prev: number) => (prev === 0 ? filteredLabels.length - 1 : prev - 1),
+        (prev: number) => (prev === 0 ? labelsList.length - 1 : prev - 1),
       );
     }
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setFocusedLabelIndex(
         // if already last, cycle to top
-        (prev: number) => (prev >= filteredLabels.length - 1 ? 0 : prev + 1),
+        (prev: number) => (prev >= labelsList.length - 1 ? 0 : prev + 1),
       );
     }
   };
@@ -123,7 +124,7 @@ export default function ContentArea({
   useEffect(() => {
     // update focused row
     setFocusedLabelIndex(0);
-  }, [filteredLabels.length, setFocusedLabelIndex]);
+  }, [labelsList.length, setFocusedLabelIndex]);
 
   return (
     <>
@@ -142,19 +143,17 @@ export default function ContentArea({
           <span className="text-amber-500">{isRecordingLabel ? 'true' : 'false'}</span>
         </p>
         <p className="font-mono">
-          contentHashtagPos: <span className="text-pink-500">{contentHashtagPos}</span>
-        </p>
-        <p className="font-mono">
-          cursorPos: <span className="text-pink-500">{cursorPos}</span>
-        </p>
-        <p className="font-mono">
-          spacePos: <span className="text-pink-500">{spacePos}</span>
+          labelsList[focusedLabelIndex]:{' '}
+          <span className="text-amber-500">{JSON.stringify(labelsList[focusedLabelIndex])}</span>
         </p>
         <p className="font-mono">
           extractedLabel: <span className="text-pink-500">&apos;{extractedLabel}&apos;</span>
         </p>
         <p className="font-mono">
           labelsToAdd: <span className="text-pink-500">{JSON.stringify(labelsToAdd)}</span>
+        </p>
+        <p className="font-mono">
+          labelsList: <span className="text-pink-500">{JSON.stringify(labelsList)}</span>
         </p>
       </div>
     </>
