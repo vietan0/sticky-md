@@ -5,7 +5,6 @@ export default function NotePrompt({
 }) {
   return (
     <textarea
-      name=""
       rows={1}
       tabIndex={1}
       placeholder="Write something…"

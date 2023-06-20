@@ -12,7 +12,8 @@ async function getAllNotes(uid: string) {
 }
 async function getNote(id: string) {
   const { data, error } = await supabase.from('notes').select('*').eq('note_id', id);
-  return data[0];
+  if (error) console.error(error);
+  if (data) return data[0];
 }
 async function createNote(noteUploadData: NoteUploadData) {
   const { data, error } = await supabase.from('notes').insert(noteUploadData).select();

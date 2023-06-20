@@ -47,7 +47,9 @@ _remember: break every problem down to actionable steps_
 - [x] fix: hit `Tab` when not recording label
 - [x] move up `Done`'s taborder
 - [x] reorganize, rename component files
-- [ ] refactor, clean up dead code
+- [x] refactor, clean up dead code
 - [ ] move `LabelSuggestion` to caret position
-- [ ] add `LabelsDropdown` (suggestion + search bar) to Label button in ~~`WriteArea`~~ `NoteForm`
+- [ ] add `LabelsDropdown` (suggestion + search bar) to Label button in `NoteForm`
 - [ ] add recording logic to `Title` field as well
+- [ ] handle deleting `#` with `delete` key
+- [ ] textarea should auto expand to accommodate `content`
