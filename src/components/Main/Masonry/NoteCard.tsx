@@ -2,11 +2,11 @@ import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
 import remarkGfm from 'remark-gfm';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import NoteDbData from '../types/NoteDbData';
-import { deleteNote } from '../supabase/notes';
-import LabelButton from './LabelButton';
-import Ellipsis from './icons/Ellipsis';
-import Close from './icons/Close';
+import NoteDbData from '../../../types/NoteDbData';
+import { deleteNote } from '../../../supabase/notes';
+import LabelButton from '../LabelButton';
+import Ellipsis from '../../icons/Ellipsis';
+import Close from '../../icons/Close';
 
 export default function NoteCard({ note }: { note: NoteDbData }) {
   const [hover, setHover] = useState(false);

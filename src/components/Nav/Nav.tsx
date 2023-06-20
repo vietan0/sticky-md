@@ -1,4 +1,4 @@
-import HomeLink from './HomeLink';
+import HomeLink from '../HomeLink';
 import SearchBar from './SearchBar';
 import SettingCorner from './SettingCorner';
 

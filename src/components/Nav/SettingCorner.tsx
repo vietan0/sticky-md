@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { Root, Trigger, Portal, Content, Arrow, Item } from '@radix-ui/react-dropdown-menu';
 import { User, signOut } from 'firebase/auth';
-import { UserContext } from '../contexts/UserContext';
-import { auth } from '../firebase/auth';
-import Settings from './icons/Settings';
-import SignOut from './icons/SignOut';
+import { UserContext } from '../../contexts/UserContext';
+import { auth } from '../../firebase/auth';
+import Settings from '../icons/Settings';
+import SignOut from '../icons/SignOut';
 
 export default function SettingCorner() {
   const currentUser = useContext(UserContext) as User;

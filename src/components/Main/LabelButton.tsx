@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Close from './icons/Close';
+import Close from '../icons/Close';
 
 export default function LabelButton({ label }: { label: string }) {
   const [hovering, setHovering] = useState(false);

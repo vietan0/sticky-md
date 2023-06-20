@@ -1,4 +1,4 @@
-export default function WriteAreaPrompt({
+export default function NotePrompt({
   setIsWriting,
 }: {
   setIsWriting: (val: boolean) => void;

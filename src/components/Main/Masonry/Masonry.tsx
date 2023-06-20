@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
 import { User } from 'firebase/auth';
-import { getAllNotes } from '../supabase/notes';
-import { UserContext } from '../contexts/UserContext';
-import NoteDbData from '../types/NoteDbData';
-import supabase from '../supabase/connect';
+import { getAllNotes } from '../../../supabase/notes';
+import { UserContext } from '../../../contexts/UserContext';
+import NoteDbData from '../../../types/NoteDbData';
+import supabase from '../../../supabase/connect';
 import NoteCard from './NoteCard';
 
 export default function Masonry() {

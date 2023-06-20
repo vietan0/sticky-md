@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import Search from './icons/Search';
+import Search from '../icons/Search';
 
 type Inputs = {
   search: string;

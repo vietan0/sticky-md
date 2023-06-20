@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './routes/Home';
 import SignIn from './routes/SignIn';
 import SignUp from './routes/SignUp';
-import Main from './routes/Main';
+import Main from './components/Main/Main';
 import Profile from './routes/Profile';
 import NotFound from './routes/NotFound';
 

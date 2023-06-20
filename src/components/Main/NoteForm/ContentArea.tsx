@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import LabelDbData from '../types/LabelDbData';
+import LabelDbData from '../../../types/LabelDbData';
 
 export default function ContentArea({
   content,

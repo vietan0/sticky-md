@@ -1,22 +1,22 @@
 import { useState, useContext, useRef } from 'react';
 import { User } from 'firebase/auth';
-import NoteUploadData from '../types/NoteUploadData';
-import { UserContext } from '../contexts/UserContext';
-import { createNote } from '../supabase/notes';
-import { AllLabelsContext } from '../contexts/AllLabelsContext';
-import LabelDbData from '../types/LabelDbData';
-import labelExists from '../utils/labelExists';
-import { createLabels } from '../supabase/labels';
-import { createNotesLabels } from '../supabase/notes_labels';
-import NoteDbData from '../types/NoteDbData';
-import Color from './icons/Color';
-import Ellipsis from './icons/Ellipsis';
-import LabelButton from './LabelButton';
-import Label from './icons/Label';
+import NoteUploadData from '../../../types/NoteUploadData';
+import { UserContext } from '../../../contexts/UserContext';
+import { createNote } from '../../../supabase/notes';
+import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
+import LabelDbData from '../../../types/LabelDbData';
+import labelExists from '../../../utils/labelExists';
+import { createLabels } from '../../../supabase/labels';
+import { createNotesLabels } from '../../../supabase/notes_labels';
+import NoteDbData from '../../../types/NoteDbData';
+import Color from '../../icons/Color';
+import Ellipsis from '../../icons/Ellipsis';
+import LabelButton from '../LabelButton';
+import Label from '../../icons/Label';
 import ContentArea from './ContentArea';
 import LabelSuggestions from './LabelSuggestions';
 
-export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
+export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
   const currentUser = useContext(UserContext) as User;
   const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
@@ -47,7 +47,7 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
         createNotesLabels(note_id, noteUploadData.labels);
       }
     }
-    setIsWriting(false); // close WriteArea
+    setIsWriting(false); // close NoteForm
   }
 
   const formHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

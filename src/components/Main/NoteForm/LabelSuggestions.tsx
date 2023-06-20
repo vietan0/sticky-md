@@ -1,9 +1,9 @@
 import { Root, Viewport, Scrollbar, Thumb } from '@radix-ui/react-scroll-area';
 import { useContext } from 'react';
-import { AllLabelsContext } from '../contexts/AllLabelsContext';
-import LabelDbData from '../types/LabelDbData';
-import labelExists from '../utils/labelExists';
-import Plus from './icons/Plus';
+import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
+import LabelDbData from '../../../types/LabelDbData';
+import labelExists from '../../../utils/labelExists';
+import Plus from '../../icons/Plus';
 
 export default function LabelSuggestions({
   focusedLabelIndex,
