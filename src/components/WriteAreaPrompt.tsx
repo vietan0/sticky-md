@@ -7,6 +7,7 @@ export default function WriteAreaPrompt({
     <textarea
       name=""
       rows={1}
+      tabIndex={1}
       placeholder="Write something…"
       onFocus={(e) => {
         e.stopPropagation();

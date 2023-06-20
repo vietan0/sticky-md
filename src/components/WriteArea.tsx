@@ -46,8 +46,8 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
       if (noteUploadData.labels.length > 0) {
         createNotesLabels(note_id, noteUploadData.labels);
       }
-      setIsWriting(false); // close WriteArea
     }
+    setIsWriting(false); // close WriteArea
   }
 
   const formHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,6 +98,7 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
     >
       <input
         type="text"
+        tabIndex={1}
         placeholder="Title"
         name="title"
         value={title}
@@ -136,25 +137,29 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
       <div className="add-stuffs flex items-center gap-2">
         <button
           type="button"
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800"
+          tabIndex={4}
+          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Label className="h-5 w-5" />
         </button>
         <button
           type="button"
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800"
+          tabIndex={5}
+          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Color className="h-5 w-5" />
         </button>
         <button
           type="button"
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800"
+          tabIndex={6}
+          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Ellipsis className="h-5 w-5" />
         </button>
         <button
           type="submit"
-          className="ml-auto rounded-full px-4 py-2 leading-5 outline outline-1 outline-slate-800 hover:bg-slate-800"
+          tabIndex={3}
+          className="ml-auto rounded-full px-4 py-2 leading-5 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           Done
         </button>

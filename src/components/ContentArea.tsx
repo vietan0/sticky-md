@@ -137,6 +137,7 @@ export default function ContentArea({
         onKeyDown={handleKeyDown}
         placeholder="Write something…"
         rows={3}
+        tabIndex={2}
         className="input-global resize-none py-2 focus:outline-none"
       />
       <div id="info">

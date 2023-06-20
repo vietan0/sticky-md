@@ -45,4 +45,4 @@ _remember: break every problem down to actionable steps_
 - [x] handle insert labels logic (Supabase)
 - [x] handle insert `notes_labels` (Supabase)
 - [x] fix: hit `Tab` when not recording label
-- [ ] move up `Done`'s taborder
+- [x] move up `Done`'s taborder
