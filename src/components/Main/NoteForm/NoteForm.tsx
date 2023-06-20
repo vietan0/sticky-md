@@ -20,7 +20,6 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   const currentUser = useContext(UserContext) as User;
   const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
-  const [labelsPopupOpen, setLabelsPopupOpen] = useState(false);
   const [title, setTitle] = useState('');
 
   const contentArea = useRef<HTMLTextAreaElement>(null);
@@ -57,9 +56,8 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
   const formHandleEscape = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Escape') {
-      if (!labelsPopupOpen) {
-        uploadToDb();
-      } else setLabelsPopupOpen(false);
+      if (!isRecordingLabel) uploadToDb();
+      else setIsRecordingLabel(false);
     }
   };
 
@@ -73,7 +71,6 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       // ternary is to avoid duplicates
     );
     setIsRecordingLabel(false);
-    setLabelsPopupOpen(false);
     setContent((prev: string) => prev.slice(0, contentHashtagPos));
     setExtractedLabel('');
     contentArea.current?.focus();
@@ -110,11 +107,9 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         setContent={setContent}
         extractedLabel={extractedLabel}
         setExtractedLabel={setExtractedLabel}
-        labelsToAdd={labelsToAdd}
         setLabelsToAdd={setLabelsToAdd}
         isRecordingLabel={isRecordingLabel}
         setIsRecordingLabel={setIsRecordingLabel}
-        setLabelsPopupOpen={setLabelsPopupOpen}
         contentHashtagPos={contentHashtagPos}
         setContentHashtagPos={setContentHashtagPos}
         contentArea={contentArea}
@@ -122,7 +117,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         setFocusedLabelIndex={setFocusedLabelIndex}
         labelsList={labelsList}
       />
-      {labelsPopupOpen && (
+      {isRecordingLabel && (
         <LabelSuggestions
           focusedLabelIndex={focusedLabelIndex}
           labelsList={labelsList}
