@@ -7,6 +7,8 @@ import { AllLabelsContext } from '../contexts/AllLabelsContext';
 import LabelDbData from '../types/LabelDbData';
 import labelExists from '../utils/labelExists';
 import { createLabels } from '../supabase/labels';
+import { createNotesLabels } from '../supabase/notes_labels';
+import NoteDbData from '../types/NoteDbData';
 import Color from './icons/Color';
 import Ellipsis from './icons/Ellipsis';
 import LabelButton from './LabelButton';
@@ -34,11 +36,16 @@ export default function WriteArea({ setIsWriting }: { setIsWriting: (val: boolea
     user_id: currentUser.uid,
   };
 
-  function uploadToDb() {
+  async function uploadToDb() {
     if (noteUploadData.title !== '' || noteUploadData.content !== '') {
-      createNote(noteUploadData);
+      const result = (await createNote(noteUploadData)) as NoteDbData[];
+      const { note_id } = result[0];
+
       const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
       createLabels(newLabels, noteUploadData.user_id);
+      if (noteUploadData.labels.length > 0) {
+        createNotesLabels(note_id, noteUploadData.labels);
+      }
       setIsWriting(false); // close WriteArea
     }
   }
