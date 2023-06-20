@@ -44,5 +44,5 @@ _remember: break every problem down to actionable steps_
   - [x] can cycle through `extractedLabel`
 - [x] handle insert labels logic (Supabase)
 - [x] handle insert `notes_labels` (Supabase)
-- [ ] fix: hit `Tab` when not recording label
+- [x] fix: hit `Tab` when not recording label
 - [ ] move up `Done`'s taborder

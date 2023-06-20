@@ -57,31 +57,33 @@ export default function ContentArea({
       }
     }
     if (e.key === 'Tab') {
-      e.preventDefault();
-      if (extractedLabel) {
-        // hit 'Tab' will add label to list
-        setLabelsToAdd((prev: string[]) => {
-          // suggested label have higher priority over extracted label
-          const target = labelsList.length > 0 ? labelsList[focusedLabelIndex] : extractedLabel;
-          if (typeof target === 'string') {
-            return prev.includes(target) ? prev : [...prev, target];
-          } else {
+      if (isRecordingLabel) {
+        e.preventDefault();
+        if (extractedLabel) {
+          // hit 'Tab' will add label to list
+          setLabelsToAdd((prev: string[]) => {
+            // suggested label have higher priority over extracted label
+            const target = labelsList.length > 0 ? labelsList[focusedLabelIndex] : extractedLabel;
+            if (typeof target === 'string') {
+              return prev.includes(target) ? prev : [...prev, target];
+            } else {
+              return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
+            }
+          });
+          setIsRecordingLabel(false);
+          setLabelsPopupOpen(false);
+          setContent((prev: string) => prev.slice(0, contentHashtagPos));
+          setExtractedLabel('');
+        } else {
+          setLabelsToAdd((prev: string[]) => {
+            const target = labelsList[focusedLabelIndex] as LabelDbData;
             return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
-          }
-        });
-        setIsRecordingLabel(false);
-        setLabelsPopupOpen(false);
-        setContent((prev: string) => prev.slice(0, contentHashtagPos));
-        setExtractedLabel('');
-      } else {
-        setLabelsToAdd((prev: string[]) => {
-          const target = labelsList[focusedLabelIndex] as LabelDbData;
-          return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
-        });
-        setIsRecordingLabel(false);
-        setLabelsPopupOpen(false);
-        setContent((prev: string) => prev.slice(0, contentHashtagPos));
-        setExtractedLabel('');
+          });
+          setIsRecordingLabel(false);
+          setLabelsPopupOpen(false);
+          setContent((prev: string) => prev.slice(0, contentHashtagPos));
+          setExtractedLabel('');
+        }
       }
     }
     if (e.key === 'Escape' || e.key === ' ') {
