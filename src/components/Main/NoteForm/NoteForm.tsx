@@ -18,10 +18,10 @@ import LabelSuggestions from './LabelSuggestions';
 export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
   const currentUser = useContext(UserContext) as User;
   const [title, setTitle] = useState('');
-  
+
   const contentArea = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState('');
-  const [contentHashtagPos, setContentHashtagPos] = useState(-1);
+  const [liveHashtagIndex, setLiveHashtagIndex] = useState(-1);
 
   const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
@@ -66,12 +66,9 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   };
 
   const addToLabelList = (label_name: string) => {
-    setLabelsToAdd(
-      (prev) => (prev.includes(label_name) ? prev : [...prev, label_name]),
-      // ternary is to avoid duplicates
-    );
+    setLabelsToAdd((prev) => (prev.includes(label_name) ? prev : [...prev, label_name]));
     setIsRecordingLabel(false);
-    setContent((prev: string) => prev.slice(0, contentHashtagPos));
+    setContent((prev: string) => prev.slice(0, liveHashtagIndex));
     setExtractedLabel('');
     contentArea.current?.focus();
   };
@@ -83,9 +80,12 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   }
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
 
+  const [cursorIndex, setCursorIndex] = useState(0);
   const contentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    setContentHashtagPos(e.target.value.lastIndexOf('#')); // -1 if not exist
+    setCursorIndex((prev: number) =>
+      contentArea.current ? contentArea.current.selectionStart : prev,
+    );
   };
 
   const contentKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -108,7 +108,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
           }
         });
         setIsRecordingLabel(false);
-        setContent((prev: string) => prev.slice(0, contentHashtagPos));
+        setContent((prev: string) => prev.slice(0, liveHashtagIndex));
         setExtractedLabel('');
       } else {
         // when only # is typed and there's no text after it
@@ -117,7 +117,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
           return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
         });
         setIsRecordingLabel(false);
-        setContent((prev: string) => prev.slice(0, contentHashtagPos));
+        setContent((prev: string) => prev.slice(0, liveHashtagIndex));
         setExtractedLabel('');
       }
     }
@@ -143,12 +143,54 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   };
 
   useEffect(() => {
-    if (isRecordingLabel) setExtractedLabel(content.slice(contentHashtagPos + 1, content.length));
-  }, [isRecordingLabel, content, contentHashtagPos]);
+    // update liveHashtagIndex
+    setLiveHashtagIndex(isRecordingLabel ? cursorIndex : -1);
+    // update extractedLabel
+    if (isRecordingLabel) setExtractedLabel(content.slice(liveHashtagIndex + 1, content.length));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRecordingLabel, content, liveHashtagIndex]);
 
   useEffect(() => {
-    setFocusedLabelIndex(0); // update focused row in LabelSuggestions
+    // update focused row in LabelSuggestions
+    setFocusedLabelIndex(0);
   }, [labelsList.length]);
+
+  const [mirrorStyles, setMirrorStyles] = useState({ left: 0, top: 0, width: 0, height: 0 });
+  useEffect(() => {
+    // initial render
+    // 1. setup mirror div position
+    const { x, y, width, height } = contentArea.current?.getBoundingClientRect() as DOMRect;
+    setMirrorStyles({ left: x, top: y, width, height });
+
+    // 2. listen to cursor
+    contentArea.current?.addEventListener('selectionchange', () => {
+      setCursorIndex((prev: number) =>
+        contentArea.current ? contentArea.current.selectionStart : prev,
+      );
+    });
+  }, []);
+
+  const liveHashtag = useRef<HTMLSpanElement>(null);
+  const mirroredContent = content.split('').map((char, i) => {
+    return char === '#' && i === liveHashtagIndex ? (
+      <span ref={liveHashtag} className="text-pink-500 outline outline-1 outline-pink-500" key={i}>
+        {char}
+      </span>
+    ) : (
+      <span key={i} className="opacity-60">
+        {char}
+      </span>
+    );
+  });
+
+  const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
+  useEffect(() => {
+    // update position of # span based on liveHashtagIndex
+    if (liveHashtag.current) {
+      const { left, top, width, height } = liveHashtag.current.getBoundingClientRect();
+      setSuggestionPos({ left: left + width, top: top + height });
+    }
+  }, [liveHashtagIndex]);
 
   return (
     <form
@@ -157,7 +199,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       }}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
-      className="relative mx-auto mb-8 flex max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
+      className="mx-auto mb-8 flex max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
       <input
         type="text"
@@ -178,11 +220,19 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         onKeyDown={contentKeyDown}
         className="input-global resize-none py-2 focus:outline-none"
       />
+      <div
+        id="mirror"
+        style={mirrorStyles}
+        className="pointer-events-none invisible absolute whitespace-pre py-2"
+      >
+        {mirroredContent}
+      </div>
       {isRecordingLabel && (
         <LabelSuggestions
           focusedLabelIndex={focusedLabelIndex}
           labelsList={labelsList}
           addToLabelList={addToLabelList}
+          suggestionPos={suggestionPos}
         />
       )}
       <div id="labels" className="flex gap-2">

@@ -48,7 +48,7 @@ _remember: break every problem down to actionable steps_
 - [x] move up `Done`'s taborder
 - [x] reorganize, rename component files
 - [x] refactor, clean up dead code
-- [ ] move `LabelSuggestion` to caret position
+- [x] move `LabelSuggestion` to caret position
 - [ ] add `LabelsDropdown` (suggestion + search bar) to Label button in `NoteForm`
 - [ ] add recording logic to `Title` field as well
 - [ ] handle deleting `#` with `delete` key
