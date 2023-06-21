@@ -9,10 +9,12 @@ export default function LabelSuggestions({
   focusedLabelIndex,
   labelsList,
   addToLabelList,
+  suggestionPos,
 }: {
   focusedLabelIndex: number;
   labelsList: (LabelDbData | string)[];
   addToLabelList: (label_name: string) => void;
+  suggestionPos: { left: number; top: number };
 }) {
   const allLabels = useContext(AllLabelsContext);
   const regularLabelButton = (label: string, i: number) => (
@@ -50,8 +52,8 @@ export default function LabelSuggestions({
 
   return (
     <Root
-      style={{ position: 'absolute' }} // to override Radix
-      className={`left-80 top-20 max-h-64 w-48 overflow-hidden rounded  bg-slate-100 ${
+      style={{ position: 'absolute', ...suggestionPos }} // to override Radix
+      className={`max-h-64 w-48 overflow-hidden rounded bg-slate-100 ${
         labelElems.length > 0 ? 'outline' : ''
       } outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700`}
     >

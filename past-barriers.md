@@ -43,7 +43,8 @@ const handleKeyDown = (e) => {
   }
   if (e.key === 'Escape') {
     // stop recording
-    setIsRecording(false); setExtracted('');
+    setIsRecording(false);
+    setExtracted('');
   }
 };
 
@@ -55,3 +56,5 @@ useEffect(() => {
 ```
 
 ### 7. How to display a popup **at caret position** in an input field
+
+- Solution: create a mirror div that looks exactly like the input, put input's content in a span in mirror div => use coor of span as caret position (because you can't get position of a caret but you can get position of a span)
