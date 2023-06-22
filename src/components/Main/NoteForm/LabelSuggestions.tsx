@@ -50,12 +50,15 @@ export default function LabelSuggestions({
     } else return regularLabelButton(elem.label_name, i);
   });
 
+  let visibility = '';
+  if (suggestionPos.left === 0 || labelElems.length === 0) {
+    visibility = 'invisible';
+  }
+
   return (
     <Root
       style={{ position: 'absolute', ...suggestionPos }} // to override Radix
-      className={`max-h-64 w-48 overflow-hidden rounded bg-slate-100 ${
-        labelElems.length > 0 ? 'outline' : ''
-      } outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700`}
+      className={`${visibility} max-h-64 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700`}
     >
       <Viewport className="h-full w-full rounded">
         <div className="grid grid-cols-1 divide-y divide-slate-700 py-1">{labelElems}</div>

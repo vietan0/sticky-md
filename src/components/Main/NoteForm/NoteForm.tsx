@@ -137,6 +137,10 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   };
 
   useEffect(() => {
+    if (cursorIndex <= liveHashtagIndex) setIsRecordingLabel(false);
+  }, [cursorIndex, liveHashtagIndex]);
+
+  useEffect(() => {
     // update extractedLabel
     setExtractedLabel((_prev: string) => {
       return isRecordingLabel ? content.slice(liveHashtagIndex + 1, content.length) : '';
@@ -226,14 +230,12 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       >
         {mirroredContent}
       </div>
-      {isRecordingLabel && (
-        <LabelSuggestions
-          focusedLabelIndex={focusedLabelIndex}
-          labelsList={labelsList}
-          addToLabelList={addToLabelList}
-          suggestionPos={suggestionPos}
-        />
-      )}
+      <LabelSuggestions
+        focusedLabelIndex={focusedLabelIndex}
+        labelsList={labelsList}
+        addToLabelList={addToLabelList}
+        suggestionPos={suggestionPos}
+      />
       <div id="labels" className="flex gap-2">
         {labelsToAdd.map((label) => (
           <LabelButton key={label} label={label} />

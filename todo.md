@@ -48,8 +48,9 @@ _remember: break every problem down to actionable steps_
 - [x] move up `Done`'s taborder
 - [x] reorganize, rename component files
 - [x] refactor, clean up dead code
-- [x] move `LabelSuggestion` to caret position
+- [x] move `LabelSuggestions` to caret position
+- [x] hide `LabelSuggestions` when no `#` or cursor before `#`
 - [ ] add `LabelsDropdown` (suggestion + search bar) to Label button in `NoteForm`
 - [ ] add recording logic to `Title` field as well
-- [ ] handle deleting `#` with `delete` key
 - [ ] textarea should auto expand to accommodate `content`
+  - [ ] `contenteditable` div or keep `textarea`?
