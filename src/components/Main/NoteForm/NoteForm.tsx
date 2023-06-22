@@ -6,7 +6,7 @@ import { createNote } from '../../../supabase/notes';
 import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
 import LabelDbData from '../../../types/LabelDbData';
 import labelExists from '../../../utils/labelExists';
-import { createLabels } from '../../../supabase/labels';
+import { createLabels, getLabelIds } from '../../../supabase/labels';
 import { createNotesLabels } from '../../../supabase/notes_labels';
 import NoteDbData from '../../../types/NoteDbData';
 import Color from '../../icons/Color';
@@ -40,11 +40,12 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       const result = (await createNote(noteUploadData)) as NoteDbData[];
       const { note_id } = result[0];
 
-      const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
-      createLabels(newLabels, noteUploadData.user_id);
       if (noteUploadData.labels.length > 0) {
-        // if has labels, update join table
-        createNotesLabels(note_id, noteUploadData.labels);
+        const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
+        await createLabels(newLabels, noteUploadData.user_id);
+
+        const labelIds = await getLabelIds(labelsToAdd, currentUser.uid) as string[];
+        await createNotesLabels(note_id, labelIds, noteUploadData.user_id);
       }
     }
     setIsWriting(false); // close NoteForm
@@ -190,7 +191,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
     if (liveHashtag.current) {
       const { left, top, width, height } = liveHashtag.current.getBoundingClientRect();
       setSuggestionPos({ left: left + width, top: top + height });
-    }
+    } else setSuggestionPos({ left: 0, top: 0 });
   }, [liveHashtagIndex]);
 
   return (

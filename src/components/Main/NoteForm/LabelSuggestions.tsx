@@ -58,7 +58,7 @@ export default function LabelSuggestions({
   return (
     <Root
       style={{ position: 'absolute', ...suggestionPos }} // to override Radix
-      className={`${visibility} max-h-64 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700`}
+      className={`${visibility} z-10 max-h-64 w-48 overflow-hidden rounded bg-slate-100 outline outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700`}
     >
       <Viewport className="h-full w-full rounded">
         <div className="grid grid-cols-1 divide-y divide-slate-700 py-1">{labelElems}</div>
