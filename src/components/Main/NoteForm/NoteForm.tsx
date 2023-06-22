@@ -176,13 +176,11 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   const liveHashtag = useRef<HTMLSpanElement>(null);
   const mirroredContent = content.split('').map((char, i) => {
     return char === '#' && i === liveHashtagIndex ? (
-      <span ref={liveHashtag} className="text-pink-500 outline outline-1 outline-pink-500" key={i}>
+      <span ref={liveHashtag} className="outline outline-1 outline-pink-500" key={i}>
         {char}
       </span>
     ) : (
-      <span key={i} className="opacity-60">
-        {char}
-      </span>
+      <span key={i}>{char}</span>
     );
   });
 
