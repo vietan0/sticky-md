@@ -13,6 +13,7 @@ import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import Label from '../../icons/Label';
+import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 import LabelSuggestions from './LabelSuggestions';
 
 export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
@@ -44,7 +45,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
         await createLabels(newLabels, noteUploadData.user_id);
 
-        const labelIds = await getLabelIds(labelsToAdd, currentUser.uid) as string[];
+        const labelIds = (await getLabelIds(labelsToAdd, currentUser.uid)) as string[];
         await createNotesLabels(note_id, labelIds, noteUploadData.user_id);
       }
     }
@@ -187,12 +188,23 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
   const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
   useEffect(() => {
-    // update position of # span based on liveHashtagIndex
+    // update position of # span based on liveHashtag's position
     if (liveHashtag.current) {
-      const { left, top, width, height } = liveHashtag.current.getBoundingClientRect();
-      setSuggestionPos({ left: left + width, top: top + height });
+      const { right, bottom } = liveHashtag.current.getBoundingClientRect();
+      setSuggestionPos({ left: right, top: bottom });
     } else setSuggestionPos({ left: 0, top: 0 });
   }, [liveHashtagIndex]);
+
+  const labelSearchButton = useRef<HTMLDivElement>(null);
+  const [searchingForLabel, setSearchingForLabel] = useState(false);
+  const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
+  useEffect(() => {
+    // initiate position of LabelSuggestionsWithSearch based on its trigger button
+    if (labelSearchButton.current) {
+      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
+      setSuggestionWithSearchPos({ left, top: bottom + 16 });
+    }
+  }, []);
 
   return (
     <form
@@ -241,27 +253,33 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         ))}
       </div>
       <div className="add-stuffs flex items-center gap-2">
-        <button
-          type="button"
+        <div
+          ref={labelSearchButton}
           tabIndex={4}
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          onClick={() => setSearchingForLabel((prev) => !prev)}
+          className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Label className="h-5 w-5" />
-        </button>
-        <button
-          type="button"
+        </div>
+        {searchingForLabel && (
+          <LabelSuggestionsWithSearch
+            labelsToAdd={labelsToAdd}
+            setLabelsToAdd={setLabelsToAdd}
+            suggestionWithSearchPos={suggestionWithSearchPos}
+          />
+        )}
+        <div
           tabIndex={5}
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Color className="h-5 w-5" />
-        </button>
-        <button
-          type="button"
+        </div>
+        <div
           tabIndex={6}
-          className="rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
         >
           <Ellipsis className="h-5 w-5" />
-        </button>
+        </div>
         <button
           type="submit"
           tabIndex={3}

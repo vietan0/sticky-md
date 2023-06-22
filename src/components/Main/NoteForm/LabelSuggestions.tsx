@@ -17,30 +17,30 @@ export default function LabelSuggestions({
   suggestionPos: { left: number; top: number };
 }) {
   const allLabels = useContext(AllLabelsContext);
-  const regularLabelButton = (label: string, i: number) => (
+  const regularLabelButton = (label_name: string, i: number) => (
     <button
-      key={label}
+      key={label_name}
       type="button"
-      onClick={() => addToLabelList(label)}
+      onClick={() => addToLabelList(label_name)}
       className={`${
         focusedLabelIndex === i && 'bg-slate-800'
       } px-4 py-2 text-left text-[13px] hover:bg-slate-800 focus:outline-none`}
     >
-      {label}
+      {label_name}
     </button>
   );
-  const addNewLabelButton = (label: string, i: number) => (
+  const addNewLabelButton = (label_name: string, i: number) => (
     <button
-      key={label}
+      key={label_name}
       type="button"
-      onClick={() => addToLabelList(label)}
+      onClick={() => addToLabelList(label_name)}
       className={`${
         focusedLabelIndex === i && 'bg-slate-800'
       } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-800 focus:outline-none`}
     >
       <Plus className="h-4 w-4" />
       <span>
-        Create &apos;<span className="font-bold">{label}</span>&apos;
+        Create &apos;<span className="font-bold">{label_name}</span>&apos;
       </span>
     </button>
   );

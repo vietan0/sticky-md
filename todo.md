@@ -51,7 +51,8 @@ _remember: break every problem down to actionable steps_
 - [x] move `LabelSuggestions` to caret position
 - [x] hide `LabelSuggestions` when no `#` or cursor before `#`
 - [x] fix: `notes_labels` not being updated
-- [ ] add `LabelsDropdown` (suggestion + search bar) to Label button in `NoteForm`
+- [x] add `LabelsSuggestionsWithSearch` to Label button in `NoteForm`
 - [ ] add recording logic to `Title` field as well
 - [ ] textarea should auto expand to accommodate `content`
   - [ ] `contenteditable` div or keep `textarea`?
+- [ ] handle error when filteredLabel trying to filter a string ends with `\`
