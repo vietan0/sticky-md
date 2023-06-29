@@ -52,6 +52,8 @@ _remember: break every problem down to actionable steps_
 - [x] hide `LabelSuggestions` when no `#` or cursor before `#`
 - [x] fix: `notes_labels` not being updated
 - [x] add `LabelsSuggestionsWithSearch` to Label button in `NoteForm`
+- [ ] build masonry
+  - [ ] layout should update when a note is added
 - [ ] add recording logic to `Title` field as well
 - [ ] textarea should auto expand to accommodate `content`
   - [ ] `contenteditable` div or keep `textarea`?
