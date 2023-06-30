@@ -1,9 +1,11 @@
 export default interface Dimension {
+  bottom: number;
+  height: number;
   left: number;
+  right: number;
   top: number;
   width: number;
-  height: number;
-  bottom: number;
-  right: number;
+  x: number;
+  y: number;
   note_id: string;
 }
