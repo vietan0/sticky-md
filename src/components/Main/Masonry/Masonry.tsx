@@ -1,23 +1,25 @@
-import { useState, useContext, useEffect, useRef } from 'react';
 import { User } from 'firebase/auth';
-import { getAllNotes } from '../../../supabase/notes';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { UserContext } from '../../../contexts/UserContext';
-import NoteDbData from '../../../types/NoteDbData';
 import supabase from '../../../supabase/connect';
+import { getAllNotes } from '../../../supabase/notes';
 import Dimension from '../../../types/Dimension';
+import NoteDbData from '../../../types/NoteDbData';
+import Nudge from '../../../types/Nudge';
 import NoteCard from './NoteCard';
 
 export default function Masonry() {
   const currentUser = useContext(UserContext) as User;
-  const [allNotes, setAllNotes] = useState<NoteDbData[] | null>([]);
+  const [allNotes, setAllNotes] = useState<NoteDbData[]>([]);
   const masonry = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>(0);
 
   useEffect(() => {
     // 1. fetch data
     const fetchDB = async () => {
-      const allNotes = await getAllNotes(currentUser.uid);
-      setAllNotes(allNotes);
+      const fetchResult = await getAllNotes(currentUser.uid);
+      if (fetchResult) setAllNotes(fetchResult);
+      // if null, then there's error when fetching, redirect to 404 or something
     };
     fetchDB();
     supabase
@@ -47,6 +49,10 @@ export default function Masonry() {
     };
   }, [currentUser]);
 
+  const abs = {
+    left: 32,
+    top: 200,
+  } as const;
   const gap = 12;
   const colWidth = 240;
   const breakpoints = Array(4)
@@ -64,46 +70,70 @@ export default function Masonry() {
       : 5;
   const lefts = Array(colNum)
     .fill(0)
-    .map((_, i) => colWidth * i + gap * i);
+    .map((_, i) => colWidth * i + gap * i); // [ 0, 252, 504, 756, 1008 ]
 
-  const cols = Array(colNum)
-    .fill(0)
-    .map((_, i) => (
-      <div
-        key={i}
-        id={`col-${i}`}
-        style={{ position: 'absolute', width: colWidth, height: 20, left: lefts[i] }}
-        className="col outline outline-1 outline-pink-500"
-      ></div>
-    ));
+  const [allCardDims, setAllCardDims] = useState<Dimension[]>(
+    // initialize
+    allNotes.map(
+      ({ note_id }): Dimension => ({
+        bottom: 0,
+        height: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+        width: 0,
+        note_id,
+      }),
+    ),
+  );
+  // store nudge amount for each card
+  const [nudges, setNudges] = useState<Nudge[]>(allNotes.map(() => ({ left: 0, top: 0 })));
 
-  // cards positioning
-  const allCardDims = useRef<Dimension[]>([]);
   useEffect(() => {
-    if (allNotes)
-      allCardDims.current = allNotes.map(
-        ({ note_id }): Dimension => ({
-          bottom: 0,
-          height: 0,
-          left: 0,
-          right: 0,
-          top: 0,
-          width: 0,
-          x: 0,
-          y: 0,
-          note_id,
-        }),
-      );
-  }, [allNotes]);
+    setNudges((prev) => {
+      const updated = [...prev];
+      const previewUpdatedDims: Dimension[] = [];
 
-  const allCards = allNotes?.map((note) => (
+      for (let i = 0; i < allCardDims.length; i++) {
+        // allNotes, allCardDims & nudges have the same order
+        const rect = allCardDims[i];
+        let nudge: Nudge = { left: 0, top: 0 };
+        if (i > 0) {
+          if (i < colNum) {
+            // first row
+            nudge = { left: lefts[i], top: 0 };
+          } else {
+            // subsequent rows
+            const cardOnTop = previewUpdatedDims[i - colNum]; // find card on top
+            if (i === 2) console.log('cardOnTop of card 2 :>> ', cardOnTop);
+            const top = cardOnTop.bottom - abs.top + gap;
+            nudge = { left: lefts[i % colNum], top };
+          }
+
+          // add changes to rect (must resemble position returned from getBoundingClientRect(),
+          // which means calculate from 0, 0)
+          rect.left = nudge.left;
+          rect.right = nudge.left + rect.width;
+          rect.top = nudge.top + abs.top;
+          rect.bottom = nudge.top + abs.top + rect.height;
+        }
+        // push preview updated position to previewUpdatedDims
+        previewUpdatedDims.push(rect);
+        updated[i] = nudge;
+      }
+
+      // console.log(updated);
+      return updated;
+    });
+  }, [colNum, allNotes, allCardDims]);
+
+  const allCards = allNotes.map((note, i) => (
     <NoteCard
       note={note}
       colWidth={colWidth}
-      colNum={colNum}
-      gap={gap}
-      lefts={lefts}
-      allCardDims={allCardDims}
+      setAllCardDims={setAllCardDims}
+      i={i}
+      nudge={nudges[i] || { left: 0, top: 0 }}
       key={note.note_id}
     />
   ));

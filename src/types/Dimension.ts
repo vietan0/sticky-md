@@ -5,7 +5,5 @@ export default interface Dimension {
   right: number;
   top: number;
   width: number;
-  x: number;
-  y: number;
   note_id: string;
 }
