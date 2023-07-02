@@ -104,16 +104,30 @@ export default function Masonry() {
             nudge = { left: lefts[i], top: 0 };
           } else {
             // subsequent rows
-            const cardOnTop = previewUpdatedDims[i - colNum]; // find card on top
-            if (i === 2) console.log('cardOnTop of card 2 :>> ', cardOnTop);
-            const top = cardOnTop.bottom - abs.top + gap;
-            nudge = { left: lefts[i % colNum], top };
+            const lowestCards = lefts.map((left) => {
+              const bottomsOfSameCol = previewUpdatedDims
+                .filter((dim) => dim.left === left + abs.left)
+                .map((dim) => dim.bottom);
+
+              const lowestCardOfEachCol = Math.max(...bottomsOfSameCol);
+              return { left, bottom: lowestCardOfEachCol };
+            });
+
+            const cardOnTop = lowestCards.find((obj, _, a) => {
+              // in possible cardOnTops (card with blank space below),
+              // return one with smallest bottom
+              const smallestBottom = Math.min(...a.map((obj) => obj.bottom));
+              if (obj.bottom === smallestBottom) return obj;
+              // TS complains that find() could return undefined, but with this logic it cannot
+            }) as { left: number; bottom: number };
+
+            nudge = { left: cardOnTop.left, top: cardOnTop.bottom - abs.top + gap };
           }
 
           // add changes to rect (must resemble position returned from getBoundingClientRect(),
           // which means calculate from 0, 0)
-          rect.left = nudge.left;
-          rect.right = nudge.left + rect.width;
+          rect.left = nudge.left + abs.left;
+          rect.right = nudge.left + abs.left + rect.width;
           rect.top = nudge.top + abs.top;
           rect.bottom = nudge.top + abs.top + rect.height;
         }
@@ -122,7 +136,6 @@ export default function Masonry() {
         updated[i] = nudge;
       }
 
-      // console.log(updated);
       return updated;
     });
   }, [colNum, allNotes, allCardDims]);
