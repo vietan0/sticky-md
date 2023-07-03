@@ -87,21 +87,32 @@ export default function Masonry() {
     ),
   );
   // store nudge amount for each card
-  const [nudges, setNudges] = useState<Nudge[]>(allNotes.map(() => ({ left: 0, top: 0 })));
+  const [nudges, setNudges] = useState<Nudge[]>(
+    allNotes.map(({ note_id }) => ({ left: 0, top: 0, note_id })),
+  );
 
   useEffect(() => {
     setNudges((prev) => {
       const updated = [...prev];
       const previewUpdatedDims: Dimension[] = [];
 
+      // handle delete card
+      const deleteTargetIndex = prev.findIndex((dim) => {
+        const ids = allNotes.map((n) => n.note_id);
+        return !ids.includes(dim.note_id);
+      });
+      if (deleteTargetIndex !== -1) {
+        updated.splice(deleteTargetIndex, 1);
+      }
+
       for (let i = 0; i < allCardDims.length; i++) {
         // allNotes, allCardDims & nudges have the same order
         const rect = allCardDims[i];
-        let nudge: Nudge = { left: 0, top: 0 };
+        let nudge: Nudge = { left: 0, top: 0, note_id: rect.note_id };
         if (i > 0) {
           if (i < colNum) {
             // first row
-            nudge = { left: lefts[i], top: 0 };
+            nudge = { left: lefts[i], top: 0, note_id: rect.note_id };
           } else {
             // subsequent rows
             const lowestCards = lefts.map((left) => {
@@ -121,7 +132,11 @@ export default function Masonry() {
               // TS complains that find() could return undefined, but with this logic it cannot
             }) as { left: number; bottom: number };
 
-            nudge = { left: cardOnTop.left, top: cardOnTop.bottom - abs.top + gap };
+            nudge = {
+              left: cardOnTop.left,
+              top: cardOnTop.bottom - abs.top + gap,
+              note_id: rect.note_id,
+            };
           }
 
           // add changes to rect (must resemble position returned from getBoundingClientRect(),
@@ -138,6 +153,7 @@ export default function Masonry() {
 
       return updated;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colNum, allNotes, allCardDims]);
 
   const allCards = allNotes.map((note, i) => (
@@ -147,6 +163,7 @@ export default function Masonry() {
       setAllCardDims={setAllCardDims}
       i={i}
       nudge={nudges[i] || { left: 0, top: 0 }}
+      allNotes={allNotes}
       key={note.note_id}
     />
   ));

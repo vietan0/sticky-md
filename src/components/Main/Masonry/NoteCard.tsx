@@ -16,12 +16,14 @@ export default function NoteCard({
   setAllCardDims,
   i,
   nudge,
+  allNotes,
 }: {
   note: NoteDbData;
   colWidth: number;
   setAllCardDims: React.Dispatch<React.SetStateAction<Dimension[]>>;
   i: number;
   nudge: Nudge;
+  allNotes: NoteDbData[];
 }) {
   const [hover, setHover] = useState(false);
   const { title, content, labels, note_id } = note;
@@ -38,15 +40,23 @@ export default function NoteCard({
 
   const card = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // runs after render
+    // runs only when allNotes change
     // its only job: update position to allCardDims
-    // NoteCard doesn't rerender when position changed
-
     if (card.current) {
       const rect = card.current.getBoundingClientRect();
 
       setAllCardDims((prev) => {
         const dup = [...prev];
+
+        // handle delete card
+        const deleteTargetIndex = prev.findIndex((dim) => {
+          const ids = allNotes.map((n) => n.note_id);
+          return !ids.includes(dim.note_id);
+        });
+        if (deleteTargetIndex !== -1) {
+          dup.splice(deleteTargetIndex, 1);
+        }
+
         dup[i] = {
           bottom: rect.bottom,
           height: rect.height,
@@ -60,7 +70,7 @@ export default function NoteCard({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [allNotes]);
 
   return (
     <div
