@@ -73,8 +73,8 @@ export default function LabelSuggestionsWithSearch({
       key={label_name}
       onClick={(e) => e.stopPropagation()}
       className={`${
-        focusedLabelIndex === i && 'bg-slate-800'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-800 focus:outline-none`}
+        focusedLabelIndex === i && 'bg-slate-300 dark:bg-slate-800'
+      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-300 focus:outline-none dark:hover:bg-slate-800`}
     >
       <Checkbox.Root
         checked={labelsToAdd.includes(label_name)}
@@ -102,8 +102,8 @@ export default function LabelSuggestionsWithSearch({
         setLabelsToAdd((prev) => (prev.includes(label_name) ? prev : [...prev, label_name]))
       }
       className={`${
-        focusedLabelIndex === i && 'bg-slate-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-800 focus:outline-none`}
+        focusedLabelIndex === i && 'bg-slate-300 dark:bg-slate-800'
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-300 focus:outline-none dark:hover:bg-slate-800`}
     >
       <Plus className="h-4 w-4" />
       <span>
@@ -132,10 +132,12 @@ export default function LabelSuggestionsWithSearch({
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyDown={contentKeyDown}
           placeholder="Search for labels…"
-          className="input-global border-b-2 border-slate-700 px-4 py-2 text-left text-[13px] focus:outline-none
+          className="input-global border-b-2 border-slate-300 px-4 py-2 text-left text-[13px] focus:outline-none dark:border-slate-700
           "
         />
-        <div className="grid grid-cols-1 divide-y divide-slate-700 pb-1">{labelElems}</div>
+        <div className="grid grid-cols-1 divide-y divide-slate-300 pb-1 dark:divide-slate-700">
+          {labelElems}
+        </div>
       </Viewport>
       <Scrollbar
         orientation="vertical"

@@ -257,9 +257,9 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
           ref={labelSearchButton}
           tabIndex={4}
           onClick={() => setSearchingForLabel((prev) => !prev)}
-          className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
-          <Label className="h-5 w-5" />
+          <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
         </div>
         {searchingForLabel && (
           <LabelSuggestionsWithSearch
@@ -270,20 +270,20 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         )}
         <div
           tabIndex={5}
-          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
-          <Color className="h-5 w-5" />
+          <Color className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
         </div>
         <div
           tabIndex={6}
-          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
-          <Ellipsis className="h-5 w-5" />
+          <Ellipsis className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
         </div>
         <button
           type="submit"
           tabIndex={3}
-          className="ml-auto rounded-full px-4 py-2 leading-5 outline outline-1 outline-slate-800 hover:bg-slate-800 focus:bg-slate-800"
+          className="ml-auto rounded-full px-4 py-2 leading-5 text-slate-700 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:text-white dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
           Done
         </button>

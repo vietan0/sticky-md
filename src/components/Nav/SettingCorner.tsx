@@ -11,7 +11,7 @@ export default function SettingCorner() {
 
   return (
     <Root>
-      <Trigger className="rounded bg-slate-100 px-4 py-3 hover:bg-slate-800 dark:bg-slate-900">
+      <Trigger className="rounded bg-slate-100 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 dark:bg-slate-900">
         {currentUser?.displayName || currentUser?.email}
       </Trigger>
       <Portal>
