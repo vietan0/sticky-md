@@ -161,29 +161,41 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
     setFocusedLabelIndex(0);
   }, [labelsList.length]);
 
-  const [mirrorStyles, setMirrorStyles] = useState({ left: 0, top: 0, width: 0, height: 0 });
+  const [mirrorPos, setMirrorPos] = useState({ left: 0, top: 0, width: 0, height: 0 });
   useEffect(() => {
     // initial render
     // 1. setup mirror div position
-    const { x, y, width, height } = contentArea.current?.getBoundingClientRect() as DOMRect;
-    setMirrorStyles({ left: x, top: y, width, height });
+    function syncMirror() {
+      const { x, y, width, height } = contentArea.current?.getBoundingClientRect() as DOMRect;
+      setMirrorPos({ left: x, top: y, width, height });
+    }
+    syncMirror();
 
+    // sync position when resize
+    window.addEventListener('resize', syncMirror);
+    
     // 2. listen to cursor
     contentArea.current?.addEventListener('selectionchange', () => {
       setCursorIndex((prev: number) =>
         contentArea.current ? contentArea.current.selectionStart : prev,
       );
     });
+
+    return () => {
+      window.removeEventListener('resize', syncMirror);
+    }
   }, []);
 
   const liveHashtag = useRef<HTMLSpanElement>(null);
   const mirroredContent = content.split('').map((char, i) => {
     return char === '#' && i === liveHashtagIndex ? (
-      <span ref={liveHashtag} className="outline outline-1 outline-pink-500" key={i}>
+      <span ref={liveHashtag} className="h-6" key={i}>
         {char}
       </span>
     ) : (
-      <span key={i}>{char}</span>
+      <span key={i} className="h-6">
+        {char}
+      </span>
     );
   });
 
@@ -200,11 +212,20 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   const [searchingForLabel, setSearchingForLabel] = useState(false);
   const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
   useEffect(() => {
-    // initiate position of LabelSuggestionsWithSearch based on its trigger button
-    if (labelSearchButton.current) {
-      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
-      setSuggestionWithSearchPos({ left, top: bottom + 16 });
+    // position LabelSuggestionsWithSearch relative to its trigger button
+    function syncSuggestionWithSearchPos() {
+      if (labelSearchButton.current) {
+        const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
+        setSuggestionWithSearchPos({ left, top: bottom + 16 });
+      }
     }
+    syncSuggestionWithSearchPos();
+
+    window.addEventListener('resize', syncSuggestionWithSearchPos);
+
+    return () => {
+      window.removeEventListener('resize', syncSuggestionWithSearchPos);
+    };
   }, []);
 
   return (
@@ -239,8 +260,8 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       />
       <div
         id="mirror"
-        style={mirrorStyles}
-        className="pointer-events-none invisible absolute whitespace-pre py-2"
+        style={mirrorPos}
+        className="pointer-events-none invisible absolute py-2"
       >
         {mirroredContent}
       </div>

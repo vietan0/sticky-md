@@ -55,6 +55,7 @@ _remember: break every problem down to actionable steps_
 - [x] build masonry
   - [x] layout should update when a note is added
 - [x] textarea should auto expand to accommodate `content`
-- [ ] fix: hashtag on lower lines - mirror div content should wrap  
+- [x] fix: hashtag on lower lines - mirror div content should wrap  
+- [x] fix: `LabelSuggestions` position should be in sync when window resizes
 - [ ] fix: error when filteredLabel trying to filter a string ends with `\`
 - [ ] add recording logic to `Title` field as well
