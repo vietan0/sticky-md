@@ -60,6 +60,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
   const formKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Escape') {
+      console.log('esc handler attached to form')
       isRecordingLabel ? setIsRecordingLabel(false) : uploadToDb();
     }
   };
