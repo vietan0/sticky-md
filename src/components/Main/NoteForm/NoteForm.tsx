@@ -1,4 +1,5 @@
 import { useState, useContext, useRef, useEffect } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import { User } from 'firebase/auth';
 import NoteUploadData from '../../../types/NoteUploadData';
 import { UserContext } from '../../../contexts/UserContext';
@@ -224,8 +225,9 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         onChange={titleChange}
         className="input-global font-semibold focus:outline-none"
       />
-      <textarea
-        rows={3}
+      <TextareaAutosize
+        minRows={3}
+        maxRows={15}
         autoFocus
         tabIndex={2}
         placeholder="Write something…"
