@@ -39,9 +39,8 @@ export default function NoteCard({
   );
 
   const card = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // runs only when allNotes change
-    // its only job: update position to allCardDims
+
+  function handleTransitionEnd() {
     if (card.current) {
       const rect = card.current.getBoundingClientRect();
 
@@ -58,17 +57,21 @@ export default function NoteCard({
         }
 
         dup[i] = {
-          bottom: rect.bottom,
+          bottom: i === 0 ? 200 + rect.height : rect.bottom,
           height: rect.height,
           left: rect.left,
           right: rect.right,
-          top: rect.top,
+          top: i === 0 ? 200 : rect.top,
           width: rect.width,
           note_id,
         };
         return dup;
       });
     }
+  }
+
+  useEffect(() => {
+    handleTransitionEnd();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);
 
@@ -77,6 +80,7 @@ export default function NoteCard({
       ref={card}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onTransitionEnd={handleTransitionEnd}
       style={{
         transform: `translate(${nudge.left}px, ${nudge.top}px)`,
         width: colWidth,
