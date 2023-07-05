@@ -1,6 +1,6 @@
 import { Root, Viewport, Scrollbar, Thumb } from '@radix-ui/react-scroll-area';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
 import Plus from '../../icons/Plus';
 import LabelDbData from '../../../types/LabelDbData';
@@ -11,10 +11,12 @@ export default function LabelSuggestionsWithSearch({
   labelsToAdd,
   setLabelsToAdd,
   suggestionWithSearchPos,
+  setSearchingForLabel,
 }: {
   labelsToAdd: string[];
   setLabelsToAdd: (value: React.SetStateAction<string[]>) => void;
   suggestionWithSearchPos: { left: number; top: number };
+  setSearchingForLabel: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const allLabels = useContext(AllLabelsContext);
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
@@ -67,14 +69,18 @@ export default function LabelSuggestionsWithSearch({
         (prev: number) => (prev >= labelsList.length - 1 ? 0 : prev + 1),
       );
     }
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      setSearchingForLabel(false);
+    }
   };
   const regularLabelButton = (label_name: string, i: number) => (
     <label
       key={label_name}
       onClick={(e) => e.stopPropagation()}
       className={`${
-        focusedLabelIndex === i && 'bg-slate-300 dark:bg-slate-800'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-300 focus:outline-none dark:hover:bg-slate-800`}
+        focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-800'
+      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800`}
     >
       <Checkbox.Root
         checked={labelsToAdd.includes(label_name)}
@@ -102,8 +108,8 @@ export default function LabelSuggestionsWithSearch({
         setLabelsToAdd((prev) => (prev.includes(label_name) ? prev : [...prev, label_name]))
       }
       className={`${
-        focusedLabelIndex === i && 'bg-slate-300 dark:bg-slate-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-300 focus:outline-none dark:hover:bg-slate-800`}
+        focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-800'
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800`}
     >
       <Plus className="h-4 w-4" />
       <span>
@@ -117,6 +123,17 @@ export default function LabelSuggestionsWithSearch({
       if (!labelExists(elem, allLabels)) return addNewLabelButton(elem, i);
     } else return regularLabelButton(elem.label_name, i);
   });
+
+  useEffect(() => {
+    function toggleSearchingForLabel() {
+      setSearchingForLabel(false);
+    }
+    document.addEventListener('click', toggleSearchingForLabel);
+
+    return () => {
+      document.removeEventListener('click', toggleSearchingForLabel);
+    };
+  }, [setSearchingForLabel]);
 
   return (
     <Root

@@ -210,6 +210,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
     <form
       onClick={(e) => {
         e.stopPropagation();
+        if (searchingForLabel) setSearchingForLabel(false);
       }}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
@@ -266,6 +267,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
             labelsToAdd={labelsToAdd}
             setLabelsToAdd={setLabelsToAdd}
             suggestionWithSearchPos={suggestionWithSearchPos}
+            setSearchingForLabel={setSearchingForLabel}
           />
         )}
         <div
