@@ -59,6 +59,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
   const formKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Escape') {
+      console.log('esc handler attached to form')
       isRecordingLabel ? setIsRecordingLabel(false) : uploadToDb();
     }
   };
@@ -210,6 +211,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
     <form
       onClick={(e) => {
         e.stopPropagation();
+        if (searchingForLabel) setSearchingForLabel(false);
       }}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
@@ -266,6 +268,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
             labelsToAdd={labelsToAdd}
             setLabelsToAdd={setLabelsToAdd}
             suggestionWithSearchPos={suggestionWithSearchPos}
+            setSearchingForLabel={setSearchingForLabel}
           />
         )}
         <div
