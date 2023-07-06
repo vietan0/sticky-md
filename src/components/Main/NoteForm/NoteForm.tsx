@@ -38,6 +38,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   };
 
   async function uploadToDb() {
+    setIsWriting(false); // close NoteForm
     if (noteUploadData.title || noteUploadData.content) {
       const result = (await createNote(noteUploadData)) as NoteDbData[];
       const { note_id } = result[0];
@@ -50,7 +51,6 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         await createNotesLabels(note_id, labelIds, noteUploadData.user_id);
       }
     }
-    setIsWriting(false); // close NoteForm
   }
 
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -173,7 +173,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
     // sync position when resize
     window.addEventListener('resize', syncMirror);
-    
+
     // 2. listen to cursor
     contentArea.current?.addEventListener('selectionchange', () => {
       setCursorIndex((prev: number) =>
@@ -183,7 +183,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
 
     return () => {
       window.removeEventListener('resize', syncMirror);
-    }
+    };
   }, []);
 
   const liveHashtag = useRef<HTMLSpanElement>(null);
@@ -211,23 +211,28 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
   const labelSearchButton = useRef<HTMLDivElement>(null);
   const [searchingForLabel, setSearchingForLabel] = useState(false);
   const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
-  useEffect(() => {
+
+  function syncSuggestionWithSearchPos() {
     // position LabelSuggestionsWithSearch relative to its trigger button
-    function syncSuggestionWithSearchPos() {
-      if (labelSearchButton.current) {
-        const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
-        setSuggestionWithSearchPos({ left, top: bottom + 16 });
-      }
+    if (labelSearchButton.current) {
+      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
+      setSuggestionWithSearchPos({ left, top: bottom + 16 });
     }
-    syncSuggestionWithSearchPos();
-
+  }
+  useEffect(() => {
     window.addEventListener('resize', syncSuggestionWithSearchPos);
-
     return () => {
       window.removeEventListener('resize', syncSuggestionWithSearchPos);
     };
   }, []);
 
+  useEffect(() => {
+    syncSuggestionWithSearchPos();
+  }, [labelsToAdd]);
+
+  function removeLabel(target: string) {
+    setLabelsToAdd((prev: string[]) => prev.filter((label) => label !== target));
+  }
   return (
     <form
       onClick={(e) => {
@@ -258,11 +263,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         onKeyDown={contentKeyDown}
         className="input-global resize-none py-2 focus:outline-none"
       />
-      <div
-        id="mirror"
-        style={mirrorPos}
-        className="pointer-events-none invisible absolute py-2"
-      >
+      <div id="mirror" style={mirrorPos} className="pointer-events-none invisible absolute py-2">
         {mirroredContent}
       </div>
       <LabelSuggestions
@@ -273,7 +274,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       />
       <div id="labels" className="flex gap-2">
         {labelsToAdd.map((label) => (
-          <LabelButton key={label} label={label} />
+          <LabelButton key={label} label={label} removeLabel={removeLabel} />
         ))}
       </div>
       <div className="add-stuffs flex items-center gap-2">
@@ -281,6 +282,9 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
           ref={labelSearchButton}
           tabIndex={4}
           onClick={() => setSearchingForLabel((prev) => !prev)}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') setSearchingForLabel((prev) => !prev);
+          }}
           className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
           <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
