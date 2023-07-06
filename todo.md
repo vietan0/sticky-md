@@ -57,5 +57,5 @@ _remember: break every problem down to actionable steps_
 - [x] textarea should auto expand to accommodate `content`
 - [x] fix: hashtag on lower lines - mirror div content should wrap  
 - [x] fix: `LabelSuggestions` position should be in sync when window resizes
-- [ ] fix: error when filteredLabel trying to filter a string ends with `\`
+- [x] fix: error when filteredLabel trying to filter a string ends with `\`
 - [ ] add recording logic to `Title` field as well

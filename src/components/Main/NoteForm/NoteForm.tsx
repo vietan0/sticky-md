@@ -75,7 +75,16 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
     contentArea.current?.focus();
   };
 
-  const filteredLabels = allLabels.filter(({ label_name }) => label_name.match(extractedLabel));
+  const filteredLabels = allLabels.filter(({ label_name }) => {
+    const backslashMatches = extractedLabel.match(/\\+$/);
+    if (backslashMatches) {
+      // if last character is a backslash
+      const backslashCount = backslashMatches[0].length;
+      // if there's an odd number of backslash (which mean unescaped), make it even by adding another one right after
+      if (backslashCount % 2 === 1) return label_name.match(extractedLabel + '\\');
+    }
+    return label_name.match(extractedLabel);
+  });
   let labelsList = [...filteredLabels] as (LabelDbData | string)[];
   if (extractedLabel) {
     labelsList = [...filteredLabels, extractedLabel];
