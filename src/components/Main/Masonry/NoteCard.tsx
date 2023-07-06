@@ -17,6 +17,8 @@ export default function NoteCard({
   i,
   nudge,
   allNotes,
+  lefts,
+  abs,
 }: {
   note: NoteDbData;
   colWidth: number;
@@ -24,6 +26,11 @@ export default function NoteCard({
   i: number;
   nudge: Nudge;
   allNotes: NoteDbData[];
+  lefts: number[];
+  abs: {
+    readonly left: 32;
+    readonly top: 200;
+  };
 }) {
   const [hover, setHover] = useState(false);
   const { title, content, labels, note_id } = note;
@@ -56,12 +63,19 @@ export default function NoteCard({
           dup.splice(deleteTargetIndex, 1);
         }
 
+        let left = 0;
+        for (let i = lefts.length - 1; i >= 0; i--) {
+          if (rect.left >= lefts[i]) {
+            left = lefts[i] + abs.left * (i + 1);
+            break;
+          }
+        }
         dup[i] = {
-          bottom: i === 0 ? 200 + rect.height : rect.bottom,
+          bottom: i === 0 ? rect.height + abs.top : rect.bottom,
           height: rect.height,
-          left: rect.left,
+          left,
           right: rect.right,
-          top: i === 0 ? 200 : rect.top,
+          top: i === 0 ? abs.top : rect.top,
           width: rect.width,
           note_id,
         };

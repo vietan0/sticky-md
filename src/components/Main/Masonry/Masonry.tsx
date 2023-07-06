@@ -12,7 +12,7 @@ export default function Masonry() {
   const currentUser = useContext(UserContext) as User;
   const [allNotes, setAllNotes] = useState<NoteDbData[]>([]);
   const masonry = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState<number>(0);
+  const [availableSpace, setAvailableSpace] = useState<number>(0);
 
   useEffect(() => {
     // 1. fetch data
@@ -37,9 +37,8 @@ export default function Masonry() {
 
     // 2. prepare layout
     const syncWidth = () => {
-      if (masonry.current) {
-        setWidth(masonry.current.getBoundingClientRect().width);
-      }
+      const mainPadding = 32;
+      setAvailableSpace(window.innerWidth - mainPadding * 2);
     };
     syncWidth();
     window.addEventListener('resize', syncWidth);
@@ -59,13 +58,13 @@ export default function Masonry() {
     .fill(0)
     .map((_, i) => colWidth * (i + 2) + gap * (i + 1)); // [ 504, 768, 1032, 1296 ]
   const colNum =
-    width < breakpoints[0]
+    availableSpace < breakpoints[0]
       ? 1
-      : width < breakpoints[1]
+      : availableSpace < breakpoints[1]
       ? 2
-      : width < breakpoints[2]
+      : availableSpace < breakpoints[2]
       ? 3
-      : width < breakpoints[3]
+      : availableSpace < breakpoints[3]
       ? 4
       : 5;
   const lefts = Array(colNum)
@@ -138,7 +137,6 @@ export default function Masonry() {
               note_id: rect.note_id,
             };
           }
-
           // add changes to rect (must resemble position returned from getBoundingClientRect(),
           // which means calculate from 0, 0)
           rect.left = nudge.left + abs.left;
@@ -164,12 +162,33 @@ export default function Masonry() {
       i={i}
       nudge={nudges[i] || { left: 0, top: 0 }}
       allNotes={allNotes}
+      lefts={lefts}
+      abs={abs}
       key={note.note_id}
     />
   ));
 
+  const [masonryHeight, setMasonryHeight] = useState(0);
+  useEffect(() => {
+    setMasonryHeight(() => {
+      const bottoms = allCardDims.map((n) => n.bottom);
+      const maxBottom = bottoms.length > 0 ? Math.max(...bottoms) - abs.top : 0;
+      return maxBottom;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allCardDims]);
+
   return (
-    <div ref={masonry} id="masonry" className="relative mx-auto">
+    <div
+      ref={masonry}
+      id="masonry"
+      style={{
+        height: masonryHeight,
+        width: colNum * colWidth + (colNum - 1) * gap,
+        maxWidth: breakpoints[3],
+      }}
+      className="relative mx-auto duration-100"
+    >
       {allCards}
     </div>
   );
