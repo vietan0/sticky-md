@@ -23,13 +23,14 @@ export default function Masonry() {
     };
     fetchDB();
     supabase
-      .channel('schema-db-changes')
+      .channel('notes-changes')
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'notes',
+          filter: `user_id=eq.${currentUser.uid}`,
         },
         (_payload) => fetchDB(), // listen for changes, refetch if there is one
       )
