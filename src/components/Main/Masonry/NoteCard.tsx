@@ -1,7 +1,9 @@
 import { nanoid } from 'nanoid';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
+import * as Dialog from '@radix-ui/react-dialog';
 import remarkGfm from 'remark-gfm';
+import { User } from 'firebase/auth';
 import { deleteNote } from '../../../supabase/notes';
 import NoteDbData from '../../../types/NoteDbData';
 import Close from '../../icons/Close';
@@ -9,6 +11,9 @@ import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import Dimension from '../../../types/Dimension';
 import Nudge from '../../../types/Nudge';
+import NoteForm from '../NoteForm/NoteForm';
+import { removeLabelFromNote } from '../../../supabase/labels';
+import { UserContext } from '../../../contexts/UserContext';
 
 export default function NoteCard({
   note,
@@ -32,10 +37,19 @@ export default function NoteCard({
     readonly top: 200;
   };
 }) {
+  const currentUser = useContext(UserContext) as User;
   const [hover, setHover] = useState(false);
   const { title, content, labels, note_id } = note;
 
-  const labelButtons = labels.map((label) => <LabelButton label={label} key={nanoid()} />);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const deleteLabel = (label: string) => {
+    removeLabelFromNote(note_id, label, currentUser.uid);
+  };
+
+  const labelButtons = labels.map((label) => (
+    <LabelButton label={label} removeLabel={deleteLabel} key={nanoid()} />
+  ));
   const deleteButton = (
     <button
       onClick={() => deleteNote(note_id)}
@@ -90,34 +104,44 @@ export default function NoteCard({
   }, [allNotes]);
 
   return (
-    <div
-      ref={card}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onTransitionEnd={handleTransitionEnd}
-      style={{
-        transform: `translate(${nudge.left}px, ${nudge.top}px)`,
-        width: colWidth,
-      }}
-      className="NoteCard absolute flex max-h-[480px] flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-100 dark:bg-slate-900 dark:outline-slate-700"
-    >
-      {title && (
-        <Md remarkPlugins={[remarkGfm]} className="markdown break-words font-semibold">
-          {title}
-        </Md>
-      )}
-      {content && (
-        <Md remarkPlugins={[remarkGfm]} className="markdown break-words">
-          {content}
-        </Md>
-      )}
-      {labelButtons}
-      <div className="add-stuffs">
-        <button className="rounded-full p-1 outline outline-1 outline-slate-400 dark:outline-slate-800">
-          <Ellipsis className="h-5 w-5" />
-        </button>
-      </div>
-      {hover && deleteButton}
-    </div>
+    <Dialog.Root open={isEditing} onOpenChange={setIsEditing}>
+      <Dialog.Trigger asChild>
+        <div
+          ref={card}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onTransitionEnd={handleTransitionEnd}
+          style={{
+            transform: `translate(${nudge.left}px, ${nudge.top}px)`,
+            width: colWidth,
+          }}
+          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-slate-500 dark:bg-slate-900 dark:outline-slate-700 dark:hover:outline-slate-300"
+        >
+          {title && (
+            <Md remarkPlugins={[remarkGfm]} className="markdown break-words font-semibold">
+              {title}
+            </Md>
+          )}
+          {content && (
+            <Md remarkPlugins={[remarkGfm]} className="markdown break-words">
+              {content}
+            </Md>
+          )}
+          <div className="flex flex-wrap gap-2">{labelButtons}</div>
+          <div className="add-stuffs">
+            <button className="rounded-full p-1 outline outline-1 outline-slate-400 dark:outline-slate-800">
+              <Ellipsis className="h-5 w-5" />
+            </button>
+          </div>
+          {hover && deleteButton}
+        </div>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/20" />
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+          <NoteForm setIsWriting={setIsEditing} />
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

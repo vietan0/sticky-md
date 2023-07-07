@@ -1,4 +1,5 @@
 import supabase from './connect';
+import { deleteNotesLabels } from './notes_labels';
 
 async function getAllLabels(uid: string) {
   const { data, error } = await supabase
@@ -27,4 +28,18 @@ async function createLabels(newLabelsOnly: string[], user_id: string) {
   if (error) console.error(error);
 }
 
-export { getAllLabels, getLabelIds, createLabels };
+async function removeLabelFromNote(note_id: string, targetLabel: string, user_id: string) {
+  // 1. delete label name from column 'labels' inside a row in table 'notes'
+  const { data, error } = await supabase.from('notes').select('labels').eq('note_id', note_id);
+  if (error) console.error(error);
+  if (data) {
+    const currentLabels = data[0].labels;
+    const updatedLabels = currentLabels.filter((n: string) => n != targetLabel);
+    await supabase.from('notes').update({ labels: updatedLabels }).eq('note_id', note_id).select();
+
+    // 2. delete a row from join table 'notes_labels'
+    await deleteNotesLabels(note_id, targetLabel, user_id);
+  }
+}
+
+export { getAllLabels, getLabelIds, createLabels, removeLabelFromNote };

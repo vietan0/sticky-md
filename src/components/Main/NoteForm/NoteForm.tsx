@@ -17,7 +17,11 @@ import Label from '../../icons/Label';
 import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 import LabelSuggestions from './LabelSuggestions';
 
-export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean) => void }) {
+export default function NoteForm({
+  setIsWriting,
+}: {
+  setIsWriting: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const currentUser = useContext(UserContext) as User;
   const [title, setTitle] = useState('');
 
@@ -250,7 +254,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
       }}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
-      className="mx-auto mb-8 flex max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
+      className="mx-auto flex w-full max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
       <input
         type="text"
@@ -281,7 +285,7 @@ export default function NoteForm({ setIsWriting }: { setIsWriting: (val: boolean
         addToLabelList={addToLabelList}
         suggestionPos={suggestionPos}
       />
-      <div id="labels" className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {labelsToAdd.map((label) => (
           <LabelButton key={label} label={label} removeLabel={removeLabel} />
         ))}
