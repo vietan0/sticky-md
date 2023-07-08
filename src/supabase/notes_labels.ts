@@ -1,4 +1,5 @@
 import supabase from './connect';
+import { getLabelId } from './labels';
 
 async function createNotesLabels(note_id: string, labelIds: string[], user_id: string) {
   const { data, error } = await supabase
@@ -7,14 +8,14 @@ async function createNotesLabels(note_id: string, labelIds: string[], user_id: s
   if (error) console.error(error);
 }
 
-async function getLabelId(label_name: string, user_id: string) {
+async function getNotesLabels(label_id: string) {
   const { data, error } = await supabase
-    .from('labels')
-    .select('label_id')
-    .match({ label_name, user_id });
+    .from('notes_labels')
+    .select('*')
+    .eq('label_id', label_id);
 
   if (error) console.error(error);
-  if (data) return data[0].label_id;
+  if (data) return data;
 }
 
 async function deleteNotesLabels(note_id: string, label_name: string, user_id: string) {
@@ -22,4 +23,4 @@ async function deleteNotesLabels(note_id: string, label_name: string, user_id: s
   const { error } = await supabase.from('notes_labels').delete().match({ note_id, label_id });
   if (error) console.error(error);
 }
-export { createNotesLabels, getLabelId, deleteNotesLabels };
+export { createNotesLabels, getNotesLabels, deleteNotesLabels };

@@ -55,8 +55,9 @@ _remember: break every problem down to actionable steps_
 - [x] build masonry
   - [x] layout should update when a note is added
 - [x] textarea should auto expand to accommodate `content`
-- [x] fix: hashtag on lower lines - mirror div content should wrap  
+- [x] fix: hashtag on lower lines - mirror div content should wrap
 - [x] fix: `LabelSuggestions` position should be in sync when window resizes
 - [x] fix: error when filteredLabel trying to filter a string ends with `\`
 - [x] refetch labels if just created note with new label
+- [x] auto delete row from table `labels` if there's no note with that label
 - [ ] add recording logic to `Title` field as well
