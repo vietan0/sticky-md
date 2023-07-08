@@ -59,4 +59,5 @@ _remember: break every problem down to actionable steps_
 - [x] fix: `LabelSuggestions` position should be in sync when window resizes
 - [x] fix: error when filteredLabel trying to filter a string ends with `\`
 - [x] refetch labels if just created note with new label
+- [x] auto delete row from table `labels` if there's no note with that label
 - [ ] add recording logic to `Title` field as well

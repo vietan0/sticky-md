@@ -11,6 +11,16 @@ async function getAllLabels(uid: string) {
   return data;
 }
 
+async function getLabelId(label_name: string, user_id: string) {
+  const { data, error } = await supabase
+    .from('labels')
+    .select('label_id')
+    .match({ label_name, user_id });
+
+  if (error) console.error(error);
+  if (data) return data[0].label_id;
+}
+
 async function getLabelIds(labelNames: string[], user_id: string) {
   const { data, error } = await supabase
     .from('labels')
@@ -42,4 +52,22 @@ async function removeLabelFromNote(note_id: string, targetLabel: string, user_id
   }
 }
 
-export { getAllLabels, getLabelIds, createLabels, removeLabelFromNote };
+async function deleteLabelByName(label_name: string, user_id: string) {
+  const { error } = await supabase.from('labels').delete().match({ label_name, user_id });
+  if (error) console.error(error);
+}
+
+async function deleteLabelById(label_id: string) {
+  const { error } = await supabase.from('labels').delete().eq('label_id', label_id);
+  if (error) console.error(error);
+}
+
+export {
+  getAllLabels,
+  getLabelId,
+  getLabelIds,
+  createLabels,
+  removeLabelFromNote,
+  deleteLabelByName,
+  deleteLabelById,
+};

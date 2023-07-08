@@ -1,8 +1,9 @@
 import { User } from 'firebase/auth';
 import { createContext, useEffect, useState, useContext } from 'react';
-import { getAllLabels } from '../supabase/labels';
+import { deleteLabelById, getAllLabels } from '../supabase/labels';
 import LabelDbData from '../types/LabelDbData';
 import supabase from '../supabase/connect';
+import { getNotesLabels } from '../supabase/notes_labels';
 import { UserContext } from './UserContext';
 
 export const AllLabelsContext = createContext<LabelDbData[]>([]);
@@ -26,10 +27,26 @@ export default function AllLabelsContextProvider({ children }: { children: JSX.E
           table: 'labels',
           filter: `user_id=eq.${currentUser.uid}`,
         },
-        (payload) => {
-          console.log(payload);
-          fetchDB();
-        }, // listen for changes, refetch if there is one
+        (_payload) => fetchDB(), // listen for changes, refetch if there is one
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'notes_labels',
+          filter: `user_id=eq.${currentUser.uid}`,
+        },
+        async (payload) => {
+          const deletedLabelId = payload.old.label_id;
+          const notesLabelsWithThisLabelId = await getNotesLabels(deletedLabelId);
+          if (notesLabelsWithThisLabelId && notesLabelsWithThisLabelId.length === 0) {
+            // if there's no row in `notes_labels` with this label_id
+            // then there is no note with this label
+            // delete label from `labels`
+            await deleteLabelById(deletedLabelId);
+          }
+        },
       )
       .subscribe();
   }, [currentUser]);
