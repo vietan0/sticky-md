@@ -3,12 +3,12 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { User } from 'firebase/auth';
 import NoteUploadData from '../../../types/NoteUploadData';
 import { UserContext } from '../../../contexts/UserContext';
-import { createNote } from '../../../supabase/notes';
+import { createNote, updateNote } from '../../../supabase/notes';
 import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
 import LabelDbData from '../../../types/LabelDbData';
 import labelExists from '../../../utils/labelExists';
-import { createLabels, getLabelIds } from '../../../supabase/labels';
-import { createNotesLabels } from '../../../supabase/notes_labels';
+import { createLabels, getLabelId, getLabelIds } from '../../../supabase/labels';
+import { createNotesLabels, deleteNotesLabels } from '../../../supabase/notes_labels';
 import NoteDbData from '../../../types/NoteDbData';
 import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
@@ -19,38 +19,68 @@ import LabelSuggestions from './LabelSuggestions';
 
 export default function NoteForm({
   setIsWriting,
+  existingNote,
 }: {
   setIsWriting: React.Dispatch<React.SetStateAction<boolean>>;
+  existingNote?: NoteDbData;
 }) {
   const currentUser = useContext(UserContext) as User;
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(existingNote?.title || '');
 
+  const form = useRef<HTMLFormElement>(null);
   const contentArea = useRef<HTMLTextAreaElement>(null);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(existingNote?.content || '');
   const [liveHashtagIndex, setLiveHashtagIndex] = useState(-1);
 
   const allLabels = useContext(AllLabelsContext);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
-  const [labelsToAdd, setLabelsToAdd] = useState<string[]>([]);
+  const [labelsToAdd, setLabelsToAdd] = useState<string[]>(existingNote?.labels || []);
   const [extractedLabel, setExtractedLabel] = useState('');
 
   const noteUploadData: NoteUploadData = {
-    title,
-    content,
+    title: title.trim(),
+    content: content.trim(),
     labels: labelsToAdd,
     user_id: currentUser.uid,
   };
 
-  async function uploadToDb() {
+  async function updateNoteToDb() {
+    setIsWriting(false); // close NoteForm
+    const { note_id, labels: existingLabels } = existingNote as NoteDbData;
+    // 1. update to notes
+    await updateNote(note_id, noteUploadData);
+    // 2. update to labels
+    const newLabels = labelsToAdd.filter((label) => !labelExists(label, allLabels));
+    await createLabels(newLabels, currentUser.uid);
+    // 3. update to notes_labels
+    // these labels aren't in note before editing (but exist in Supabase)
+    const newLabelsOfNote = labelsToAdd.filter((newLabel) => !existingLabels.includes(newLabel));
+    // get their ids to insert new rows to notes_labels
+    newLabelsOfNote.forEach(async (newLabel) => {
+      const label_id = await getLabelId(newLabel, currentUser.uid);
+      await createNotesLabels(note_id, [label_id], currentUser.uid);
+    });
+    existingLabels.forEach(async (existingLabel) => {
+      if (!labelsToAdd.includes(existingLabel)) {
+        // an old label was removed --> delete from notes_labels
+        await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
+      }
+    });
+  }
+
+  async function insertNoteToDb() {
     setIsWriting(false); // close NoteForm
     if (noteUploadData.title || noteUploadData.content) {
+      // 1. insert to notes
       const result = (await createNote(noteUploadData)) as NoteDbData[];
       const { note_id } = result[0];
 
-      if (noteUploadData.labels.length > 0) {
-        const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
+      if (labelsToAdd.length > 0) {
+        // 2. insert to labels
+        const newLabels = labelsToAdd.filter((label) => !labelExists(label, allLabels));
         await createLabels(newLabels, noteUploadData.user_id);
 
+        // 3. insert to notes_labels
         const labelIds = (await getLabelIds(labelsToAdd, currentUser.uid)) as string[];
         await createNotesLabels(note_id, labelIds, noteUploadData.user_id);
       }
@@ -59,12 +89,15 @@ export default function NoteForm({
 
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    uploadToDb();
+    existingNote ? updateNoteToDb() : insertNoteToDb();
   };
 
   const formKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Escape') {
-      isRecordingLabel ? setIsRecordingLabel(false) : uploadToDb();
+      if (isRecordingLabel) setIsRecordingLabel(false);
+      else {
+        existingNote ? updateNoteToDb() : insertNoteToDb();
+      }
     }
   };
 
@@ -174,15 +207,30 @@ export default function NoteForm({
     setFocusedLabelIndex(0);
   }, [labelsList.length]);
 
-  const [mirrorPos, setMirrorPos] = useState({ left: 0, top: 0, width: 0, height: 0 });
+  const [mirrorPos, setMirrorPos] = useState({ width: 0, height: 0, top: 0 });
   useEffect(() => {
     // initial render
     // 1. setup mirror div position
     function syncMirror() {
-      const { x, y, width, height } = contentArea.current?.getBoundingClientRect() as DOMRect;
-      setMirrorPos({ left: x, top: y, width, height });
+      if (contentArea.current && form.current) {
+        const { width, height, top: textareaTop } = contentArea.current.getBoundingClientRect();
+        const { top: formTop } = form.current.getBoundingClientRect();
+        // when normal, mirror's (0, 0) is document's corner
+        // when in dialog, mirror's (0, 0) is form's corner (because of how Radix works)
+        setMirrorPos({
+          width,
+          height,
+          top: existingNote ? textareaTop - formTop : textareaTop,
+        });
+      }
     }
     syncMirror();
+
+    // if editing existingNote, make cursor appear at the end
+    contentArea.current?.setSelectionRange(
+      contentArea.current.value.length,
+      contentArea.current.value.length,
+    );
 
     // sync position when resize
     window.addEventListener('resize', syncMirror);
@@ -213,25 +261,38 @@ export default function NoteForm({
   });
 
   const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
+  function syncSuggestionWithSearchPos() {
+    // position LabelSuggestionsWithSearch relative to its trigger button
+    if (labelSearchButton.current && form.current) {
+      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
+      const { top: formTop, left: formLeft } = form.current.getBoundingClientRect();
+      setSuggestionWithSearchPos(
+        existingNote
+          ? { left: left - formLeft, top: bottom - formTop + 16 }
+          : { left, top: bottom + 16 },
+      );
+    }
+  }
   useEffect(() => {
     // update position of # span based on liveHashtag's position
-    if (liveHashtag.current) {
-      const { right, bottom } = liveHashtag.current.getBoundingClientRect();
-      setSuggestionPos({ left: right, top: bottom });
+    if (liveHashtag.current && form.current) {
+      const { right: hashtagRight, bottom: hashtagBottom } =
+        liveHashtag.current.getBoundingClientRect();
+      const { top: formTop, left: formLeft } = form.current.getBoundingClientRect();
+
+      setSuggestionPos(
+        existingNote
+          ? { left: hashtagRight - formLeft, top: hashtagBottom - formTop }
+          : { left: hashtagRight, top: hashtagBottom },
+      );
     } else setSuggestionPos({ left: 0, top: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveHashtagIndex]);
 
   const labelSearchButton = useRef<HTMLDivElement>(null);
   const [searchingForLabel, setSearchingForLabel] = useState(false);
   const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
 
-  function syncSuggestionWithSearchPos() {
-    // position LabelSuggestionsWithSearch relative to its trigger button
-    if (labelSearchButton.current) {
-      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
-      setSuggestionWithSearchPos({ left, top: bottom + 16 });
-    }
-  }
   useEffect(() => {
     window.addEventListener('resize', syncSuggestionWithSearchPos);
     return () => {
@@ -248,6 +309,7 @@ export default function NoteForm({
   }
   return (
     <form
+      ref={form}
       onClick={(e) => {
         e.stopPropagation();
         if (searchingForLabel) setSearchingForLabel(false);
@@ -265,7 +327,7 @@ export default function NoteForm({
         className="input-global font-semibold focus:outline-none"
       />
       <TextareaAutosize
-        minRows={3}
+        minRows={2}
         maxRows={15}
         autoFocus
         tabIndex={2}
@@ -274,6 +336,12 @@ export default function NoteForm({
         value={content}
         onChange={contentChange}
         onKeyDown={contentKeyDown}
+        onHeightChange={(height) => {
+          setMirrorPos((prev) => ({
+            ...prev,
+            height,
+          }));
+        }}
         className="input-global resize-none py-2 focus:outline-none"
       />
       <div id="mirror" style={mirrorPos} className="pointer-events-none invisible absolute py-2">
@@ -327,7 +395,7 @@ export default function NoteForm({
           tabIndex={3}
           className="ml-auto rounded-full px-4 py-2 leading-5 text-slate-700 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:text-white dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
-          Done
+          {existingNote ? 'Save' : 'Done'}
         </button>
       </div>
     </form>

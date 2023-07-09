@@ -16,12 +16,12 @@ export default function Masonry() {
 
   useEffect(() => {
     // 1. fetch data
-    const fetchDB = async () => {
+    const fetchNotes = async () => {
       const fetchResult = await getAllNotes(currentUser.uid);
       if (fetchResult) setAllNotes(fetchResult);
       // if null, then there's error when fetching, redirect to 404 or something
     };
-    fetchDB();
+    fetchNotes();
     supabase
       .channel('notes-changes')
       .on(
@@ -32,7 +32,7 @@ export default function Masonry() {
           table: 'notes',
           filter: `user_id=eq.${currentUser.uid}`,
         },
-        (_payload) => fetchDB(), // listen for changes, refetch if there is one
+        (_payload) => fetchNotes(), // listen for changes, refetch if there is one
       )
       .subscribe();
 

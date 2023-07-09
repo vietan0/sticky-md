@@ -60,4 +60,11 @@ _remember: break every problem down to actionable steps_
 - [x] fix: error when filteredLabel trying to filter a string ends with `\`
 - [x] refetch labels if just created note with new label
 - [x] auto delete row from table `labels` if there's no note with that label
+- [x] `LabelButton`: stop close button from hanging out the side
+- [x] make `NoteForm` reusable (Radix dialog)
+  - [x] get `NoteForm` to appear in dialog
+  - [x] display content of clicked note
+  - [x] all database logic should work fine
+  - [x] all suggestion popups' positions should work fine
+- [x] fix: mirror should expand when textarea expands
 - [ ] add recording logic to `Title` field as well

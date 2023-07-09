@@ -12,11 +12,11 @@ export default function AllLabelsContextProvider({ children }: { children: JSX.E
   const currentUser = useContext(UserContext) as User;
   const [allLabels, setAllLabels] = useState<LabelDbData[]>([]);
   useEffect(() => {
-    const fetchDB = async () => {
+    const fetchLabels = async () => {
       const fetchResult = await getAllLabels(currentUser.uid);
       if (fetchResult) setAllLabels(fetchResult);
     };
-    fetchDB();
+    fetchLabels();
     supabase
       .channel('labels-changes')
       .on(
@@ -27,7 +27,7 @@ export default function AllLabelsContextProvider({ children }: { children: JSX.E
           table: 'labels',
           filter: `user_id=eq.${currentUser.uid}`,
         },
-        (_payload) => fetchDB(), // listen for changes, refetch if there is one
+        (_payload) => fetchLabels(), // listen for changes, refetch if there is one
       )
       .on(
         'postgres_changes',

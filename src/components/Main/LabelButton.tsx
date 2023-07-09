@@ -11,9 +11,13 @@ export default function LabelButton({
   const [hovering, setHovering] = useState(false);
   return (
     <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
-      className="relative flex self-start rounded-full bg-slate-300 px-2 py-1 text-xs outline outline-1 outline-slate-400 hover:bg-slate-400 hover:pr-7 dark:bg-slate-900 dark:outline-slate-700 dark:hover:bg-slate-800"
+      className="relative flex self-start rounded-full bg-slate-300 px-3 py-1 text-xs outline outline-1 outline-slate-400 hover:bg-slate-400 hover:pl-1 hover:pr-5 dark:bg-slate-900 dark:outline-slate-700 dark:hover:bg-slate-800"
     >
       <span>{label}</span>
       {hovering && (

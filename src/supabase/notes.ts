@@ -23,8 +23,16 @@ async function createNote(noteUploadData: NoteUploadData) {
   return data;
 }
 
+async function updateNote(id: string, changedFields: object) {
+  const { data, error } = await supabase
+    .from('notes')
+    .update(changedFields)
+    .eq('note_id', id)
+    .select();
+}
+
 async function deleteNote(id: string) {
   const { data, error } = await supabase.from('notes').delete().eq('note_id', id);
 }
 
-export { getAllNotes, getNote, createNote, deleteNote };
+export { getAllNotes, getNote, createNote, updateNote, deleteNote };

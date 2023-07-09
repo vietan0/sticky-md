@@ -20,7 +20,7 @@ export default function Main() {
 
   return (
     <AllLabelsContextProvider>
-      <main className="p-8">
+      <main className="flex flex-col gap-8 p-8">
         {isWriting ? (
           <NoteForm setIsWriting={setIsWriting} />
         ) : (

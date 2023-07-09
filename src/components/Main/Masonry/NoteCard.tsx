@@ -5,11 +5,11 @@ import * as Dialog from '@radix-ui/react-dialog';
 import remarkGfm from 'remark-gfm';
 import { User } from 'firebase/auth';
 import { deleteNote } from '../../../supabase/notes';
-import NoteDbData from '../../../types/NoteDbData';
 import Close from '../../icons/Close';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import Dimension from '../../../types/Dimension';
+import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
 import NoteForm from '../NoteForm/NoteForm';
 import { removeLabelFromNote } from '../../../supabase/labels';
@@ -52,7 +52,10 @@ export default function NoteCard({
   ));
   const deleteButton = (
     <button
-      onClick={() => deleteNote(note_id)}
+      onClick={(e) => {
+        e.stopPropagation();
+        deleteNote(note_id);
+      }}
       className="delete-button absolute -right-3 -top-3 rounded-full bg-slate-300 p-1 outline outline-1 outline-slate-400 dark:bg-slate-800 dark:outline-slate-800"
     >
       <Close className="h-4 w-4" />
@@ -137,9 +140,9 @@ export default function NoteCard({
         </div>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/20" />
+        <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/40" />
         <Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-          <NoteForm setIsWriting={setIsEditing} />
+          <NoteForm setIsWriting={setIsEditing} existingNote={note} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
