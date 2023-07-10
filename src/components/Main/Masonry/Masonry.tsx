@@ -1,11 +1,11 @@
+import { useContext, useEffect, useRef, useState } from 'react';
 import { User } from 'firebase/auth';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { UserContext } from '../../../contexts/UserContext';
-import supabase from '../../../supabase/connect';
-import { getAllNotes } from '../../../supabase/notes';
 import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
+import { UserContext } from '../../../contexts/UserContext';
+import supabase from '../../../supabase/connect';
+import { getAllNotes } from '../../../supabase/notes';
 import NoteCard from './NoteCard';
 
 export default function Masonry() {

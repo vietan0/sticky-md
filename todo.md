@@ -66,5 +66,8 @@ _remember: break every problem down to actionable steps_
   - [x] display content of clicked note
   - [x] all database logic should work fine
   - [x] all suggestion popups' positions should work fine
+  - [ ] update `modified_by` on DB
 - [x] fix: mirror should expand when textarea expands
+- [ ] switch from React Markdown to Simple Markdown
+- [ ] fix: mirror should display leading spaces
 - [ ] add recording logic to `Title` field as well

@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { emailSignUp, githubProvider, googleProvider, oAuthSignIn } from '../firebase/auth';
 import { UserContext } from '../contexts/UserContext';
 import Lock from '../components/icons/Lock';

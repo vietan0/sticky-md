@@ -1,21 +1,21 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { User } from 'firebase/auth';
+import LabelDbData from '../../../types/LabelDbData';
+import NoteDbData from '../../../types/NoteDbData';
 import NoteUploadData from '../../../types/NoteUploadData';
 import { UserContext } from '../../../contexts/UserContext';
-import { createNote, updateNote } from '../../../supabase/notes';
 import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
-import LabelDbData from '../../../types/LabelDbData';
-import labelExists from '../../../utils/labelExists';
 import { createLabels, getLabelId, getLabelIds } from '../../../supabase/labels';
+import { createNote, updateNote } from '../../../supabase/notes';
 import { createNotesLabels, deleteNotesLabels } from '../../../supabase/notes_labels';
-import NoteDbData from '../../../types/NoteDbData';
+import labelExists from '../../../utils/labelExists';
 import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
-import LabelButton from '../LabelButton';
 import Label from '../../icons/Label';
-import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
+import LabelButton from '../LabelButton';
 import LabelSuggestions from './LabelSuggestions';
+import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 
 export default function NoteForm({
   setIsWriting,

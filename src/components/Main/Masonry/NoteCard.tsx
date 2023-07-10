@@ -1,19 +1,19 @@
-import { nanoid } from 'nanoid';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
 import * as Dialog from '@radix-ui/react-dialog';
+import { nanoid } from 'nanoid';
 import remarkGfm from 'remark-gfm';
 import { User } from 'firebase/auth';
+import Dimension from '../../../types/Dimension';
+import NoteDbData from '../../../types/NoteDbData';
+import Nudge from '../../../types/Nudge';
+import { UserContext } from '../../../contexts/UserContext';
+import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
 import Close from '../../icons/Close';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
-import Dimension from '../../../types/Dimension';
-import NoteDbData from '../../../types/NoteDbData';
-import Nudge from '../../../types/Nudge';
 import NoteForm from '../NoteForm/NoteForm';
-import { removeLabelFromNote } from '../../../supabase/labels';
-import { UserContext } from '../../../contexts/UserContext';
 
 export default function NoteCard({
   note,

@@ -1,8 +1,8 @@
-import { Root, Viewport, Scrollbar, Thumb } from '@radix-ui/react-scroll-area';
-import * as Checkbox from '@radix-ui/react-checkbox';
 import { useContext, useEffect, useState } from 'react';
-import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
+import { Root, Viewport } from '@radix-ui/react-scroll-area';
+import * as Checkbox from '@radix-ui/react-checkbox';
 import LabelDbData from '../../../types/LabelDbData';
+import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
