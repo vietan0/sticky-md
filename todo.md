@@ -70,6 +70,6 @@ _remember: break every problem down to actionable steps_
 - [x] fix: mirror should expand when textarea expands
 - [x] fix: `nothing to repeat` error
 - [ ] switch from React Markdown to Simple Markdown
-- [ ] fix: mirror should display leading spaces
+- [x] fix: mirror should display leading spaces
 - [ ] add recording logic to `Title` field as well
 - [ ] reorder types

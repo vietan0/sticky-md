@@ -255,7 +255,7 @@ export default function NoteForm({
         {char}
       </span>
     ) : (
-      <span key={i} className="h-6">
+      <span key={i} className="h-6 whitespace-pre-wrap">
         {char}
       </span>
     );
