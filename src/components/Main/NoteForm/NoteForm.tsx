@@ -48,7 +48,7 @@ export default function NoteForm({
     setIsWriting(false); // close NoteForm
     const { note_id, labels: existingLabels } = existingNote as NoteDbData;
     // 1. update to notes
-    await updateNote(note_id, noteUploadData);
+    await updateNote(note_id, { ...noteUploadData, last_modified_at: new Date().toISOString() });
     // 2. update to labels
     const newLabels = labelsToAdd.filter((label) => !labelExists(label, allLabels));
     await createLabels(newLabels, currentUser.uid);
@@ -245,6 +245,7 @@ export default function NoteForm({
     return () => {
       window.removeEventListener('resize', syncMirror);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const liveHashtag = useRef<HTMLSpanElement>(null);
@@ -288,7 +289,7 @@ export default function NoteForm({
     } else setSuggestionPos({ left: 0, top: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveHashtagIndex]);
-
+  
   const labelSearchButton = useRef<HTMLDivElement>(null);
   const [searchingForLabel, setSearchingForLabel] = useState(false);
   const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
@@ -298,10 +299,12 @@ export default function NoteForm({
     return () => {
       window.removeEventListener('resize', syncSuggestionWithSearchPos);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   useEffect(() => {
     syncSuggestionWithSearchPos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [labelsToAdd]);
 
   function removeLabel(target: string) {
