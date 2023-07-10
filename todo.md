@@ -68,6 +68,7 @@ _remember: break every problem down to actionable steps_
   - [x] all suggestion popups' positions should work fine
   - [x] update `last_modified_at` on DB
 - [x] fix: mirror should expand when textarea expands
+- [x] fix: `nothing to repeat` error
 - [ ] switch from React Markdown to Simple Markdown
 - [ ] fix: mirror should display leading spaces
 - [ ] add recording logic to `Title` field as well

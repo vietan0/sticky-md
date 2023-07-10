@@ -131,9 +131,15 @@ export default function NoteForm({
   const [cursorIndex, setCursorIndex] = useState(0);
   const contentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    setCursorIndex((prev: number) =>
-      contentArea.current ? contentArea.current.selectionStart : prev,
-    );
+    const newCursorIndex = contentArea.current?.selectionStart as number;
+    setCursorIndex(newCursorIndex);
+    setLiveHashtagIndex((prev) => {
+      if (prev === -1) {
+        if (isRecordingLabel) return newCursorIndex >= 1 ? newCursorIndex - 1 : 0;
+        return -1;
+      }
+      return isRecordingLabel ? prev : -1;
+    });
   };
 
   const contentKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -191,16 +197,10 @@ export default function NoteForm({
 
   useEffect(() => {
     // update extractedLabel
-    setExtractedLabel((_prev: string) => {
-      return isRecordingLabel ? content.slice(liveHashtagIndex + 1, content.length) : '';
-    });
+    setExtractedLabel(() =>
+      isRecordingLabel ? content.slice(liveHashtagIndex + 1, content.length) : '',
+    );
   }, [isRecordingLabel, content, liveHashtagIndex]);
-
-  useEffect(() => {
-    // update liveHashtagIndex
-    setLiveHashtagIndex(isRecordingLabel ? cursorIndex : -1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRecordingLabel]);
 
   useEffect(() => {
     // update focused row in LabelSuggestions
@@ -245,7 +245,7 @@ export default function NoteForm({
     return () => {
       window.removeEventListener('resize', syncMirror);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const liveHashtag = useRef<HTMLSpanElement>(null);
@@ -289,7 +289,7 @@ export default function NoteForm({
     } else setSuggestionPos({ left: 0, top: 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveHashtagIndex]);
-  
+
   const labelSearchButton = useRef<HTMLDivElement>(null);
   const [searchingForLabel, setSearchingForLabel] = useState(false);
   const [suggestionWithSearchPos, setSuggestionWithSearchPos] = useState({ left: 0, top: 0 });
@@ -301,7 +301,7 @@ export default function NoteForm({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   useEffect(() => {
     syncSuggestionWithSearchPos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
