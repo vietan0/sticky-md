@@ -40,7 +40,7 @@ export default function NoteCard({
   const [hover, setHover] = useState(false);
   const { title, content, labels, note_id } = note;
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [editFormOpen, setEditFormOpen] = useState(false);
 
   const deleteLabel = (label: string) => {
     removeLabelFromNote(note_id, label, currentUser.uid);
@@ -106,7 +106,7 @@ export default function NoteCard({
   }, [allNotes]);
 
   return (
-    <Dialog.Root open={isEditing} onOpenChange={setIsEditing}>
+    <Dialog.Root open={editFormOpen} onOpenChange={setEditFormOpen}>
       <Dialog.Trigger asChild>
         <div
           ref={card}
@@ -133,7 +133,7 @@ export default function NoteCard({
       <Dialog.Portal>
         <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/40" />
         <Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-          <NoteForm setIsWriting={setIsEditing} existingNote={note} />
+          <NoteForm setFormOpen={setEditFormOpen} existingNote={note} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

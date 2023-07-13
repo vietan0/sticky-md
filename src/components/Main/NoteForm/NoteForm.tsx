@@ -19,10 +19,10 @@ import LabelSuggestions from './LabelSuggestions';
 import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 
 export default function NoteForm({
-  setIsWriting,
+  setFormOpen,
   existingNote,
 }: {
-  setIsWriting: React.Dispatch<React.SetStateAction<boolean>>;
+  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   existingNote?: NoteDbData;
 }) {
   const currentUser = useContext(UserContext) as User;
@@ -95,7 +95,7 @@ export default function NoteForm({
 
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsWriting(false); // close NoteForm
+    setFormOpen(false); // close NoteForm
     existingNote ? updateNoteToDb() : insertNoteToDb();
   };
 

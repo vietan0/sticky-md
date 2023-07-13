@@ -5,26 +5,26 @@ import NoteForm from './NoteForm/NoteForm';
 import NotePrompt from './NoteForm/NotePrompt';
 
 export default function Main() {
-  const [isWriting, setIsWriting] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
-    function toggleIsWriting() {
-      setIsWriting(false);
+    function toggleformOpen() {
+      setFormOpen(false);
     }
-    document.addEventListener('click', toggleIsWriting);
+    document.addEventListener('click', toggleformOpen);
 
     return () => {
-      document.removeEventListener('click', toggleIsWriting);
+      document.removeEventListener('click', toggleformOpen);
     };
   }, []);
 
   return (
     <AllLabelsContextProvider>
       <main className="flex flex-col gap-8 p-8">
-        {isWriting ? (
-          <NoteForm setIsWriting={setIsWriting} />
+        {formOpen ? (
+          <NoteForm setFormOpen={setFormOpen} />
         ) : (
-          <NotePrompt setIsWriting={setIsWriting} />
+          <NotePrompt setFormOpen={setFormOpen} />
         )}
         <Masonry />
       </main>

@@ -1,7 +1,7 @@
 export default function NotePrompt({
-  setIsWriting,
+  setFormOpen,
 }: {
-  setIsWriting: (val: boolean) => void;
+  setFormOpen: (val: boolean) => void;
 }) {
   return (
     <textarea
@@ -10,11 +10,11 @@ export default function NotePrompt({
       placeholder="Write something…"
       onFocus={(e) => {
         e.stopPropagation();
-        setIsWriting(true);
+        setFormOpen(true);
       }}
       onClick={(e) => {
         e.stopPropagation();
-        setIsWriting(true);
+        setFormOpen(true);
       }}
       className="input-global mx-auto block max-w-xl resize-none rounded-lg p-4 focus:outline-none"
     />
