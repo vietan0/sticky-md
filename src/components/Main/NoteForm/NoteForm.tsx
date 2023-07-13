@@ -45,31 +45,36 @@ export default function NoteForm({
   };
 
   async function updateNoteToDb() {
-    setIsWriting(false); // close NoteForm
-    const { note_id, labels: existingLabels } = existingNote as NoteDbData;
-    // 1. update to notes
-    await updateNote(note_id, { ...noteUploadData, last_modified_at: new Date().toISOString() });
-    // 2. update to labels
-    const newLabels = labelsToAdd.filter((label) => !labelExists(label, allLabels));
-    await createLabels(newLabels, currentUser.uid);
-    // 3. update to notes_labels
-    // these labels aren't in note before editing (but exist in Supabase)
-    const newLabelsOfNote = labelsToAdd.filter((newLabel) => !existingLabels.includes(newLabel));
-    // get their ids to insert new rows to notes_labels
-    newLabelsOfNote.forEach(async (newLabel) => {
-      const label_id = await getLabelId(newLabel, currentUser.uid);
-      await createNotesLabels(note_id, [label_id], currentUser.uid);
-    });
-    existingLabels.forEach(async (existingLabel) => {
-      if (!labelsToAdd.includes(existingLabel)) {
-        // an old label was removed --> delete from notes_labels
-        await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
-      }
-    });
+    const { title, content, note_id, labels: existingLabels } = existingNote as NoteDbData;
+    if (
+      noteUploadData.title !== title ||
+      noteUploadData.content !== content ||
+      noteUploadData.labels !== existingLabels
+    ) {
+      // only do this if there's something changed
+      // 1. update to notes
+      await updateNote(note_id, { ...noteUploadData, last_modified_at: new Date().toISOString() });
+      // 2. update to labels
+      const newLabels = labelsToAdd.filter((label) => !labelExists(label, allLabels));
+      await createLabels(newLabels, currentUser.uid);
+      // 3. update to notes_labels
+      // these labels aren't in note before editing (but exist in Supabase)
+      const newLabelsOfNote = labelsToAdd.filter((newLabel) => !existingLabels.includes(newLabel));
+      // get their ids to insert new rows to notes_labels
+      newLabelsOfNote.forEach(async (newLabel) => {
+        const label_id = await getLabelId(newLabel, currentUser.uid);
+        await createNotesLabels(note_id, [label_id], currentUser.uid);
+      });
+      existingLabels.forEach(async (existingLabel) => {
+        if (!labelsToAdd.includes(existingLabel)) {
+          // an old label was removed --> delete from notes_labels
+          await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
+        }
+      });
+    }
   }
 
   async function insertNoteToDb() {
-    setIsWriting(false); // close NoteForm
     if (noteUploadData.title || noteUploadData.content) {
       // 1. insert to notes
       const result = (await createNote(noteUploadData)) as NoteDbData[];
@@ -89,6 +94,7 @@ export default function NoteForm({
 
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsWriting(false); // close NoteForm
     existingNote ? updateNoteToDb() : insertNoteToDb();
   };
 

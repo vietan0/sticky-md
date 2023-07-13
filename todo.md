@@ -71,5 +71,6 @@ _remember: break every problem down to actionable steps_
 - [x] fix: `nothing to repeat` error
 - [ ] switch from React Markdown to Simple Markdown
 - [x] fix: mirror should display leading spaces
+- [x] fix: stop sending unnecessary requests on pressing `Esc` when nothing's changed
 - [ ] add recording logic to `Title` field as well
 - [ ] reorder types
