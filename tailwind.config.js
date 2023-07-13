@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mono: ['Roboto Mono', 'IBM Plex Mono', 'JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
       screens: {
         xs: '400px',

@@ -181,14 +181,14 @@ export default function NoteForm({
     }
     if (e.key === 'Escape' || e.key === ' ') setIsRecordingLabel(false);
 
-    if (e.key === 'ArrowUp') {
+    if (e.key === 'ArrowUp' && isRecordingLabel) {
       e.preventDefault();
       setFocusedLabelIndex(
         // if already first, cycle up to last index
         (prev: number) => (prev === 0 ? labelsList.length - 1 : prev - 1),
       );
     }
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown' && isRecordingLabel) {
       e.preventDefault();
       setFocusedLabelIndex(
         // if already last, cycle to top
@@ -351,7 +351,7 @@ export default function NoteForm({
             height,
           }));
         }}
-        className="input-global resize-none py-2 focus:outline-none"
+        className="input-global resize-none py-2 font-mono text-[15px] focus:outline-none"
       />
       <div id="mirror" style={mirrorPos} className="pointer-events-none invisible absolute py-2">
         {mirroredContent}

@@ -1,8 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { ReactMarkdown as Md } from 'react-markdown/lib/react-markdown';
 import * as Dialog from '@radix-ui/react-dialog';
 import { nanoid } from 'nanoid';
-import remarkGfm from 'remark-gfm';
 import { User } from 'firebase/auth';
 import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
@@ -10,6 +8,7 @@ import Nudge from '../../../types/Nudge';
 import { UserContext } from '../../../contexts/UserContext';
 import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
+import md from '../../../utils/simple-markdown-config';
 import Close from '../../icons/Close';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
@@ -118,18 +117,10 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-slate-500 dark:bg-slate-900 dark:outline-slate-700 dark:hover:outline-slate-300"
+          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
         >
-          {title && (
-            <Md remarkPlugins={[remarkGfm]} className="markdown break-words font-semibold">
-              {title}
-            </Md>
-          )}
-          {content && (
-            <Md remarkPlugins={[remarkGfm]} className="markdown break-words">
-              {content}
-            </Md>
-          )}
+          {title && <div className="title font-semibold">{md('# ' + title)}</div>}
+          {content && <div className="content">{md(content)}</div>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
           <div className="add-stuffs">
             <button className="rounded-full p-1 outline outline-1 outline-slate-400 dark:outline-slate-800">

@@ -10,3 +10,23 @@
 .input-global {
   @apply w-full bg-slate-100 dark:bg-slate-900 placeholder:text-slate-500
 }
+
+.content {
+  @apply text-[15px]
+}
+
+.content h1 {
+  @apply text-lg font-semibold
+}
+
+.content h2 {
+  @apply text-base font-medium
+}
+
+.content code, .content pre {
+  @apply text-sm bg-slate-300 dark:bg-slate-700 px-1 py-[2px] rounded-md whitespace-pre-wrap
+}
+
+.content a {
+  @apply text-blue-700 dark:text-blue-500 hover:underline
+}

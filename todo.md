@@ -69,8 +69,12 @@ _remember: break every problem down to actionable steps_
   - [x] update `last_modified_at` on DB
 - [x] fix: mirror should expand when textarea expands
 - [x] fix: `nothing to repeat` error
-- [ ] switch from React Markdown to Simple Markdown
+- [x] switch from React Markdown to Simple Markdown
 - [x] fix: mirror should display leading spaces
 - [x] fix: stop sending unnecessary requests on pressing `Esc` when nothing's changed
+- [x] MD's codeblocks should have syntax highlighting (`prismjs`)
+- [ ] consider get rid of `textarea` in favor of `div` to display live-editing content?
+- [ ] render markdown correctly without separating lines with empty lines
+- [ ] fix any labels problems after markdown is done
 - [ ] add recording logic to `Title` field as well
 - [ ] reorder types
