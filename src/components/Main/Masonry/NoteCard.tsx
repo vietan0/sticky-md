@@ -119,8 +119,8 @@ export default function NoteCard({
           }}
           className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
         >
-          {title && <div className="title font-semibold">{md('# ' + title)}</div>}
-          {content && <div className="content">{md(content)}</div>}
+          {title && <div className="md-title font-semibold">{md('# ' + title)}</div>}
+          {content && <div className="md-content">{md(content)}</div>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
           <div className="add-stuffs">
             <button className="rounded-full p-1 outline outline-1 outline-slate-400 dark:outline-slate-800">

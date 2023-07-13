@@ -1,4 +1,6 @@
-const vsDarkCustom = {
+import { PrismTheme } from 'prism-react-renderer';
+
+const vsDarkCustom: PrismTheme = {
   plain: {
     color: '#9CDCFE',
     backgroundColor: '#1E1E1E',

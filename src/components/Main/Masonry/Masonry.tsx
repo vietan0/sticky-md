@@ -1,13 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { User } from 'firebase/auth';
-import { Highlight } from 'prism-react-renderer';
 import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
 import { UserContext } from '../../../contexts/UserContext';
 import supabase from '../../../supabase/connect';
 import { getAllNotes } from '../../../supabase/notes';
-import vsDarkCustom from '../highlight-themes/vsDarkCustom';
 import NoteCard from './NoteCard';
 
 export default function Masonry() {
@@ -180,17 +178,7 @@ export default function Masonry() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCardDims]);
-  const codeBlock = `export default function GroceryItem({ item }: { item: Item }) {
-  const width = 540;
-  console.log('display grocery items');
-  return (
-    <div>
-      <h2>{item.name}</h2>
-      <p>Price: {item.price}</p>
-      <p>Quantity: {item.quantity}</p>
-    </div>
-  );
-}`;
+
   return (
     <div
       ref={masonry}
@@ -202,23 +190,6 @@ export default function Masonry() {
       }}
       className="relative mx-auto duration-100"
     >
-      <Highlight theme={vsDarkCustom} code={codeBlock} language="tsx">
-        {({ className, style, tokens, getLineProps, getTokenProps }) => {
-          console.log('className :>> ', className);
-          return (
-            <pre style={style} className="rounded p-4 text-sm">
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })}>
-                  <span className="mr-8">{i + 1}</span>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          );
-        }}
-      </Highlight>
       {allCards}
     </div>
   );

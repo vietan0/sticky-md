@@ -14,6 +14,7 @@ import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
 import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
+import md from '../../../utils/simple-markdown-config';
 import LabelSuggestions from './LabelSuggestions';
 import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 
@@ -316,6 +317,62 @@ export default function NoteForm({
   function removeLabel(target: string) {
     setLabelsToAdd((prev: string[]) => prev.filter((label) => label !== target));
   }
+
+  const [displayMd, setDisplayMd] = useState(true);
+  let renderedContent;
+  if (existingNote) {
+    // open form from card
+    // 1. markdown -- click --> raw
+    if (displayMd)
+      renderedContent = (
+        <div className="md-content cursor-pointer" onClick={() => setDisplayMd(false)}>
+          {md(content)}
+        </div>
+      );
+    else renderedContent = (
+      <TextareaAutosize
+        minRows={2}
+        maxRows={15}
+        autoFocus
+        tabIndex={2}
+        placeholder="Write something…"
+        ref={contentArea}
+        value={content}
+        onChange={contentChange}
+        onKeyDown={contentKeyDown}
+        onHeightChange={(height) => {
+          setMirrorPos((prev) => ({
+            ...prev,
+            height,
+          }));
+        }}
+        className="input-global resize-none py-2 font-mono text-[14px] focus:outline-none"
+      />
+    );
+  } else {
+    // writing new card
+    // raw rightaway, no markdown
+    renderedContent = (
+      <TextareaAutosize
+        minRows={2}
+        maxRows={15}
+        autoFocus
+        tabIndex={2}
+        placeholder="Write something…"
+        ref={contentArea}
+        value={content}
+        onChange={contentChange}
+        onKeyDown={contentKeyDown}
+        onHeightChange={(height) => {
+          setMirrorPos((prev) => ({
+            ...prev,
+            height,
+          }));
+        }}
+        className="input-global resize-none py-2 font-mono text-[14px] focus:outline-none"
+      />
+    );
+  }
   return (
     <form
       ref={form}
@@ -335,24 +392,7 @@ export default function NoteForm({
         onChange={titleChange}
         className="input-global font-semibold focus:outline-none"
       />
-      <TextareaAutosize
-        minRows={2}
-        maxRows={15}
-        autoFocus
-        tabIndex={2}
-        placeholder="Write something…"
-        ref={contentArea}
-        value={content}
-        onChange={contentChange}
-        onKeyDown={contentKeyDown}
-        onHeightChange={(height) => {
-          setMirrorPos((prev) => ({
-            ...prev,
-            height,
-          }));
-        }}
-        className="input-global resize-none py-2 font-mono text-[15px] focus:outline-none"
-      />
+      {renderedContent}
       <div id="mirror" style={mirrorPos} className="pointer-events-none invisible absolute py-2">
         {mirroredContent}
       </div>
