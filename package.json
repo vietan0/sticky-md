@@ -15,6 +15,7 @@
     "@radix-ui/react-scroll-area": "^1.0.4",
     "@supabase/supabase-js": "^2.25.0",
     "@types/prismjs": "^1.26.0",
+    "boring-avatars": "^1.10.1",
     "firebase": "^9.22.2",
     "nanoid": "^4.0.2",
     "prism-react-renderer": "^2.0.6",

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Root, Trigger, Portal, Content, Arrow, Item } from '@radix-ui/react-dropdown-menu';
 import { User, signOut } from 'firebase/auth';
+import Avatar from 'boring-avatars';
 import { UserContext } from '../../contexts/UserContext';
 import { auth } from '../../firebase/auth';
 import Settings from '../icons/Settings';
@@ -11,20 +12,32 @@ export default function SettingCorner() {
 
   return (
     <Root>
-      <Trigger className="rounded bg-slate-100 px-4 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 dark:bg-slate-900">
-        {currentUser?.displayName || currentUser?.email}
+      <Trigger className="rounded-full p-2 text-sm hover:bg-slate-200 dark:hover:bg-slate-800">
+        {currentUser?.photoURL ? (
+          <img src={currentUser.photoURL} alt="" className="w-8 rounded-full" />
+        ) : (
+          <Avatar
+            size={32}
+            name={currentUser?.uid}
+            variant="pixel"
+            colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
+          />
+        )}
       </Trigger>
       <Portal>
-        <Content align="end" className="flex flex-col rounded bg-slate-100 dark:bg-slate-900 p-2 shadow-lg">
-          <Item className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
-            <Settings className="h-6 w-6" />
+        <Content
+          align="end"
+          className="flex flex-col rounded bg-slate-100 p-1 text-sm shadow-lg dark:bg-slate-900"
+        >
+          <Item className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
+            <Settings className="h-5 w-5" />
             <span>Settings</span>
           </Item>
           <Item
             onClick={async () => await signOut(auth)}
-            className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
+            className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
           >
-            <SignOut className="h-6 w-6" />
+            <SignOut className="h-5 w-5" />
             <span>Sign Out</span>
           </Item>
           <Arrow className="fill-slate-100 dark:fill-slate-900" />

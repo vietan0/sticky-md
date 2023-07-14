@@ -73,6 +73,7 @@ _remember: break every problem down to actionable steps_
 - [x] fix: mirror should display leading spaces
 - [x] fix: stop sending unnecessary requests on pressing `Esc` when nothing's changed
 - [x] MD's codeblocks should have syntax highlighting (`prismjs`)
+- [x] add unique avatar if `photoUrl` doesn't exist
 - [ ] consider get rid of `textarea` in favor of `div` to display live-editing content?
 - [ ] render markdown correctly without separating lines with empty lines
 - [ ] fix any labels problems after markdown is done
