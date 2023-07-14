@@ -332,7 +332,7 @@ export default function NoteForm({
     else renderedContent = (
       <TextareaAutosize
         minRows={2}
-        maxRows={15}
+        maxRows={20}
         autoFocus
         tabIndex={2}
         placeholder="Write something…"

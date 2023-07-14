@@ -56,7 +56,40 @@ const customRules = {
             <pre
               key={state.key}
               style={style}
-              className="Highlight overflow-scroll whitespace-pre-wrap rounded p-4 text-sm"
+              className={`Highlight ${className} mb-2 overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
+            >
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({ line })}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token })} />
+                  ))}
+                </div>
+              ))}
+            </pre>
+          )}
+        </Highlight>
+      );
+    },
+  },
+  fence: {
+    ...SimpleMarkdown.defaultRules.fence,
+    react: function (
+      node: SimpleMarkdown.SingleASTNode,
+      output: SimpleMarkdown.Output<React.ReactNode>,
+      state: SimpleMarkdown.State,
+    ) {
+      return (
+        <Highlight
+          key={state.key}
+          theme={darkMode ? vsDarkCustom : vsLightCustom}
+          code={node.content}
+          language="js"
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <pre
+              key={state.key}
+              style={style}
+              className={`Highlight ${className} mb-2 overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
             >
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
