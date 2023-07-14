@@ -56,7 +56,7 @@ const customRules = {
             <pre
               key={state.key}
               style={style}
-              className={`Highlight ${className} mb-2 overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
+              className={`Highlight ${className} overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
             >
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
@@ -89,7 +89,7 @@ const customRules = {
             <pre
               key={state.key}
               style={style}
-              className={`Highlight ${className} mb-2 overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
+              className={`Highlight ${className} overflow-scroll whitespace-pre-wrap rounded p-4 text-sm`}
             >
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
@@ -137,6 +137,7 @@ export default function md(source: string) {
   // Many rules require content to end in \n\n to be interpreted as a block.
   const blockSource = source + '\n\n';
   const parseTree = parser(blockSource, { inline: false });
+  console.log(JSON.stringify(parseTree, null, 2));
   const outputResult = reactOutput(parseTree);
   return outputResult;
 }

@@ -329,26 +329,27 @@ export default function NoteForm({
           {md(content)}
         </div>
       );
-    else renderedContent = (
-      <TextareaAutosize
-        minRows={2}
-        maxRows={20}
-        autoFocus
-        tabIndex={2}
-        placeholder="Write something…"
-        ref={contentArea}
-        value={content}
-        onChange={contentChange}
-        onKeyDown={contentKeyDown}
-        onHeightChange={(height) => {
-          setMirrorPos((prev) => ({
-            ...prev,
-            height,
-          }));
-        }}
-        className="input-global resize-none py-2 font-mono text-[14px] focus:outline-none"
-      />
-    );
+    else
+      renderedContent = (
+        <TextareaAutosize
+          minRows={2}
+          maxRows={20}
+          autoFocus
+          tabIndex={2}
+          placeholder="Write something…"
+          ref={contentArea}
+          value={content}
+          onChange={contentChange}
+          onKeyDown={contentKeyDown}
+          onHeightChange={(height) => {
+            setMirrorPos((prev) => ({
+              ...prev,
+              height,
+            }));
+          }}
+          className="input-global resize-none py-2 font-mono text-[14px] focus:outline-none"
+        />
+      );
   } else {
     // writing new card
     // raw rightaway, no markdown
@@ -390,7 +391,7 @@ export default function NoteForm({
         placeholder="Title"
         value={title}
         onChange={titleChange}
-        className="input-global font-semibold focus:outline-none"
+        className="input-global text-lg font-medium focus:outline-none"
       />
       {renderedContent}
       <div id="mirror" style={mirrorPos} className="pointer-events-none invisible absolute py-2">

@@ -12,7 +12,7 @@
 }
 
 .md-content {
-  @apply text-[15px];
+  @apply text-[15px] flex flex-col gap-2;
 }
 
 .md-content h1 {
