@@ -15,19 +15,19 @@ export default function SettingCorner() {
         {currentUser?.displayName || currentUser?.email}
       </Trigger>
       <Portal>
-        <Content align="end" className="flex flex-col rounded bg-slate-900 p-2">
-          <Item className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-800">
+        <Content align="end" className="flex flex-col rounded bg-slate-100 dark:bg-slate-900 p-2 shadow-lg">
+          <Item className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
             <Settings className="h-6 w-6" />
             <span>Settings</span>
           </Item>
           <Item
             onClick={async () => await signOut(auth)}
-            className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-800"
+            className="flex cursor-pointer gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
           >
             <SignOut className="h-6 w-6" />
             <span>Sign Out</span>
           </Item>
-          <Arrow className="fill-slate-900" />
+          <Arrow className="fill-slate-100 dark:fill-slate-900" />
         </Content>
       </Portal>
     </Root>

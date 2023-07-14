@@ -16,26 +16,27 @@ export default function Masonry() {
 
   useEffect(() => {
     // 1. fetch data
-    const fetchNotes = async () => {
-      const fetchResult = await getAllNotes(currentUser.uid);
-      if (fetchResult) setAllNotes(fetchResult);
-      // if null, then there's error when fetching, redirect to 404 or something
-    };
-    fetchNotes();
-    supabase
-      .channel('notes-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'notes',
-          filter: `user_id=eq.${currentUser.uid}`,
-        },
-        (_payload) => fetchNotes(), // listen for changes, refetch if there is one
-      )
-      .subscribe();
-
+    if (currentUser) {
+      const fetchNotes = async () => {
+        const fetchResult = await getAllNotes(currentUser.uid);
+        if (fetchResult) setAllNotes(fetchResult);
+        // if null, then there's error when fetching, redirect to 404 or something
+      };
+      fetchNotes();
+      supabase
+        .channel('notes-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'notes',
+            filter: `user_id=eq.${currentUser.uid}`,
+          },
+          (_payload) => fetchNotes(), // listen for changes, refetch if there is one
+        )
+        .subscribe();
+    }
     // 2. prepare layout
     const syncWidth = () => {
       const mainPadding = 32;
