@@ -8,7 +8,7 @@ import Nudge from '../../../types/Nudge';
 import { UserContext } from '../../../contexts/UserContext';
 import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
-import md from '../../../utils/simple-markdown-config';
+import CustomMd from '../../CustomMd';
 import Close from '../../icons/Close';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
@@ -117,10 +117,10 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 whitespace-pre-line rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
+          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
         >
-          {title && <div className="md-title text-lg font-medium">{md('# ' + title)}</div>}
-          {content && <div className="md-content">{md(content)}</div>}
+          {title && <CustomMd>{'# ' + title}</CustomMd>}
+          {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
           <div className="add-stuffs">
             <button className="rounded-full p-1 outline outline-1 outline-slate-400 dark:outline-slate-800">

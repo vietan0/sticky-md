@@ -14,7 +14,7 @@ import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
 import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
-import md from '../../../utils/simple-markdown-config';
+import CustomMd from '../../CustomMd';
 import LabelSuggestions from './LabelSuggestions';
 import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
 
@@ -325,8 +325,8 @@ export default function NoteForm({
     // 1. markdown -- click --> raw
     if (displayMd)
       renderedContent = (
-        <div className="md-content cursor-pointer" onClick={() => setDisplayMd(false)}>
-          {md(content)}
+        <div className="cursor-pointer" onClick={() => setDisplayMd(false)}>
+          <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>
         </div>
       );
     else

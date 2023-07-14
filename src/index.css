@@ -11,26 +11,6 @@
   @apply w-full bg-slate-100 placeholder:text-slate-500 dark:bg-slate-900;
 }
 
-.md-content {
-  @apply text-[15px] flex flex-col gap-2;
-}
-
-.md-content h1 {
-  @apply text-lg font-semibold;
-}
-
-.md-content h2 {
-  @apply text-base font-medium;
-}
-
-.md-content code {
-  @apply whitespace-pre-wrap rounded-md bg-slate-300 px-1 py-[2px] text-sm dark:bg-slate-700;
-}
-
-.md-content a {
-  @apply text-blue-700 hover:underline dark:text-blue-500;
-}
-
 .NoteCard pre {
   @apply max-h-40;
 }
