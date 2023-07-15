@@ -136,67 +136,78 @@ export default function NoteForm({
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
 
   const [cursorIndex, setCursorIndex] = useState(0);
-  const contentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-    const newCursorIndex = contentArea.current?.selectionStart as number;
-    setCursorIndex(newCursorIndex);
-    setLiveHashtagIndex((prev) => {
-      if (prev === -1) {
-        if (isRecordingLabel) return newCursorIndex >= 1 ? newCursorIndex - 1 : 0;
-        return -1;
-      }
-      return isRecordingLabel ? prev : -1;
-    });
-  };
 
   const contentKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === '#') setIsRecordingLabel(true);
-    if (e.key === 'Backspace') {
-      if (content.charAt(content.length - 1) === '#') setIsRecordingLabel(false);
-    }
-    if ((e.key === 'Tab' || e.key === 'Enter') && isRecordingLabel) {
-      e.preventDefault();
-      // hit 'Tab' will add label to list
-      if (extractedLabel) {
-        // when there's text after # and LabelSuggestion is showing
+    if (isRecordingLabel) {
+      if (e.key === 'Escape' || e.key === ' ') setIsRecordingLabel(false);
+      if (e.key === 'Backspace' && content.charAt(content.length - 1) === '#')
+        setIsRecordingLabel(false);
+      if (e.key === 'Tab' || e.key === 'Enter') {
+        e.preventDefault();
         setLabelsToAdd((prev: string[]) => {
+          // add label to list
           // suggested label have higher priority over extracted label
-          const target = labelsList.length > 0 ? labelsList[focusedLabelIndex] : extractedLabel;
-          if (typeof target === 'string') {
-            return prev.includes(target) ? prev : [...prev, target];
+          if (extractedLabel) {
+            // when there's text after # and LabelSuggestion is showing
+            const target = labelsList.length > 0 ? labelsList[focusedLabelIndex] : extractedLabel;
+            if (typeof target === 'string') {
+              return prev.includes(target) ? prev : [...prev, target];
+            } else {
+              return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
+            }
           } else {
+            // when only # is typed and there's no text after it
+            const target = labelsList[focusedLabelIndex] as LabelDbData;
             return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
           }
         });
         setIsRecordingLabel(false);
         setContent((prev: string) => prev.slice(0, liveHashtagIndex));
-      } else {
-        // when only # is typed and there's no text after it
-        setLabelsToAdd((prev: string[]) => {
-          const target = labelsList[focusedLabelIndex] as LabelDbData;
-          return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
-        });
-        setIsRecordingLabel(false);
-        setContent((prev: string) => prev.slice(0, liveHashtagIndex));
+      }
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedLabelIndex(
+          // if already first, cycle up to last index
+          (prev: number) => (prev === 0 ? labelsList.length - 1 : prev - 1),
+        );
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setFocusedLabelIndex(
+          // if already last, cycle to top
+          (prev: number) => (prev >= labelsList.length - 1 ? 0 : prev + 1),
+        );
       }
     }
-    if (e.key === 'Escape' || e.key === ' ') setIsRecordingLabel(false);
-
-    if (e.key === 'ArrowUp' && isRecordingLabel) {
-      e.preventDefault();
-      setFocusedLabelIndex(
-        // if already first, cycle up to last index
-        (prev: number) => (prev === 0 ? labelsList.length - 1 : prev - 1),
-      );
-    }
-    if (e.key === 'ArrowDown' && isRecordingLabel) {
-      e.preventDefault();
-      setFocusedLabelIndex(
-        // if already last, cycle to top
-        (prev: number) => (prev >= labelsList.length - 1 ? 0 : prev + 1),
-      );
-    }
   };
+
+  const contentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    const newCursorIndex = contentArea.current?.selectionStart as number; // cursor after typed
+    setCursorIndex(newCursorIndex);
+    setLiveHashtagIndex((prev) => {
+      if (isRecordingLabel) {
+        if (prev === -1) {
+          return newCursorIndex >= 1 ? newCursorIndex - 1 : prev;
+        } else return prev;
+      } else return -1;
+    });
+  };
+  const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
+  function syncSuggestionWithSearchPos() {
+    // position LabelSuggestionsWithSearch relative to its trigger button
+    if (labelSearchButton.current && form.current) {
+      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
+      const { top: formTop, left: formLeft } = form.current.getBoundingClientRect();
+      setSuggestionWithSearchPos(
+        existingNote
+          ? { left: left - formLeft, top: bottom - formTop + 16 }
+          : { left, top: bottom + 16 },
+      );
+    }
+  }
 
   useEffect(() => {
     if (cursorIndex <= liveHashtagIndex) setIsRecordingLabel(false);
@@ -268,19 +279,6 @@ export default function NoteForm({
     );
   });
 
-  const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
-  function syncSuggestionWithSearchPos() {
-    // position LabelSuggestionsWithSearch relative to its trigger button
-    if (labelSearchButton.current && form.current) {
-      const { left, bottom } = labelSearchButton.current.getBoundingClientRect();
-      const { top: formTop, left: formLeft } = form.current.getBoundingClientRect();
-      setSuggestionWithSearchPos(
-        existingNote
-          ? { left: left - formLeft, top: bottom - formTop + 16 }
-          : { left, top: bottom + 16 },
-      );
-    }
-  }
   useEffect(() => {
     // update position of # span based on liveHashtag's position
     if (liveHashtag.current && form.current) {
@@ -320,36 +318,14 @@ export default function NoteForm({
 
   const [displayMd, setDisplayMd] = useState(true);
   let renderedContent;
-  if (existingNote) {
+  if (existingNote && displayMd && existingNote.content !== '') {
     // open form from card
     // 1. markdown -- click --> raw
-    if (displayMd)
-      renderedContent = (
-        <div className="cursor-pointer" onClick={() => setDisplayMd(false)}>
-          <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>
-        </div>
-      );
-    else
-      renderedContent = (
-        <TextareaAutosize
-          minRows={2}
-          maxRows={20}
-          autoFocus
-          tabIndex={2}
-          placeholder="Write something…"
-          ref={contentArea}
-          value={content}
-          onChange={contentChange}
-          onKeyDown={contentKeyDown}
-          onHeightChange={(height) => {
-            setMirrorPos((prev) => ({
-              ...prev,
-              height,
-            }));
-          }}
-          className="input-global resize-none py-2 font-mono text-[14px] focus:outline-none"
-        />
-      );
+    renderedContent = (
+      <div className="cursor-pointer" onClick={() => setDisplayMd(false)}>
+        <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>
+      </div>
+    );
   } else {
     // writing new card
     // raw rightaway, no markdown
@@ -362,8 +338,8 @@ export default function NoteForm({
         placeholder="Write something…"
         ref={contentArea}
         value={content}
-        onChange={contentChange}
         onKeyDown={contentKeyDown}
+        onChange={contentChange}
         onHeightChange={(height) => {
           setMirrorPos((prev) => ({
             ...prev,

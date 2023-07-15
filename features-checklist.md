@@ -1,12 +1,12 @@
 # Features Checklist:
 
-- [ ] markdown support
+- [x] markdown support
 - [ ] be able to choose theme: Light / Dark / OS
-- [ ] masonry layout (transform translate)
+- [x] masonry layout (transform translate)
 - [ ] display link previews
 - [ ] export to CSV
 - [ ] lazy loading
-- [ ] code blocks themes (like ray.so)
+- [x] code blocks themes (like ray.so)
 - [ ] dragging animation (Framer)
 - [ ] link preview
 - [ ] can display modified time as local time

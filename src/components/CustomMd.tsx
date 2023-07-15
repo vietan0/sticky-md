@@ -17,12 +17,13 @@ export default function CustomMd({
       components={{
         h1: ({ node, ...props }) => <h1 {...props} className="text-lg font-semibold" />,
         h2: ({ node, ...props }) => <h2 {...props} className="text-base font-medium" />,
-        ul: ({ node, ...props }) => <ul {...props} className="list-disc ps-4" />,
+        ul: ({ node, ordered, ...props }) => <ul {...props} className="list-disc ps-4" />,
         a: ({ node, ...props }) => (
           <a
-            className="text-blue-700 hover:underline dark:text-blue-500"
-            target="_blank"
             {...props}
+            target="_blank"
+            onClick={(e) => e.stopPropagation()}
+            className="text-blue-700 hover:underline dark:text-blue-500"
           />
         ),
         code: ({ node, inline, className, children, ...props }) => {
@@ -30,8 +31,8 @@ export default function CustomMd({
           return !inline && match ? (
             <SyntaxHighlighter
               style={vscDarkPlus}
-              customStyle={{ borderRadius: '4px' }}
-              codeTagProps={{ className: 'text-[13px]' }}
+              customStyle={{ borderRadius: '4px' }} // affect parent of <code>
+              codeTagProps={{ className: 'text-[14px] tracking-tight' }} // affect <code> itself, overrides style
               language={match[1]}
             >
               {String(children).replace(/\n$/, '')}
