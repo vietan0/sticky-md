@@ -1,8 +1,4 @@
-export default function NotePrompt({
-  setFormOpen,
-}: {
-  setFormOpen: (val: boolean) => void;
-}) {
+export default function NotePrompt({ setFormOpen }: { setFormOpen: (val: boolean) => void }) {
   return (
     <textarea
       rows={1}
@@ -16,7 +12,7 @@ export default function NotePrompt({
         e.stopPropagation();
         setFormOpen(true);
       }}
-      className="input-global mx-auto block max-w-xl resize-none rounded-lg p-4 focus:outline-none"
+      className="input-global mx-auto block max-w-xl resize-none rounded-lg p-4 font-mono tracking-tight focus:outline-none"
     />
   );
 }

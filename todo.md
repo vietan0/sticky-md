@@ -74,6 +74,10 @@ _remember: break every problem down to actionable steps_
 - [x] fix: stop sending unnecessary requests on pressing `Esc` when nothing's changed
 - [x] MD's codeblocks should have syntax highlighting (`prismjs`)
 - [x] add unique avatar if `photoUrl` doesn't exist
+- [x] add recording logic to `Title` field as well
+- [x] refactor: use custom hooks to separate label-recording logic, send-requests-to-db logic
 - [ ] fix any labels problems after markdown is done
-- [ ] add recording logic to `Title` field as well
+- [ ] re-add textarea autosize's onHeightChange --> reposition mirror
+- [ ] find a source for themes
+- [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types
