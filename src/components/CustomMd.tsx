@@ -26,12 +26,18 @@ export default function CustomMd({
             className="text-blue-700 hover:underline dark:text-blue-500"
           />
         ),
+        pre: ({ node, ...props }) => <pre {...props} className="myPre max-h-64 overflow-scroll" />,
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
             <SyntaxHighlighter
-              style={vscDarkPlus}
-              customStyle={{ borderRadius: '4px' }} // affect parent of <code>
+              style={darkMode ? vscDarkPlus : vs}
+              customStyle={{
+                borderRadius: '4px',
+                margin: 0,
+                overflow: 'unset',
+                width: 'fit-content',
+              }} // affect parent of <code>
               codeTagProps={{ className: 'text-[14px] tracking-tight' }} // affect <code> itself, overrides style
               language={match[1]}
             >

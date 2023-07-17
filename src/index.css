@@ -10,7 +10,3 @@
 .input-global {
   @apply w-full bg-slate-100 placeholder:text-slate-500 dark:bg-slate-900;
 }
-
-.NoteCard pre {
-  @apply max-h-40;
-}
