@@ -81,7 +81,8 @@ _remember: break every problem down to actionable steps_
 - [x] re-add textarea autosize's onHeightChange --> reposition mirror
 - [x] fix: `LabelSuggestions` should work when triggered by button
 - [x] display modified time (as local time)
+- [x] add syntax highlighting themes
+- [ ] try Torchlight
 - [ ] fix: shouldn't allow `LabelSuggestions` to start with space
-- [ ] find a source for themes
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types

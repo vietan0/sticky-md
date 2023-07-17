@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import vsDarkPlus from './Main/themes/vs-dark-plus';
+import vsLight from './Main/themes/vs-light';
 
 export default function CustomMd({
   children,
@@ -10,6 +12,21 @@ export default function CustomMd({
   children: string;
   className?: string;
 }) {
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      // dark mode
+      setDarkMode(true);
+    }
+    function syncTheme(e: MediaQueryListEvent) {
+      setDarkMode(e.matches ? true : false);
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncTheme);
+    return () => {
+      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', syncTheme);
+    };
+  }, []);
+
   return (
     <ReactMarkdown
       className={className}
@@ -31,7 +48,7 @@ export default function CustomMd({
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
             <SyntaxHighlighter
-              style={darkMode ? vscDarkPlus : vs}
+              style={darkMode ? vsDarkPlus : vsLight}
               customStyle={{
                 borderRadius: '4px',
                 margin: 0,
