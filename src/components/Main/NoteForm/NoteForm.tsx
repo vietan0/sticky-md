@@ -1,16 +1,17 @@
-import { useState, useContext, useRef } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import { User } from 'firebase/auth';
+import { DateTime } from 'luxon';
+import { useContext, useEffect, useRef, useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
+import { UserContext } from '../../../contexts/UserContext';
+import usePostDb from '../../../hooks/usePostDb';
+import useRecordLabel from '../../../hooks/useRecordLabel';
+import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import NoteDbData from '../../../types/NoteDbData';
 import NoteUploadData from '../../../types/NoteUploadData';
-import { UserContext } from '../../../contexts/UserContext';
 import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
 import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
-import useRecordLabel from '../../../hooks/useRecordLabel';
-import usePostDb from '../../../hooks/usePostDb';
-import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
 
@@ -47,12 +48,7 @@ export default function NoteForm({
     setLabelsToAdd,
     existingNote,
   );
-  const buttonRecord = useRecordLabelButton(
-    formRef,
-    labelsToAdd,
-    setLabelsToAdd,
-    existingNote,
-  );
+  const buttonRecord = useRecordLabelButton(formRef, labelsToAdd, setLabelsToAdd, existingNote);
 
   const noteUploadData: NoteUploadData = {
     title: title.trim(),
@@ -85,7 +81,7 @@ export default function NoteForm({
       onClick={formClick}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
-      className="mx-auto flex w-full max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
+      className="mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
       <ToggleMdRaw
         isTitle
@@ -118,10 +114,22 @@ export default function NoteForm({
           className="input-global resize-none font-mono text-sm tracking-tight focus:outline-none"
         />
       </ToggleMdRaw>
-      <div className="flex flex-wrap gap-2">
-        {labelsToAdd.map((label) => (
-          <LabelButton key={label} label={label} removeLabel={removeLabel} />
-        ))}
+      <div className="mt-4 flex items-end justify-between gap-8">
+        <div className="flex flex-wrap gap-2">
+          {labelsToAdd.map((label) => (
+            <LabelButton key={label} label={label} removeLabel={removeLabel} />
+          ))}
+        </div>
+        {existingNote && (
+          <p
+            className="min-w-fit text-right text-xs"
+            title={DateTime.fromISO(existingNote.last_modified_at).toLocaleString(
+              DateTime.DATETIME_MED,
+            )}
+          >
+            Edited {DateTime.fromISO(existingNote.last_modified_at).toRelative()}
+          </p>
+        )}
       </div>
       <div className="add-stuffs flex items-center gap-2">
         <div

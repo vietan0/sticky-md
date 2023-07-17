@@ -49,12 +49,6 @@ export default function Mirror({
     }
     syncMirror();
 
-    // // if editing existingNote, make cursor appear at the end
-    // inputRef.current?.setSelectionRange(
-    //   inputRef.current.value.length,
-    //   inputRef.current.value.length,
-    // );
-
     // sync position when resize
     window.addEventListener('resize', syncMirror);
     return () => {
@@ -69,11 +63,11 @@ export default function Mirror({
         style={mirrorPos}
         className={`${
           isTitle ? 'text-lg' : 'text-sm'
-        } pointer-events-none absolute font-mono font-medium tracking-tight outline outline-1`}
+        } pointer-events-none invisible absolute font-mono font-medium tracking-tight`}
       >
         {value.split('').map((char, i) => {
           return char === '#' && i === record.liveHashtagIndex ? (
-            <span ref={record.liveHashtag} className="h-6 text-pink-400" key={i}>
+            <span ref={record.liveHashtag} className="h-6" key={i}>
               {char}
             </span>
           ) : (

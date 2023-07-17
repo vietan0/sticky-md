@@ -80,6 +80,7 @@ _remember: break every problem down to actionable steps_
 - [x] fix any labels problems after markdown is done
 - [x] re-add textarea autosize's onHeightChange --> reposition mirror
 - [x] fix: `LabelSuggestions` should work when triggered by button
+- [x] display modified time (as local time)
 - [ ] fix: shouldn't allow `LabelSuggestions` to start with space
 - [ ] find a source for themes
 - [ ] change route when opening a `NoteForm` popup
