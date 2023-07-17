@@ -18,7 +18,7 @@ export type RecordReturn = {
   liveHashtagIndex: number;
   liveHashtag: React.RefObject<HTMLSpanElement>;
 };
-export default function useRecordingLabel(
+export default function useRecordLabel(
   setValue: React.Dispatch<React.SetStateAction<string>>,
   inputRef: React.RefObject<HTMLTextAreaElement> | React.RefObject<HTMLInputElement>,
   formRef: React.RefObject<HTMLFormElement>,
@@ -112,7 +112,7 @@ export default function useRecordingLabel(
     if (liveHashtag.current && formRef.current) {
       const { right: hashtagRight, bottom: hashtagBottom } =
         liveHashtag.current.getBoundingClientRect();
-      const { top: formTop, left: formLeft } = formRef.current.getBoundingClientRect();
+      const { left: formLeft, top: formTop } = formRef.current.getBoundingClientRect();
 
       setSuggestionPos(
         existingNote

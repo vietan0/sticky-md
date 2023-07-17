@@ -1,6 +1,6 @@
 import { cloneElement, useState } from 'react';
 import CustomMd from '../../CustomMd';
-import { RecordReturn } from '../../../hooks/useRecordingLabel';
+import { RecordReturn } from '../../../hooks/useRecordLabel';
 import NoteDbData from '../../../types/NoteDbData';
 import Mirror from './Mirror';
 

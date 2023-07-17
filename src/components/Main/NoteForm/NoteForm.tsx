@@ -8,7 +8,7 @@ import Color from '../../icons/Color';
 import Ellipsis from '../../icons/Ellipsis';
 import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
-import useRecordingLabel from '../../../hooks/useRecordingLabel';
+import useRecordLabel from '../../../hooks/useRecordLabel';
 import usePostDb from '../../../hooks/usePostDb';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import LabelSuggestions from './LabelSuggestions';
@@ -31,7 +31,7 @@ export default function NoteForm({
   const [content, setContent] = useState(existingNote?.content || '');
   const [labelsToAdd, setLabelsToAdd] = useState<string[]>(existingNote?.labels || []);
 
-  const titleRecord = useRecordingLabel(
+  const titleRecord = useRecordLabel(
     setTitle,
     titleRef,
     formRef,
@@ -39,7 +39,7 @@ export default function NoteForm({
     setLabelsToAdd,
     existingNote,
   );
-  const contentRecord = useRecordingLabel(
+  const contentRecord = useRecordLabel(
     setContent,
     contentRef,
     formRef,

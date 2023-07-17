@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import NoteDbData from '../../../types/NoteDbData';
-import { RecordReturn } from '../../../hooks/useRecordingLabel';
+import { RecordReturn } from '../../../hooks/useRecordLabel';
 import LabelSuggestions from './LabelSuggestions';
 
 export default function Mirror({
