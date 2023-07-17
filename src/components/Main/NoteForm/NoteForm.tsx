@@ -10,6 +10,7 @@ import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
 import useRecordingLabel from '../../../hooks/useRecordingLabel';
 import usePostDb from '../../../hooks/usePostDb';
+import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
 
@@ -41,6 +42,12 @@ export default function NoteForm({
   const contentRecord = useRecordingLabel(
     setContent,
     contentRef,
+    formRef,
+    labelsToAdd,
+    setLabelsToAdd,
+    existingNote,
+  );
+  const buttonRecord = useRecordLabelButton(
     formRef,
     labelsToAdd,
     setLabelsToAdd,
@@ -118,10 +125,10 @@ export default function NoteForm({
       </div>
       <div className="add-stuffs flex items-center gap-2">
         <div
-          // ref={labelSearchButton}
+          ref={buttonRecord.triggerButtonRef}
           tabIndex={4}
           onClick={() => {
-            /*  */
+            buttonRecord.setIsRecordingLabel((prev) => !prev);
           }}
           onKeyUp={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -132,13 +139,7 @@ export default function NoteForm({
         >
           <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
         </div>
-        {/* {searchingForLabel && (
-          <LabelSuggestions
-            labelsToAdd={labelsToAdd}
-            setLabelsToAdd={setLabelsToAdd}
-            suggestionWithSearchPos={suggestionWithSearchPos}
-          />
-        )} */}
+        {buttonRecord.isRecordingLabel && <LabelSuggestions record={buttonRecord} />}
         <div
           tabIndex={5}
           className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"

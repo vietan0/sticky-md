@@ -79,7 +79,8 @@ _remember: break every problem down to actionable steps_
 - [x] refactor: `LabelSuggestions` will always have search input field
 - [x] fix any labels problems after markdown is done
 - [x] re-add textarea autosize's onHeightChange --> reposition mirror
-- [ ] fix: `LabelSuggestions` should work when triggered by button
+- [x] fix: `LabelSuggestions` should work when triggered by button
+- [ ] fix: shouldn't allow `LabelSuggestions` to start with space
 - [ ] find a source for themes
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types

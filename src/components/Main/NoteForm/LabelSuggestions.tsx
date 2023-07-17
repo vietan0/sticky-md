@@ -5,9 +5,9 @@ import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
-import { RecordReturn } from '../../../hooks/useRecordingLabel';
+import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
 
-export default function LabelSuggestions({ record }: { record: RecordReturn }) {
+export default function LabelSuggestions({ record }: { record: RecordReturn | RecordButtonReturn }) {
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
   const renderCount = useRef(1);
