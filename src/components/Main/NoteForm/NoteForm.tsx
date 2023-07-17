@@ -9,10 +9,8 @@ import Ellipsis from '../../icons/Ellipsis';
 import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
 import useRecordingLabel from '../../../hooks/useRecordingLabel';
-import useSuggestionsWithSearch from '../../../hooks/useSuggestionsWithSearch';
 import usePostDb from '../../../hooks/usePostDb';
-import LabelSuggestionsWithSearch from './LabelSuggestionsWithSearch';
-import Mirror from './Mirror';
+import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
 
 export default function NoteForm({
@@ -33,19 +31,19 @@ export default function NoteForm({
   const [labelsToAdd, setLabelsToAdd] = useState<string[]>(existingNote?.labels || []);
 
   const titleRecord = useRecordingLabel(
-    title,
     setTitle,
     titleRef,
-    setLabelsToAdd,
     formRef,
+    labelsToAdd,
+    setLabelsToAdd,
     existingNote,
   );
   const contentRecord = useRecordingLabel(
-    content,
     setContent,
     contentRef,
-    setLabelsToAdd,
     formRef,
+    labelsToAdd,
+    setLabelsToAdd,
     existingNote,
   );
 
@@ -56,6 +54,12 @@ export default function NoteForm({
     user_id: currentUser.uid,
   };
   const { updateNoteToDb, insertNoteToDb } = usePostDb(noteUploadData, existingNote);
+
+  function formClick(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
+    e.stopPropagation();
+    if (titleRecord.isRecordingLabel) titleRecord.setIsRecordingLabel(false);
+    if (contentRecord.isRecordingLabel) contentRecord.setIsRecordingLabel(false);
+  }
   function formSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFormOpen(false); // close NoteForm
@@ -64,10 +68,6 @@ export default function NoteForm({
   function formKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === 'Escape') existingNote ? updateNoteToDb() : insertNoteToDb();
   }
-
-  const { labelSearchButton, searchingForLabel, setSearchingForLabel, suggestionWithSearchPos } =
-    useSuggestionsWithSearch(formRef, labelsToAdd, existingNote);
-
   function removeLabel(target: string) {
     setLabelsToAdd((prev: string[]) => prev.filter((label) => label !== target));
   }
@@ -75,54 +75,42 @@ export default function NoteForm({
   return (
     <form
       ref={formRef}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (searchingForLabel) setSearchingForLabel(false);
-      }}
+      onClick={formClick}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
       className="mx-auto flex w-full max-w-xl flex-col gap-2 rounded-lg bg-slate-100 p-4 dark:bg-slate-900"
     >
-      <ToggleMdRaw isTitle value={title}>
+      <ToggleMdRaw
+        isTitle
+        value={title}
+        inputRef={titleRef}
+        formRef={formRef}
+        record={titleRecord}
+        existingNote={existingNote}
+      >
         <input
           type="text"
           tabIndex={1}
           placeholder="Title"
-          ref={titleRef}
-          value={title}
-          onKeyDown={titleRecord.handleKeyDown}
-          onChange={titleRecord.handleChange}
           className="input-global font-mono text-lg font-medium tracking-tight focus:outline-none"
         />
       </ToggleMdRaw>
-      <ToggleMdRaw value={content}>
-        <TextareaAutosize
-          minRows={2}
-          maxRows={15}
-          autoFocus
-          tabIndex={2}
-          placeholder="Write something…"
-          ref={contentRef}
-          value={content}
-          onKeyDown={contentRecord.handleKeyDown}
-          onChange={contentRecord.handleChange}
-          className="input-global resize-none py-2 font-mono text-[14px] tracking-tight focus:outline-none"
-        />
-      </ToggleMdRaw>
-      <Mirror
-        value={title}
-        inputRef={titleRef}
-        form={formRef}
-        existingNote={existingNote}
-        record={titleRecord}
-      />
-      <Mirror
+      <ToggleMdRaw
         value={content}
         inputRef={contentRef}
-        form={formRef}
-        existingNote={existingNote}
+        formRef={formRef}
         record={contentRecord}
-      />
+        existingNote={existingNote}
+      >
+        <TextareaAutosize
+          autoFocus
+          minRows={2}
+          maxRows={15}
+          tabIndex={2}
+          placeholder="Write something…"
+          className="input-global resize-none font-mono text-sm tracking-tight focus:outline-none"
+        />
+      </ToggleMdRaw>
       <div className="flex flex-wrap gap-2">
         {labelsToAdd.map((label) => (
           <LabelButton key={label} label={label} removeLabel={removeLabel} />
@@ -130,24 +118,27 @@ export default function NoteForm({
       </div>
       <div className="add-stuffs flex items-center gap-2">
         <div
-          ref={labelSearchButton}
+          // ref={labelSearchButton}
           tabIndex={4}
-          onClick={() => setSearchingForLabel((prev) => !prev)}
+          onClick={() => {
+            /*  */
+          }}
           onKeyUp={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') setSearchingForLabel((prev) => !prev);
+            if (e.key === 'Enter' || e.key === ' ') {
+              /*  */
+            }
           }}
           className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
         >
           <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
         </div>
-        {searchingForLabel && (
-          <LabelSuggestionsWithSearch
+        {/* {searchingForLabel && (
+          <LabelSuggestions
             labelsToAdd={labelsToAdd}
             setLabelsToAdd={setLabelsToAdd}
             suggestionWithSearchPos={suggestionWithSearchPos}
-            setSearchingForLabel={setSearchingForLabel}
           />
-        )}
+        )} */}
         <div
           tabIndex={5}
           className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-300 focus:bg-slate-300 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"

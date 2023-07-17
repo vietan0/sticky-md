@@ -76,8 +76,10 @@ _remember: break every problem down to actionable steps_
 - [x] add unique avatar if `photoUrl` doesn't exist
 - [x] add recording logic to `Title` field as well
 - [x] refactor: use custom hooks to separate label-recording logic, send-requests-to-db logic
-- [ ] fix any labels problems after markdown is done
-- [ ] re-add textarea autosize's onHeightChange --> reposition mirror
+- [x] refactor: `LabelSuggestions` will always have search input field
+- [x] fix any labels problems after markdown is done
+- [x] re-add textarea autosize's onHeightChange --> reposition mirror
+- [ ] fix: `LabelSuggestions` should work when triggered by button
 - [ ] find a source for themes
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types

@@ -68,8 +68,19 @@ useEffect(() => {
 - All cards have the same position at first render `{ left: 0, top: 0 }` (cards have `position: absolute`, `left` and `top` will be modified by `transform: translate()`).
 - All cards have the same constant width `cardWidth`.
 - Each card has access to position & dimension of all previous cards.
-- In the first row, (when `i < numberOfColumns`) (`i` is card's index in an array from database), all cards have `top: 0`. Determine `left` from `i` and `cardWidth`. 
+- In the first row, (when `i < numberOfColumns`) (`i` is card's index in an array from database), all cards have `top: 0`. Determine `left` from `i` and `cardWidth`.
 - In lower rows, the rule of insertion is: a card should choose the most empty column to insert itself (i.e. choose the shortest column):
   1. Find the bottom card of each column by choosing the card with largest `bottom` (a property that you get from calling `getBoundingClientRect()`) among the cards with the same `left` (same `left` means same column).
-  2. Choose the card with smallest `bottom`. 
+  2. Choose the card with smallest `bottom`.
   3. From there you can determine the target card's `left` and `top`.
+
+### 10. How to pass props to not-defined-ahead-of-time children
+
+- use React's `cloneElement`:
+
+```js
+function Toggle({ content, children: input }) {
+  const inputWithValue = cloneElement(input, { value: content });
+  return <div>{inputWithValue}</div>;
+}
+```
