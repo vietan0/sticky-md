@@ -83,6 +83,7 @@ _remember: break every problem down to actionable steps_
 - [x] display modified time (as local time)
 - [x] add syntax highlighting themes
 - [ ] try Torchlight
-- [ ] fix: shouldn't allow `LabelSuggestions` to start with space
+- [x] fix: disallow `LabelSuggestions`'s input to start with space
+- [ ] user can choose theme: light / dark / os
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types

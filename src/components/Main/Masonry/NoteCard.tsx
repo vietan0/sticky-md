@@ -119,7 +119,11 @@ export default function NoteCard({
           }}
           className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
         >
-          {title && <CustomMd>{'# ' + title}</CustomMd>}
+          {title && (
+            <h1 className="min-h-[28px] text-lg font-semibold">
+              <CustomMd>{title}</CustomMd>
+            </h1>
+          )}
           {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
           <div className="add-stuffs">

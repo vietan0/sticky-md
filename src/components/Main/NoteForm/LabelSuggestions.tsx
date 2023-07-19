@@ -8,10 +8,22 @@ import Plus from '../../icons/Plus';
 import { RecordReturn } from '../../../hooks/useRecordLabel';
 import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
 
-export default function LabelSuggestions({ record }: { record: RecordReturn | RecordButtonReturn }) {
+export default function LabelSuggestions({
+  record,
+}: {
+  record: RecordReturn | RecordButtonReturn;
+}) {
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
   const renderCount = useRef(1);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.value.startsWith(' ')) {
+      // prevent starting with space
+      setValue(e.target.value.trim());
+    } else setValue(e.target.value);
+    renderCount.current += 1;
+  }
 
   useEffect(() => {
     record.setExtractedLabel(value);
@@ -82,10 +94,7 @@ export default function LabelSuggestions({ record }: { record: RecordReturn | Re
           type="text"
           value={value}
           onClick={(e) => e.stopPropagation()}
-          onChange={(e) => {
-            setValue(e.target.value);
-            renderCount.current += 1;
-          }}
+          onChange={handleChange}
           onKeyDown={record.searchKeyDown}
           placeholder="Search for labels…"
           className="input-global border-b-2 border-slate-300 px-4 py-2 text-left text-[13px] focus:outline-none dark:border-slate-700"
