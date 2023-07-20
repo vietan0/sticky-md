@@ -1,7 +1,7 @@
 # Features Checklist:
 
 - [x] markdown support
-- [ ] be able to choose theme: Light / Dark / OS
+- [x] be able to choose theme: Light / Dark / OS
 - [x] masonry layout (transform translate)
 - [ ] each card can have persisting individual background color
 - [ ] display link previews

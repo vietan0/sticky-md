@@ -84,6 +84,6 @@ _remember: break every problem down to actionable steps_
 - [x] add syntax highlighting themes
 - [ ] try Torchlight
 - [x] fix: disallow `LabelSuggestions`'s input to start with space
-- [ ] user can choose theme: light / dark / os
+- [x] user can choose theme: light / dark / os
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types
