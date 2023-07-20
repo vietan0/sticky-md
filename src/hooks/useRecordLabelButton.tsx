@@ -20,7 +20,6 @@ export default function useRecordLabelButton(
   formRef: React.RefObject<HTMLFormElement>,
   labelsToAdd: string[],
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
-  existingNote?: NoteDbData,
 ) {
   // use a button to trigger popup
   const allLabels = useContext(AllLabelsContext);
@@ -95,14 +94,11 @@ export default function useRecordLabelButton(
     // update position of LabelSuggestions based on triggerButton's position
     function syncSuggestionPos() {
       if (triggerButtonRef.current && formRef.current) {
-        const { left: btnLeft, bottom: btnBottom } = triggerButtonRef.current.getBoundingClientRect();
+        const { left: btnLeft, bottom: btnBottom } =
+          triggerButtonRef.current.getBoundingClientRect();
         const { left: formLeft, top: formTop } = formRef.current.getBoundingClientRect();
-  
-        setSuggestionPos(
-          existingNote
-            ? { left: btnLeft - formLeft, top: btnBottom - formTop + 16 }
-            : { left: btnLeft, top: btnBottom + 16 },
-        );
+
+        setSuggestionPos({ left: btnLeft - formLeft, top: btnBottom - formTop + 16 });
       }
     }
     syncSuggestionPos();
@@ -110,7 +106,7 @@ export default function useRecordLabelButton(
     window.addEventListener('resize', syncSuggestionPos);
     return () => {
       window.removeEventListener('resize', syncSuggestionPos);
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

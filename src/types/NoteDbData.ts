@@ -6,4 +6,5 @@ export default interface NoteDbData {
   note_id: string;
   title: string;
   user_id: string;
+  bg_color: string | null;
 }

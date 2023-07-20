@@ -34,8 +34,8 @@ export default function LabelSuggestions({
       key={label_name}
       onClick={(e) => e.stopPropagation()}
       className={`${
-        record.focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-800'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800`}
+        record.focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-900'
+      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-900`}
     >
       <Checkbox.Root
         checked={record.labelsToAdd.includes(label_name)}
@@ -68,7 +68,7 @@ export default function LabelSuggestions({
       }
       className={`${
         record.focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-800`}
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-900`}
     >
       <Plus className="h-4 w-4" />
       <span>
@@ -86,7 +86,7 @@ export default function LabelSuggestions({
   return (
     <Root
       style={{ position: 'absolute', ...record.suggestionPos }} // to override Radix
-      className="z-10 max-h-64 w-48 overflow-y-scroll rounded bg-slate-100 outline outline-1 outline-slate-400 dark:bg-slate-900 dark:outline-slate-700"
+      className="z-10 max-h-64 w-48 overflow-y-scroll rounded bg-white dark:bg-slate-950 outline outline-1 outline-slate-300 dark:outline-slate-800"
     >
       <Viewport className="h-full w-full rounded">
         <input
@@ -97,7 +97,7 @@ export default function LabelSuggestions({
           onChange={handleChange}
           onKeyDown={record.searchKeyDown}
           placeholder="Search for labels…"
-          className="input-global border-b-2 border-slate-300 px-4 py-2 text-left text-[13px] focus:outline-none dark:border-slate-700"
+          className="w-full border-b-2 border-slate-300 bg-white dark:bg-slate-950 px-4 py-2 text-left text-[13px] placeholder:text-slate-500 focus:outline-none dark:border-slate-700"
         />
         <div className="grid grid-cols-1 divide-y divide-slate-300 pb-1 dark:divide-slate-700">
           {labelElems}

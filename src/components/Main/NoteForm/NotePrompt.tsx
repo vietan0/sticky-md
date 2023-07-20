@@ -12,7 +12,7 @@ export default function NotePrompt({ setFormOpen }: { setFormOpen: (val: boolean
         e.stopPropagation();
         setFormOpen(true);
       }}
-      className="input-global mx-auto block max-w-xl resize-none rounded-lg p-4 font-mono tracking-tight focus:outline-none"
+      className="mx-auto block w-full max-w-xl resize-none rounded-lg bg-white dark:bg-slate-950 p-4 font-mono tracking-tight outline outline-1 outline-slate-200 drop-shadow focus:outline-none dark:outline-slate-800"
     />
   );
 }

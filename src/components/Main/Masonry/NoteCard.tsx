@@ -55,7 +55,7 @@ export default function NoteCard({
         e.stopPropagation();
         deleteNote(note_id);
       }}
-      className="delete-button absolute -right-3 -top-3 rounded-full bg-slate-300 p-1 outline outline-1 outline-slate-400 dark:bg-slate-800 dark:outline-slate-800"
+      className="delete-button absolute -right-3 -top-3 rounded-full bg-slate-200 p-1 outline outline-1 outline-slate-400 hover:bg-slate-300 dark:bg-slate-800 dark:outline-slate-800 dark:hover:bg-slate-700"
     >
       <Close className="h-4 w-4" />
     </button>
@@ -108,7 +108,7 @@ export default function NoteCard({
   return (
     <Dialog.Root open={editFormOpen} onOpenChange={setEditFormOpen}>
       <Dialog.Trigger asChild>
-        <div
+        <article
           ref={card}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
@@ -117,10 +117,10 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg bg-slate-200 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:bg-slate-900 dark:outline-slate-700"
+          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg bg-white dark:bg-slate-950 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:outline-slate-700 dark:hover:outline-blue-700"
         >
           {title && (
-            <h1 className="min-h-[28px] text-lg font-semibold">
+            <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">
               <CustomMd>{title}</CustomMd>
             </h1>
           )}
@@ -132,7 +132,7 @@ export default function NoteCard({
             </button>
           </div>
           {hover && deleteButton}
-        </div>
+        </article>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/40" />
