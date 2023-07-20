@@ -1,18 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../firebase/auth';
-
-export const ThemeContext = createContext<{
-  theme: 'light' | 'dark' | 'os';
-  setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark' | 'os'>>;
-  htmlHasDark: boolean;
-}>({
-  theme: 'os',
-  setTheme: () => {
-    /*  */
-  },
-  htmlHasDark: false,
-});
+import { useEffect, useState } from 'react';
+import { ThemeContext } from '.';
 
 export default function ThemeContextProvider({ children }: { children: JSX.Element }) {
   const [theme, setTheme] = useState<'light' | 'dark' | 'os'>(() => {
@@ -27,8 +14,6 @@ export default function ThemeContextProvider({ children }: { children: JSX.Eleme
 
   // state to localStorage
   useEffect(() => {
-    console.log('theme useEffect!');
-
     if (theme === 'light') localStorage.setItem('theme', 'light');
     if (theme === 'dark') localStorage.setItem('theme', 'dark');
     if (theme === 'os') localStorage.removeItem('theme');
@@ -38,7 +23,6 @@ export default function ThemeContextProvider({ children }: { children: JSX.Eleme
   // localStorage to <html>
   useEffect(() => {
     function localStorageChange() {
-      console.log('localStorage change!');
       const themeInLocal = localStorage.getItem('theme');
       if (themeInLocal) {
         if (themeInLocal === 'dark') document.documentElement.classList.add('dark');

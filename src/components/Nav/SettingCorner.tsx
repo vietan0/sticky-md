@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Root, Trigger, Portal, Content, Arrow, Item } from '@radix-ui/react-dropdown-menu';
 import { User, signOut } from 'firebase/auth';
 import Avatar from 'boring-avatars';
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from '../../contexts';
 import { auth } from '../../firebase/auth';
 import Settings from '../icons/Settings';
 import SignOut from '../icons/SignOut';

@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { Outlet , useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../contexts';
 
 export default function Home() {
   const currentUser = useContext(UserContext);

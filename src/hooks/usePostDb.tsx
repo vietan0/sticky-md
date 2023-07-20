@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { User } from 'firebase/auth';
-import { UserContext } from '../contexts/UserContext';
-import { AllLabelsContext } from '../contexts/AllLabelsContext';
+import { UserContext , AllLabelsContext } from '../contexts';
 import { createNote, updateNote } from '../supabase/notes';
 import { createLabels, getLabelId, getLabelIds } from '../supabase/labels';
 import { createNotesLabels, deleteNotesLabels } from '../supabase/notes_labels';

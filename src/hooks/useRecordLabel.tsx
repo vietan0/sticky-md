@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { AllLabelsContext } from '../contexts/AllLabelsContext';
+import { AllLabelsContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
 import NoteDbData from '../types/NoteDbData';
 

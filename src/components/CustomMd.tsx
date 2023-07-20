@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { ThemeContext } from '../contexts';
 import vsDarkPlus from './Main/themes/vs-dark-plus';
 import vsLight from './Main/themes/vs-light';
 

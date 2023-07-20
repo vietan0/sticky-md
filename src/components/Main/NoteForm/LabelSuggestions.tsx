@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Root, Viewport } from '@radix-ui/react-scroll-area';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { AllLabelsContext } from '../../../contexts/AllLabelsContext';
+import { AllLabelsContext } from '../../../contexts';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';

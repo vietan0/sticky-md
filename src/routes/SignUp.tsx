@@ -2,7 +2,7 @@ import { useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { emailSignUp, githubProvider, googleProvider, oAuthSignIn } from '../firebase/auth';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../contexts';
 import Lock from '../components/icons/Lock';
 import Mail from '../components/icons/Mail';
 import Google from '../components/icons/Google';

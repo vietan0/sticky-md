@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App.tsx';
+import App from './App';
 import './index.css';
-import UserContextProvider from './contexts/UserContext.tsx';
-import ThemeContextProvider from './contexts/ThemeContext.tsx';
+import UserContextProvider from './contexts/UserContextProvider';
+import ThemeContextProvider from './contexts/ThemeContextProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

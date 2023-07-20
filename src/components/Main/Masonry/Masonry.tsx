@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
-import { UserContext } from '../../../contexts/UserContext';
+import { UserContext } from '../../../contexts';
 import supabase from '../../../supabase/connect';
 import { getAllNotes } from '../../../supabase/notes';
 import NoteCard from './NoteCard';

@@ -2,7 +2,7 @@ import { User } from 'firebase/auth';
 import { DateTime } from 'luxon';
 import { useContext, useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { UserContext } from '../../../contexts/UserContext';
+import { UserContext } from '../../../contexts';
 import usePostDb from '../../../hooks/usePostDb';
 import useRecordLabel from '../../../hooks/useRecordLabel';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
