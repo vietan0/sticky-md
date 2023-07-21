@@ -90,7 +90,7 @@ _remember: break every problem down to actionable steps_
 - [x] use `RadixPopover` for `LabelSuggestions` when triggered by button
 - [x] use `RadixPopover` for `LabelSuggestions` when typing
 - [x] make default colors more neutral (stop using `slate`)
-- [ ] fix: `LabelSuggestions` loses focus after each key typed
+- [x] feat: delete note if after editing, both `title` and `content` are empty
 - [ ] make `AddStuffsBar` reusable
 - [ ] change route when opening a `NoteForm` popup
 - [ ] reorder types

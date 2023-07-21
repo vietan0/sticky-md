@@ -34,7 +34,13 @@ export default function Mirror({
       if (inputRef.current && formRef.current) {
         const { width, height, top: textareaTop } = inputRef.current.getBoundingClientRect();
         const { top: formTop } = formRef.current.getBoundingClientRect();
-        setMirrorPos({ width, height, top: textareaTop - formTop });
+        // when normal, mirror's (0, 0) is document's corner
+        // when in dialog, mirror's (0, 0) is form's corner (because of how Radix works)
+        setMirrorPos({
+          width,
+          height,
+          top: existingNote ? textareaTop - formTop : textareaTop,
+        });
       }
     }
     syncMirror();
@@ -56,7 +62,7 @@ export default function Mirror({
     >
       {value.split('').map((char, i) => {
         return char === '#' && i === record.liveHashtagIndex ? (
-          <span className="h-6 text-pink-500" key={i}>
+          <span className="h-6" key={i}>
             {char}
             <LabelSuggestions record={record} inline />
           </span>
