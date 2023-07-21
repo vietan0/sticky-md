@@ -9,8 +9,6 @@ export type RecordButtonReturn = {
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>;
   labelsList: (string | LabelDbData)[];
   focusedLabelIndex: number;
-  isRecordingLabel: boolean;
-  setIsRecordingLabel: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function useRecordLabelButton(
   labelsToAdd: string[],
@@ -36,10 +34,7 @@ export default function useRecordLabelButton(
   if (extractedLabel) labelsList = [...filteredLabels, extractedLabel];
   const searchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
-      // discard popup, focus back outside
-      e.preventDefault();
-      e.stopPropagation();
-      setIsRecordingLabel(false);
+      e.stopPropagation(); // stop form's handler from firing
     }
     if (e.key === 'Tab' || e.key === 'Enter') {
       // accept label, focus back outside
@@ -90,7 +85,5 @@ export default function useRecordLabelButton(
     setLabelsToAdd,
     labelsList,
     focusedLabelIndex,
-    isRecordingLabel,
-    setIsRecordingLabel,
   };
 }

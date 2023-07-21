@@ -31,7 +31,7 @@ export default function ToggleMdRaw({
           <CustomMd>{value}</CustomMd>
         </h1>
       ) : (
-        <CustomMd className="flex flex-col gap-2 text-[15px]">{value}</CustomMd>
+        <CustomMd className="flex flex-col gap-2 text-[15px] min-h-[22.5px]">{value}</CustomMd>
       )}
     </div>
   );
@@ -39,13 +39,11 @@ export default function ToggleMdRaw({
   const propsToPass: {
     value: string;
     ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>;
-    onKeyUp: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onHeightChange?: (height: number) => void;
   } = {
     value,
     ref: inputRef,
-    onKeyUp: record.fieldKeyUp,
     onChange: record.fieldChange,
   };
   if (!isTitle) {

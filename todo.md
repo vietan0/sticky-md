@@ -92,6 +92,7 @@ _remember: break every problem down to actionable steps_
 - [x] make default colors more neutral (stop using `slate`)
 - [x] feat: delete note if after editing, both `title` and `content` are empty
 - [x] fix: `LabelSuggestions` bug when recording using button in NoteForm - editing
+- [x] fix: `LabelSuggestions` not show up in NoteForm - editing
 - [ ] merge useRecordLabel into one file, 2 versions: inline / button
 - [ ] make `AddStuffsBar` reusable
 - [ ] add Radix's `Tooltip` for stuffs (swatch / button hovering,...)

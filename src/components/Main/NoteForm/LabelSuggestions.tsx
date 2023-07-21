@@ -8,13 +8,16 @@ import { AllLabelsContext } from '../../../contexts';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
+import NoteDbData from '../../../types/NoteDbData';
 
 export default function LabelSuggestions({
   record,
   inline = false,
+  existingNote,
 }: {
   record: RecordReturn | RecordButtonReturn;
   inline?: boolean;
+  existingNote?: NoteDbData;
 }) {
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
@@ -86,38 +89,43 @@ export default function LabelSuggestions({
     } else return regularLabelButton(elem.label_name, i);
   });
 
+  const content = (
+    <Popover.Content
+      align="start"
+      sideOffset={inline ? 0 : 16}
+      className="max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
+    >
+      <input
+        autoFocus
+        type="text"
+        value={value}
+        onClick={(e) => e.stopPropagation()}
+        onChange={handleChange}
+        onKeyDown={record.searchKeyDown}
+        placeholder="Search for labels…"
+        className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950"
+      />
+      <div className="grid grid-cols-1 divide-y divide-neutral-300 pb-1 dark:divide-neutral-700">
+        {labelElems}
+      </div>
+    </Popover.Content>
+  );
+  const portaled = <Popover.Portal>{content}</Popover.Portal>;
+
+  let renderedContent = portaled;
+  // if use button and NoteForm is editing --> remove portal
+  if (!inline && existingNote) renderedContent = content;
+
   return (
-    <Popover.Root defaultOpen={inline} open={record.isRecordingLabel}>
+    <Popover.Root defaultOpen={inline}>
       <Popover.Trigger asChild={!inline}>
         {!inline && (
-          <button
-            onClick={() => record.setIsRecordingLabel((prev) => !prev)}
-            className="rounded-full p-2 bg-black/5 hover:bg-black/10 dark:text-white dark:bg-white/5 dark:hover:bg-white/10"
-          >
+          <button className="rounded-full bg-black/5 p-2 hover:bg-black/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
             <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
           </button>
         )}
       </Popover.Trigger>
-      <Popover.Content
-        align="start"
-        sideOffset={inline ? 0 : 16}
-        onPointerDownOutside={() => record.setIsRecordingLabel(false)}
-        className="max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
-      >
-        <input
-          autoFocus
-          type="text"
-          value={value}
-          onClick={(e) => e.stopPropagation()}
-          onChange={handleChange}
-          onKeyDown={record.searchKeyDown}
-          placeholder="Search for labels…"
-          className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950"
-        />
-        <div className="grid grid-cols-1 divide-y divide-neutral-300 pb-1 dark:divide-neutral-700">
-          {labelElems}
-        </div>
-      </Popover.Content>
+      {renderedContent}
     </Popover.Root>
   );
 }

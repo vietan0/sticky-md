@@ -4,7 +4,6 @@ import LabelDbData from '../types/LabelDbData';
 import NoteDbData from '../types/NoteDbData';
 
 export type RecordReturn = {
-  fieldKeyUp: (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   fieldChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   searchKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   setExtractedLabel: React.Dispatch<React.SetStateAction<string>>;
@@ -12,8 +11,6 @@ export type RecordReturn = {
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>;
   labelsList: (string | LabelDbData)[];
   focusedLabelIndex: number;
-  isRecordingLabel: boolean;
-  setIsRecordingLabel: React.Dispatch<React.SetStateAction<boolean>>;
   liveHashtagIndex: number;
 };
 export default function useRecordLabel(
@@ -42,9 +39,9 @@ export default function useRecordLabel(
   let labelsList = [...filteredLabels] as (LabelDbData | string)[];
   if (extractedLabel) labelsList = [...filteredLabels, extractedLabel];
 
-  const fieldKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (e.key === '#') setIsRecordingLabel(true);
-  };
+  // const fieldKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  //   if (e.key === '#') setIsRecordingLabel(true);
+  // };
   const fieldChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setValue(e.target.value);
     const cursorIndex = inputRef.current?.selectionStart as number; // cursor after typed
@@ -103,7 +100,6 @@ export default function useRecordLabel(
 
   return {
     // for outside fields
-    fieldKeyUp,
     fieldChange,
     // for <LabelSuggestions />
     searchKeyDown,
@@ -113,8 +109,6 @@ export default function useRecordLabel(
     labelsList,
     focusedLabelIndex,
     // for <Mirror />
-    isRecordingLabel, // also <NoteForm />
-    setIsRecordingLabel, // also <NoteForm />
     liveHashtagIndex,
   };
 }

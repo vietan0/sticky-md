@@ -121,7 +121,7 @@ export default function NoteCard({
           className={`${getTwBgClasses(bg_color)} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500`}
         >
           {title && (
-            <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">
+            <h1 className="text-lg font-semibold [&_*]:text-lg">
               <CustomMd>{title}</CustomMd>
             </h1>
           )}

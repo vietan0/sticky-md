@@ -50,8 +50,6 @@ export default function NoteForm({
 
   function formClick(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
     e.stopPropagation();
-    if (titleRecord.isRecordingLabel) titleRecord.setIsRecordingLabel(false);
-    if (contentRecord.isRecordingLabel) contentRecord.setIsRecordingLabel(false);
   }
   function formSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -127,7 +125,7 @@ export default function NoteForm({
         )}
       </div>
       <div className="add-stuffs flex items-center gap-2">
-        <LabelSuggestions record={buttonRecord} />
+        <LabelSuggestions record={buttonRecord} existingNote={existingNote} />
         <BackgroundSwatches selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
         <div className="cursor-pointer rounded-full bg-black/5 p-2 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20">
           <Ellipsis className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
