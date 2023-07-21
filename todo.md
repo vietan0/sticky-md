@@ -85,7 +85,9 @@ _remember: break every problem down to actionable steps_
 - [ ] try Torchlight
 - [x] fix: disallow `LabelSuggestions`'s input to start with space
 - [x] user can choose theme: light / dark / os
-- [ ] each card can have individual bg color
+- [x] use `RadioGroup` (Radix) for swatches
+- [ ] make default colors more neutral (stop using `slate`)
+- [x] each card can have individual bg color
 - [x] use `RadixPopover` for `LabelSuggestions` when triggered by button
 - [x] use `RadixPopover` for `LabelSuggestions` when typing
 - [ ] change route when opening a `NoteForm` popup

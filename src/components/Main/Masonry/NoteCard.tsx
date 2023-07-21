@@ -13,6 +13,7 @@ import Close from '../../icons/Close';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import NoteForm from '../NoteForm/NoteForm';
+import getTwBgClasses from '../../../utils/getTwBgClasses';
 
 export default function NoteCard({
   note,
@@ -38,7 +39,7 @@ export default function NoteCard({
 }) {
   const currentUser = useContext(UserContext) as User;
   const [hover, setHover] = useState(false);
-  const { title, content, labels, note_id } = note;
+  const { title, content, labels, note_id, bg_color } = note;
 
   const [editFormOpen, setEditFormOpen] = useState(false);
 
@@ -117,7 +118,7 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className="NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg bg-white dark:bg-slate-950 p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:outline-slate-700 dark:hover:outline-blue-700"
+          className={`${getTwBgClasses(bg_color)} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 outline outline-1 outline-slate-300 duration-75 hover:outline-blue-500 dark:outline-slate-700 dark:hover:outline-blue-700`}
         >
           {title && (
             <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">

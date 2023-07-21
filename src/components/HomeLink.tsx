@@ -7,7 +7,11 @@ interface HomeLinkProps {
 
 export default function HomeLink({ className }: HomeLinkProps) {
   return (
-    <Link to="/" className={`flex items-center gap-2 ${className}`}>
+    <Link
+      to="/"
+      onClick={() => window.location.reload()}
+      className={`flex items-center gap-2 ${className}`}
+    >
       <Logo />
       <span className="whitespace-nowrap font-medium tracking-tight">Sticky MD</span>
     </Link>

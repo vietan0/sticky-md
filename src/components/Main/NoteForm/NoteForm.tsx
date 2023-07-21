@@ -10,6 +10,8 @@ import NoteDbData from '../../../types/NoteDbData';
 import NoteUploadData from '../../../types/NoteUploadData';
 import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
+import { Bg_Color } from '../../../types/Bg_Color';
+import getTwBgClasses from '../../../utils/getTwBgClasses';
 import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
 import BackgroundSwatches from './BackgroundSwatches';
@@ -35,11 +37,14 @@ export default function NoteForm({
   const contentRecord = useRecordLabel(setContent, contentRef, labelsToAdd, setLabelsToAdd);
   const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
 
+  const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>('');
+
   const noteUploadData: NoteUploadData = {
     title: title.trim(),
     content: content.trim(),
     labels: labelsToAdd,
     user_id: currentUser.uid,
+    bg_color: selectedBgColor,
   };
   const { updateNoteToDb, insertNoteToDb } = usePostDb(noteUploadData, existingNote);
 
@@ -69,7 +74,9 @@ export default function NoteForm({
       onClick={formClick}
       onSubmit={formSubmit}
       onKeyDown={formKeyDown}
-      className="mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg bg-white p-4 outline outline-1 outline-slate-200 drop-shadow dark:bg-slate-950 dark:outline-slate-800"
+      className={`${getTwBgClasses(
+        existingNote ? existingNote.bg_color : selectedBgColor,
+      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4 outline outline-1 outline-slate-200 drop-shadow dark:outline-slate-800`}
     >
       <ToggleMdRaw
         isTitle
@@ -83,7 +90,7 @@ export default function NoteForm({
           type="text"
           tabIndex={1}
           placeholder="Title"
-          className="w-full bg-white font-mono text-lg font-medium tracking-tight placeholder:text-slate-500 focus:outline-none dark:bg-slate-950"
+          className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-slate-700 focus:outline-none dark:placeholder:text-slate-400"
         />
       </ToggleMdRaw>
       <ToggleMdRaw
@@ -99,7 +106,7 @@ export default function NoteForm({
           maxRows={15}
           tabIndex={2}
           placeholder="Write something…"
-          className="w-full resize-none bg-white font-mono text-sm tracking-tight placeholder:text-slate-500 focus:outline-none dark:bg-slate-950"
+          className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-slate-700 focus:outline-none dark:placeholder:text-slate-400"
         />
       </ToggleMdRaw>
       <div className="mt-4 flex items-end justify-between gap-8">
@@ -121,7 +128,7 @@ export default function NoteForm({
       </div>
       <div className="add-stuffs flex items-center gap-2">
         <LabelSuggestions record={buttonRecord} />
-        <BackgroundSwatches />
+        <BackgroundSwatches selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
         <div
           tabIndex={6}
           className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"

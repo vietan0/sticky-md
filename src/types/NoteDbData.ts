@@ -1,3 +1,5 @@
+import { Bg_Color } from './Bg_Color';
+
 export default interface NoteDbData {
   content: string;
   created_at: string;
@@ -6,5 +8,5 @@ export default interface NoteDbData {
   note_id: string;
   title: string;
   user_id: string;
-  bg_color: string | null;
+  bg_color: Bg_Color;
 }

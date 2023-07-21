@@ -3,7 +3,7 @@
 - [x] markdown support
 - [x] be able to choose theme: Light / Dark / OS
 - [x] masonry layout (transform translate)
-- [ ] each card can have persisting individual background color
+- [x] each card can have persisting individual background color
 - [ ] display link previews
 - [ ] export to CSV
 - [ ] lazy loading

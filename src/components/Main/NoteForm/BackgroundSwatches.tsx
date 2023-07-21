@@ -1,23 +1,30 @@
 import * as Popover from '@radix-ui/react-popover';
-import { useContext } from 'react';
+import * as RadioGroup from '@radix-ui/react-radio-group';
 import Color from '../../icons/Color';
-import { ThemeContext } from '../../../contexts';
 import No from '../../icons/No';
+import { Bg_Color } from '../../../types/Bg_Color';
 
-function Swatch({ className = '', none }: { className?: string; none?: boolean }) {
-  return (
-    <div
-      className={`${className} ${
-        none && 'outline outline-1 outline-slate-300'
-      } flex h-8 w-8 items-center justify-center rounded-full hover:outline hover:outline-1 hover:outline-slate-600 dark:hover:outline-slate-400`}
-    >
-      {none && <No className="h-5 w-5" />}
-    </div>
-  );
-}
+export default function BackgroundSwatches({
+  selectedColor,
+  setSelectedColor,
+}: {
+  selectedColor: string;
+  setSelectedColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
+}) {
+  const coloredRadioItems = ['blue', 'red', 'pink', 'yellow', 'green'].map((n) => {
+    const bgClass = `bg-card-${n}-light dark:bg-card-${n}-dark`;
+    return (
+      <RadioGroup.Item
+        key={n}
+        value={n}
+        aria-label={n}
+        className={`${bgClass} h-8 w-8 cursor-pointer rounded-full`}
+      >
+        <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-slate-700 after:content-[''] dark:after:outline-slate-300" />
+      </RadioGroup.Item>
+    );
+  });
 
-export default function BackgroundSwatches() {
-  const { htmlHasDark } = useContext(ThemeContext);
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
@@ -34,12 +41,22 @@ export default function BackgroundSwatches() {
           sideOffset={16}
           className="flex flex-row gap-2 rounded bg-white p-3 outline outline-1 outline-slate-400 dark:bg-slate-950 dark:outline-slate-700"
         >
-          <Swatch none />
-          <Swatch className={htmlHasDark ? 'bg-card-blue-dark' : 'bg-card-blue-light'} />
-          <Swatch className={htmlHasDark ? 'bg-card-red-dark' : 'bg-card-red-light'} />
-          <Swatch className={htmlHasDark ? 'bg-card-pink-dark' : 'bg-card-pink-light'} />
-          <Swatch className={htmlHasDark ? 'bg-card-yellow-dark' : 'bg-card-yellow-light'} />
-          <Swatch className={htmlHasDark ? 'bg-card-green-dark' : 'bg-card-green-light'} />
+          <RadioGroup.Root
+            className="flex gap-2"
+            defaultValue={selectedColor}
+            aria-label="Choose background color"
+            onValueChange={(value: Bg_Color) => setSelectedColor(value)}
+          >
+            <RadioGroup.Item
+              value=""
+              aria-label="no color"
+              className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline outline-1 outline-slate-400 dark:outline-slate-700"
+            >
+              <No className="h-5 w-5" />
+              <RadioGroup.Indicator className="absolute flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-slate-700 after:content-[''] dark:after:outline-slate-300" />
+            </RadioGroup.Item>
+            {...coloredRadioItems}
+          </RadioGroup.Root>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
