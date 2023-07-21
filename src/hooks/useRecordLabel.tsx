@@ -100,6 +100,7 @@ export default function useRecordLabel(
     // update focused row in LabelSuggestions
     setFocusedLabelIndex(0);
   }, [labelsList.length]);
+
   return {
     // for outside fields
     fieldKeyUp,

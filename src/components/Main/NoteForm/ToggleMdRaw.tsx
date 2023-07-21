@@ -27,7 +27,7 @@ export default function ToggleMdRaw({
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
       {isTitle ? (
-        <h1 className="min-h-[28px] text-lg font-semibold">
+        <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">
           <CustomMd>{value}</CustomMd>
         </h1>
       ) : (

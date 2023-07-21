@@ -118,7 +118,7 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className={`${getTwBgClasses(bg_color)} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-blue-500 dark:hover:outline-blue-700`}
+          className={`${getTwBgClasses(bg_color)} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500`}
         >
           {title && (
             <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">
@@ -128,7 +128,7 @@ export default function NoteCard({
           {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
           <div className="add-stuffs">
-            <button className="rounded-full p-1 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20">
+            <button className="rounded-full p-1 bg-black/5 hover:bg-black/10 dark:text-white dark:bg-white/5 dark:hover:bg-white/10">
               <Ellipsis className="h-5 w-5" />
             </button>
           </div>

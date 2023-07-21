@@ -30,8 +30,7 @@ export default function BackgroundSwatches({
     <Popover.Root>
       <Popover.Trigger asChild>
         <button
-          tabIndex={5}
-          className="rounded-full p-2 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
+          className="rounded-full p-2 bg-black/5 hover:bg-black/10 dark:text-white dark:bg-white/5 dark:hover:bg-white/10"
         >
           <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
         </button>

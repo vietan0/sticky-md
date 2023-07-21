@@ -37,7 +37,7 @@ export default function NoteForm({
   const contentRecord = useRecordLabel(setContent, contentRef, labelsToAdd, setLabelsToAdd);
   const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
 
-  const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>('');
+  const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>(existingNote?.bg_color || '');
 
   const noteUploadData: NoteUploadData = {
     title: title.trim(),
@@ -129,16 +129,12 @@ export default function NoteForm({
       <div className="add-stuffs flex items-center gap-2">
         <LabelSuggestions record={buttonRecord} />
         <BackgroundSwatches selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
-        <div
-          tabIndex={6}
-          className="cursor-pointer rounded-full p-2 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
-        >
+        <div className="cursor-pointer rounded-full bg-black/5 p-2 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20">
           <Ellipsis className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
         </div>
         <button
           type="submit"
-          tabIndex={3}
-          className="ml-auto rounded-full px-4 py-2 leading-5 text-neutral-700 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
+          className="ml-auto rounded-full bg-black/5 px-4 py-2 leading-5 text-neutral-700 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20"
         >
           {existingNote ? 'Save' : 'Done'}
         </button>
