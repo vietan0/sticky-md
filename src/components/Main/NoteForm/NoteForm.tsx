@@ -9,7 +9,6 @@ import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import NoteDbData from '../../../types/NoteDbData';
 import NoteUploadData from '../../../types/NoteUploadData';
 import Ellipsis from '../../icons/Ellipsis';
-import Label from '../../icons/Label';
 import LabelButton from '../LabelButton';
 import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
@@ -32,23 +31,9 @@ export default function NoteForm({
   const [content, setContent] = useState(existingNote?.content || '');
   const [labelsToAdd, setLabelsToAdd] = useState<string[]>(existingNote?.labels || []);
 
-  const titleRecord = useRecordLabel(
-    setTitle,
-    titleRef,
-    formRef,
-    labelsToAdd,
-    setLabelsToAdd,
-    existingNote,
-  );
-  const contentRecord = useRecordLabel(
-    setContent,
-    contentRef,
-    formRef,
-    labelsToAdd,
-    setLabelsToAdd,
-    existingNote,
-  );
-  const buttonRecord = useRecordLabelButton(formRef, labelsToAdd, setLabelsToAdd);
+  const titleRecord = useRecordLabel(setTitle, titleRef, labelsToAdd, setLabelsToAdd);
+  const contentRecord = useRecordLabel(setContent, contentRef, labelsToAdd, setLabelsToAdd);
+  const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
 
   const noteUploadData: NoteUploadData = {
     title: title.trim(),
@@ -69,7 +54,10 @@ export default function NoteForm({
     existingNote ? updateNoteToDb() : insertNoteToDb();
   }
   function formKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
-    if (e.key === 'Escape') existingNote ? updateNoteToDb() : insertNoteToDb();
+    if (e.key === 'Escape') {
+      setFormOpen(false); // close NoteForm
+      existingNote ? updateNoteToDb() : insertNoteToDb();
+    }
   }
   function removeLabel(target: string) {
     setLabelsToAdd((prev: string[]) => prev.filter((label) => label !== target));
@@ -132,17 +120,7 @@ export default function NoteForm({
         )}
       </div>
       <div className="add-stuffs flex items-center gap-2">
-        <div
-          ref={buttonRecord.triggerButtonRef}
-          tabIndex={4}
-          onClick={() => {
-            buttonRecord.setIsRecordingLabel((prev) => !prev);
-          }}
-          className="relative cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
-        >
-          <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
-        </div>
-        {buttonRecord.isRecordingLabel && <LabelSuggestions record={buttonRecord} />}
+        <LabelSuggestions record={buttonRecord} />
         <BackgroundSwatches />
         <div
           tabIndex={6}

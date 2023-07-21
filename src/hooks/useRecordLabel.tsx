@@ -11,20 +11,16 @@ export type RecordReturn = {
   labelsToAdd: string[];
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>;
   labelsList: (string | LabelDbData)[];
-  suggestionPos: { left: number; top: number };
   focusedLabelIndex: number;
   isRecordingLabel: boolean;
   setIsRecordingLabel: React.Dispatch<React.SetStateAction<boolean>>;
   liveHashtagIndex: number;
-  liveHashtag: React.RefObject<HTMLSpanElement>;
 };
 export default function useRecordLabel(
   setValue: React.Dispatch<React.SetStateAction<string>>,
   inputRef: React.RefObject<HTMLTextAreaElement> | React.RefObject<HTMLInputElement>,
-  formRef: React.RefObject<HTMLFormElement>,
   labelsToAdd: string[],
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
-  existingNote?: NoteDbData,
 ) {
   // should work for both <input> and <textarea>
   const allLabels = useContext(AllLabelsContext);
@@ -32,7 +28,6 @@ export default function useRecordLabel(
   const [extractedLabel, setExtractedLabel] = useState('');
   const [liveHashtagIndex, setLiveHashtagIndex] = useState(-1);
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
-  const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
 
   const filteredLabels = allLabels.filter(({ label_name }) => {
     const backslashMatches = extractedLabel.match(/\\+$/);
@@ -105,23 +100,6 @@ export default function useRecordLabel(
     // update focused row in LabelSuggestions
     setFocusedLabelIndex(0);
   }, [labelsList.length]);
-
-  const liveHashtag = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    // update position of # span based on liveHashtag's position
-    if (liveHashtag.current && formRef.current) {
-      const { right: hashtagRight, bottom: hashtagBottom } =
-        liveHashtag.current.getBoundingClientRect();
-      const { left: formLeft, top: formTop } = formRef.current.getBoundingClientRect();
-
-      setSuggestionPos(
-        existingNote
-          ? { left: hashtagRight - formLeft, top: hashtagBottom - formTop }
-          : { left: hashtagRight, top: hashtagBottom },
-      );
-    } else setSuggestionPos({ left: 0, top: 0 });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [liveHashtagIndex]);
   return {
     // for outside fields
     fieldKeyUp,
@@ -132,12 +110,10 @@ export default function useRecordLabel(
     labelsToAdd,
     setLabelsToAdd,
     labelsList,
-    suggestionPos,
     focusedLabelIndex,
     // for <Mirror />
     isRecordingLabel, // also <NoteForm />
     setIsRecordingLabel, // also <NoteForm />
     liveHashtagIndex,
-    liveHashtag,
   };
 }

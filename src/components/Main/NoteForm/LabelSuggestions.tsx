@@ -1,17 +1,20 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Root, Viewport } from '@radix-ui/react-scroll-area';
+import * as Popover from '@radix-ui/react-popover';
 import * as Checkbox from '@radix-ui/react-checkbox';
+import { useContext, useEffect, useRef, useState } from 'react';
+import Label from '../../icons/Label';
+import { RecordReturn } from '../../../hooks/useRecordLabel';
+import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
 import { AllLabelsContext } from '../../../contexts';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
-import { RecordReturn } from '../../../hooks/useRecordLabel';
-import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
 
 export default function LabelSuggestions({
   record,
+  inline = false,
 }: {
   record: RecordReturn | RecordButtonReturn;
+  inline?: boolean;
 }) {
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
@@ -84,25 +87,40 @@ export default function LabelSuggestions({
   });
 
   return (
-    <Root
-      style={{ position: 'absolute', ...record.suggestionPos }} // to override Radix
-      className="z-10 max-h-64 w-48 overflow-y-scroll rounded bg-white dark:bg-slate-950 outline outline-1 outline-slate-300 dark:outline-slate-800"
-    >
-      <Viewport className="h-full w-full rounded">
-        <input
-          autoFocus
-          type="text"
-          value={value}
-          onClick={(e) => e.stopPropagation()}
-          onChange={handleChange}
-          onKeyDown={record.searchKeyDown}
-          placeholder="Search for labels…"
-          className="w-full border-b-2 border-slate-300 bg-white dark:bg-slate-950 px-4 py-2 text-left text-[13px] placeholder:text-slate-500 focus:outline-none dark:border-slate-700"
-        />
-        <div className="grid grid-cols-1 divide-y divide-slate-300 pb-1 dark:divide-slate-700">
-          {labelElems}
-        </div>
-      </Viewport>
-    </Root>
+    <Popover.Root defaultOpen={inline} open={record.isRecordingLabel}>
+      <Popover.Trigger asChild={!inline}>
+        {!inline && (
+          <button
+            tabIndex={4}
+            onClick={() => record.setIsRecordingLabel((prev) => !prev)}
+            className="rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
+          >
+            <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
+          </button>
+        )}
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content
+          align="start"
+          sideOffset={inline ? 0 : 16}
+          onPointerDownOutside={() => record.setIsRecordingLabel(false)}
+          className="POP-CONTENT max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-slate-300 dark:bg-slate-950 dark:outline-slate-700"
+        >
+          <input
+            autoFocus
+            type="text"
+            value={value}
+            onClick={(e) => e.stopPropagation()}
+            onChange={handleChange}
+            onKeyDown={record.searchKeyDown}
+            placeholder="Search for labels…"
+            className="w-full border-b-2 border-slate-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-slate-500 focus:outline-none dark:border-slate-700 dark:bg-slate-950"
+          />
+          <div className="grid grid-cols-1 divide-y divide-slate-300 pb-1 dark:divide-slate-700">
+            {labelElems}
+          </div>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }

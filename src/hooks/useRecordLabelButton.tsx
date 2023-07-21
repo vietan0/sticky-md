@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AllLabelsContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
-import NoteDbData from '../types/NoteDbData';
 
 export type RecordButtonReturn = {
   searchKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -9,15 +8,11 @@ export type RecordButtonReturn = {
   labelsToAdd: string[];
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>;
   labelsList: (string | LabelDbData)[];
-  suggestionPos: { left: number; top: number };
   focusedLabelIndex: number;
   isRecordingLabel: boolean;
   setIsRecordingLabel: React.Dispatch<React.SetStateAction<boolean>>;
-  triggerButtonRef: React.RefObject<HTMLSpanElement>;
-  formRef: React.RefObject<HTMLFormElement>;
 };
 export default function useRecordLabelButton(
-  formRef: React.RefObject<HTMLFormElement>,
   labelsToAdd: string[],
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
@@ -26,7 +21,6 @@ export default function useRecordLabelButton(
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
   const [extractedLabel, setExtractedLabel] = useState('');
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);
-  const [suggestionPos, setSuggestionPos] = useState({ left: 0, top: 0 });
 
   const filteredLabels = allLabels.filter(({ label_name }) => {
     const backslashMatches = extractedLabel.match(/\\+$/);
@@ -89,39 +83,14 @@ export default function useRecordLabelButton(
     setFocusedLabelIndex(0);
   }, [labelsList.length]);
 
-  const triggerButtonRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // update position of LabelSuggestions based on triggerButton's position
-    function syncSuggestionPos() {
-      if (triggerButtonRef.current && formRef.current) {
-        const { left: btnLeft, bottom: btnBottom } =
-          triggerButtonRef.current.getBoundingClientRect();
-        const { left: formLeft, top: formTop } = formRef.current.getBoundingClientRect();
-
-        setSuggestionPos({ left: btnLeft - formLeft, top: btnBottom - formTop + 16 });
-      }
-    }
-    syncSuggestionPos();
-
-    window.addEventListener('resize', syncSuggestionPos);
-    return () => {
-      window.removeEventListener('resize', syncSuggestionPos);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return {
-    // for <LabelSuggestions /> directly, no <Mirror />
     searchKeyDown,
     setExtractedLabel,
     labelsToAdd,
     setLabelsToAdd,
     labelsList,
-    suggestionPos,
     focusedLabelIndex,
     isRecordingLabel,
     setIsRecordingLabel,
-    triggerButtonRef,
-    formRef,
   };
 }
