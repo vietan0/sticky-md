@@ -12,7 +12,7 @@ export default function SettingCorner() {
 
   return (
     <Root>
-      <Trigger className="rounded-full p-2 text-sm hover:bg-slate-200 dark:hover:bg-slate-800">
+      <Trigger className="rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
         {currentUser?.photoURL ? (
           <img src={currentUser.photoURL} alt="" className="w-8 rounded-full" />
         ) : (
@@ -27,20 +27,20 @@ export default function SettingCorner() {
       <Portal>
         <Content
           align="end"
-          className="flex flex-col rounded bg-slate-100 p-1 text-sm shadow-lg dark:bg-slate-900"
+          className="flex flex-col rounded bg-neutral-100 p-1 text-sm shadow-lg dark:bg-neutral-900"
         >
-          <Item className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800">
+          <Item className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800">
             <Settings className="h-5 w-5" />
             <span>Settings</span>
           </Item>
           <Item
             onClick={async () => await signOut(auth)}
-            className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800"
+            className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
           >
             <SignOut className="h-5 w-5" />
             <span>Sign Out</span>
           </Item>
-          <Arrow className="fill-slate-100 dark:fill-slate-900" />
+          <Arrow className="fill-neutral-100 dark:fill-neutral-900" />
         </Content>
       </Portal>
     </Root>

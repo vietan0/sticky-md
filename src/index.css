@@ -8,9 +8,9 @@
 }
 
 body {
-  @apply bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-50;
+  @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50;
 }
 
 .input-global {
-  @apply w-full bg-slate-100 placeholder:text-slate-500 dark:bg-slate-900;
+  @apply w-full bg-neutral-100 placeholder:text-neutral-500 dark:bg-neutral-900;
 }

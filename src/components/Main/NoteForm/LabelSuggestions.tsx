@@ -37,8 +37,8 @@ export default function LabelSuggestions({
       key={label_name}
       onClick={(e) => e.stopPropagation()}
       className={`${
-        record.focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-900'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-900`}
+        record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-900'
+      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-none dark:hover:bg-neutral-900`}
     >
       <Checkbox.Root
         checked={record.labelsToAdd.includes(label_name)}
@@ -53,7 +53,7 @@ export default function LabelSuggestions({
             );
           }
         }}
-        className="flex h-3 w-3 appearance-none items-center justify-center rounded-sm outline outline-1 outline-slate-500"
+        className="flex h-3 w-3 appearance-none items-center justify-center rounded-sm outline outline-1 outline-neutral-500"
       >
         <Checkbox.Indicator>
           <Check className="h-3 w-3" />
@@ -70,8 +70,8 @@ export default function LabelSuggestions({
         record.setLabelsToAdd((prev) => (prev.includes(label_name) ? prev : [...prev, label_name]))
       }
       className={`${
-        record.focusedLabelIndex === i && 'bg-slate-200 dark:bg-slate-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-slate-200 focus:outline-none dark:hover:bg-slate-900`}
+        record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-800'
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-none dark:hover:bg-neutral-900`}
     >
       <Plus className="h-4 w-4" />
       <span>
@@ -93,9 +93,9 @@ export default function LabelSuggestions({
           <button
             tabIndex={4}
             onClick={() => record.setIsRecordingLabel((prev) => !prev)}
-            className="rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
+            className="rounded-full p-2 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
           >
-            <Label className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
+            <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
           </button>
         )}
       </Popover.Trigger>
@@ -104,7 +104,7 @@ export default function LabelSuggestions({
           align="start"
           sideOffset={inline ? 0 : 16}
           onPointerDownOutside={() => record.setIsRecordingLabel(false)}
-          className="POP-CONTENT max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-slate-300 dark:bg-slate-950 dark:outline-slate-700"
+          className="POP-CONTENT max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
         >
           <input
             autoFocus
@@ -114,9 +114,9 @@ export default function LabelSuggestions({
             onChange={handleChange}
             onKeyDown={record.searchKeyDown}
             placeholder="Search for labels…"
-            className="w-full border-b-2 border-slate-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-slate-500 focus:outline-none dark:border-slate-700 dark:bg-slate-950"
+            className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950"
           />
-          <div className="grid grid-cols-1 divide-y divide-slate-300 pb-1 dark:divide-slate-700">
+          <div className="grid grid-cols-1 divide-y divide-neutral-300 pb-1 dark:divide-neutral-700">
             {labelElems}
           </div>
         </Popover.Content>

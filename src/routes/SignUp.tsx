@@ -37,7 +37,7 @@ export default function SignUp() {
   return (
     <div
       id="SignUp"
-      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-2xl xs:m-auto xs:p-8 xs:outline xs:outline-slate-300 xs:dark:outline-slate-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-2xl xs:m-auto xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
     >
       <HomeLink className="mb-2" />
       <p className="mb-6 text-xl font-bold">Sign Up</p>
@@ -75,14 +75,14 @@ export default function SignUp() {
       <div className="flex flex-col justify-center gap-3">
         <button
           onClick={async () => await oAuthSignIn(googleProvider)}
-          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-slate-200 dark:hover:bg-slate-800"
+          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-neutral-200 dark:hover:bg-neutral-800"
         >
           <Google className="w-5" />
           <span>Sign in with Google</span>
         </button>
         <button
           onClick={async () => await oAuthSignIn(githubProvider)}
-          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-slate-200 dark:hover:bg-slate-800"
+          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-neutral-200 dark:hover:bg-neutral-800"
         >
           <Github className="w-5" />
           <span>Sign in with Github</span>

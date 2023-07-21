@@ -76,7 +76,7 @@ export default function NoteForm({
       onKeyDown={formKeyDown}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4 outline outline-1 outline-slate-200 drop-shadow dark:outline-slate-800`}
+      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4 dark:outline dark:outline-1 dark:outline-neutral-700`}
     >
       <ToggleMdRaw
         isTitle
@@ -90,7 +90,7 @@ export default function NoteForm({
           type="text"
           tabIndex={1}
           placeholder="Title"
-          className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-slate-700 focus:outline-none dark:placeholder:text-slate-400"
+          className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
         />
       </ToggleMdRaw>
       <ToggleMdRaw
@@ -106,7 +106,7 @@ export default function NoteForm({
           maxRows={15}
           tabIndex={2}
           placeholder="Write something…"
-          className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-slate-700 focus:outline-none dark:placeholder:text-slate-400"
+          className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
         />
       </ToggleMdRaw>
       <div className="mt-4 flex items-end justify-between gap-8">
@@ -131,14 +131,14 @@ export default function NoteForm({
         <BackgroundSwatches selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
         <div
           tabIndex={6}
-          className="cursor-pointer rounded-full p-2 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
+          className="cursor-pointer rounded-full p-2 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
         >
-          <Ellipsis className="h-5 w-5 stroke-slate-700 dark:stroke-slate-200" />
+          <Ellipsis className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
         </div>
         <button
           type="submit"
           tabIndex={3}
-          className="ml-auto rounded-full px-4 py-2 leading-5 text-slate-700 outline outline-1 outline-slate-300 hover:bg-slate-100 focus:bg-slate-200 dark:text-white dark:outline-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
+          className="ml-auto rounded-full px-4 py-2 leading-5 text-neutral-700 bg-black/5 hover:bg-black/10 focus:bg-black/20 dark:text-white dark:bg-white/5 dark:hover:bg-white/10 dark:focus:bg-white/20"
         >
           {existingNote ? 'Save' : 'Done'}
         </button>

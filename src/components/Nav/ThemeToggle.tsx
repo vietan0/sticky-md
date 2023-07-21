@@ -22,13 +22,13 @@ export default function ThemeToggle() {
 
   return (
     <Root>
-      <Trigger className="rounded-full p-2 text-sm hover:bg-slate-200 dark:hover:bg-slate-800">
+      <Trigger className="rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
         {themeIcon}
       </Trigger>
       <Portal>
         <Content
           align="end"
-          className="flex flex-col rounded bg-slate-100 p-1 text-sm shadow-lg dark:bg-slate-900"
+          className="flex flex-col rounded bg-neutral-100 p-1 text-sm shadow-lg dark:bg-neutral-900"
         >
           <CheckboxItem
             checked={theme === 'light'}
@@ -37,7 +37,7 @@ export default function ThemeToggle() {
             }}
             className={`${
               theme === 'light' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800`}
+            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
           >
             <Sun className="h-5 w-5" />
             <span>Light Mode</span>
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
             }}
             className={`${
               theme === 'dark' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800`}
+            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
           >
             <Moon className="h-5 w-5" />
             <span>Dark Mode</span>
@@ -61,12 +61,12 @@ export default function ThemeToggle() {
             }}
             className={`${
               theme === 'os' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800`}
+            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
           >
             <Desktop className="h-5 w-5" />
             <span>System</span>
           </CheckboxItem>
-          <Arrow className="fill-slate-100 dark:fill-slate-900" />
+          <Arrow className="fill-neutral-100 dark:fill-neutral-900" />
         </Content>
       </Portal>
     </Root>
