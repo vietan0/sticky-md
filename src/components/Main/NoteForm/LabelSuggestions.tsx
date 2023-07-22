@@ -12,12 +12,18 @@ import NoteDbData from '../../../types/NoteDbData';
 
 export default function LabelSuggestions({
   record,
+  btnClasses,
   inline = false,
   existingNote,
+  inNoteCard,
+  updateNoteToDb,
 }: {
   record: RecordReturn | RecordButtonReturn;
+  btnClasses: string;
   inline?: boolean;
   existingNote?: NoteDbData;
+  inNoteCard?: boolean;
+  updateNoteToDb?: () => Promise<void>;
 }) {
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
@@ -35,6 +41,15 @@ export default function LabelSuggestions({
     record.setExtractedLabel(value);
   }, [record, value]);
 
+  useEffect(() => {
+    if (inNoteCard && updateNoteToDb) updateNoteToDb();
+    // if <LabelSug> is in <NoteCard>,
+    // changes to labelsToAdd should send Supabase request immediately
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [record.labelsToAdd]);
+
+  // up next: same thing for bg_color`
+
   const regularLabelButton = (label_name: string, i: number) => (
     <label
       key={label_name}
@@ -47,13 +62,15 @@ export default function LabelSuggestions({
         checked={record.labelsToAdd.includes(label_name)}
         onCheckedChange={(checked) => {
           if (checked) {
-            record.setLabelsToAdd((prev) =>
-              prev.includes(label_name) ? prev : [...prev, label_name],
-            );
+            const updated = record.labelsToAdd.includes(label_name)
+              ? record.labelsToAdd
+              : [...record.labelsToAdd, label_name];
+            record.setLabelsToAdd(updated);
           } else {
-            record.setLabelsToAdd((prev) =>
-              prev.filter((existingLabel) => existingLabel !== label_name),
+            const updated = record.labelsToAdd.filter(
+              (existingLabel) => existingLabel !== label_name,
             );
+            record.setLabelsToAdd(updated);
           }
         }}
         className="flex h-3 w-3 appearance-none items-center justify-center rounded-sm outline outline-1 outline-neutral-500"
@@ -118,9 +135,9 @@ export default function LabelSuggestions({
 
   return (
     <Popover.Root defaultOpen={inline}>
-      <Popover.Trigger asChild={!inline}>
+      <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
         {!inline && (
-          <button className="rounded-full bg-black/5 p-2 hover:bg-black/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+          <button className={btnClasses}>
             <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
           </button>
         )}

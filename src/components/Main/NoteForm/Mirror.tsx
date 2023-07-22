@@ -58,7 +58,7 @@ export default function Mirror({
       style={mirrorPos}
       className={`${
         isTitle ? 'text-lg' : 'text-sm'
-      } pointer-events-none absolute invisible font-mono font-medium tracking-tight`}
+      } pointer-events-none invisible absolute font-mono font-medium tracking-tight`}
     >
       {value.split('').map((char, i) => {
         return char === '#' && i === record.liveHashtagIndex ? (
@@ -66,6 +66,7 @@ export default function Mirror({
             {char}
             <LabelSuggestions
               record={record}
+              btnClasses="rounded-full bg-black/5 p-2 hover:bg-black/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               inline
               existingNote={existingNote}
             />

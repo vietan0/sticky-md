@@ -14,6 +14,11 @@ import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import NoteForm from '../NoteForm/NoteForm';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
+import Toolbar from '../Toolbar';
+import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
+import { Bg_Color } from '../../../types/Bg_Color';
+import NoteUploadData from '../../../types/NoteUploadData';
+import usePostDb from '../../../hooks/usePostDb';
 
 export default function NoteCard({
   note,
@@ -41,7 +46,20 @@ export default function NoteCard({
   const [hover, setHover] = useState(false);
   const { title, content, labels, note_id, bg_color } = note;
 
+  const [labelsToAdd, setLabelsToAdd] = useState<string[]>(labels);
+  const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
+  const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>(bg_color);
+
   const [editFormOpen, setEditFormOpen] = useState(false);
+
+  const noteUploadData: NoteUploadData = {
+    title,
+    content,
+    labels: labelsToAdd,
+    user_id: currentUser.uid,
+    bg_color: selectedBgColor,
+  };
+  const { updateNoteToDb } = usePostDb(noteUploadData, note);
 
   const deleteLabel = (label: string) => {
     removeLabelFromNote(note_id, label, currentUser.uid);
@@ -118,7 +136,9 @@ export default function NoteCard({
             transform: `translate(${nudge.left}px, ${nudge.top}px)`,
             width: colWidth,
           }}
-          className={`${getTwBgClasses(bg_color)} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500`}
+          className={`${getTwBgClasses(
+            selectedBgColor,
+          )} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500`}
         >
           {title && (
             <h1 className="text-lg font-semibold [&_*]:text-lg">
@@ -127,11 +147,15 @@ export default function NoteCard({
           )}
           {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
           <div className="flex flex-wrap gap-2">{labelButtons}</div>
-          <div className="add-stuffs">
-            <button className="rounded-full p-1 bg-black/5 hover:bg-black/10 dark:text-white dark:bg-white/5 dark:hover:bg-white/10">
-              <Ellipsis className="h-5 w-5" />
-            </button>
-          </div>
+          <Toolbar
+            existingNote={note}
+            buttonRecord={buttonRecord}
+            selectedBgColor={selectedBgColor}
+            setSelectedBgColor={setSelectedBgColor}
+            inNoteCard
+            opacity={hover ? '' : 'opacity-0'}
+            updateNoteToDb={updateNoteToDb}
+          />
           {hover && deleteButton}
         </article>
       </Dialog.Trigger>

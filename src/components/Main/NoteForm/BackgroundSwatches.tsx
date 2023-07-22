@@ -1,24 +1,33 @@
+import { useEffect } from 'react'
 import * as Popover from '@radix-ui/react-popover';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import Color from '../../icons/Color';
 import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
+import NoteDbData from '../../../types/NoteDbData';
 
 export default function BackgroundSwatches({
   selectedColor,
   setSelectedColor,
+  btnClasses,
+  inNoteCard,
+  updateNoteToDb,
 }: {
   selectedColor: string;
   setSelectedColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
+  btnClasses: string;
+  inNoteCard?: boolean;
+  updateNoteToDb?: () => Promise<void>;
 }) {
-  const bgColors: Bg_Color[] = ['blue', 'red', 'pink', 'yellow', 'green']
+  const bgColors: Bg_Color[] = ['blue', 'red', 'pink', 'yellow', 'green'];
   const coloredRadioItems = bgColors.map((color) => {
     return (
       <RadioGroup.Item
         key={color}
         value={color}
         aria-label={color}
+        onClick={(e) => e.stopPropagation()}
         className={`${getTwBgClasses(color)} h-8 w-8 cursor-pointer rounded-full`}
       >
         <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
@@ -26,12 +35,17 @@ export default function BackgroundSwatches({
     );
   });
 
+  useEffect(() => {
+    if (inNoteCard && updateNoteToDb) updateNoteToDb();
+    // if <LabelSug> is in <NoteCard>,
+    // changes to labelsToAdd should send Supabase request immediately
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedColor]);
+
   return (
     <Popover.Root>
-      <Popover.Trigger asChild>
-        <button
-          className="rounded-full p-2 bg-black/5 hover:bg-black/10 dark:text-white dark:bg-white/5 dark:hover:bg-white/10"
-        >
+      <Popover.Trigger asChild onClick={(e) => e.stopPropagation()}>
+        <button className={btnClasses}>
           <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
         </button>
       </Popover.Trigger>
@@ -50,6 +64,7 @@ export default function BackgroundSwatches({
             <RadioGroup.Item
               value=""
               aria-label="no color"
+              onClick={(e) => e.stopPropagation()}
               className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline outline-1 outline-neutral-400 dark:outline-neutral-700"
             >
               <No className="h-5 w-5" />

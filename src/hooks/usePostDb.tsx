@@ -13,11 +13,12 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
   const allLabels = useContext(AllLabelsContext);
 
   async function updateNoteToDb() {
-    const { title, content, note_id, labels: existingLabels } = existingNote as NoteDbData;
+    const { title, content, note_id, labels: existingLabels, bg_color } = existingNote as NoteDbData;
     if (
       noteUploadData.title !== title ||
       noteUploadData.content !== content ||
-      noteUploadData.labels !== existingLabels
+      noteUploadData.labels !== existingLabels ||
+      noteUploadData.bg_color !== bg_color
     ) {
       // only do this if there's something changed
       if (noteUploadData.title || noteUploadData.content) {

@@ -12,6 +12,7 @@ import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
+import Toolbar from '../Toolbar';
 import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
 import BackgroundSwatches from './BackgroundSwatches';
@@ -124,19 +125,12 @@ export default function NoteForm({
           </p>
         )}
       </div>
-      <div className="add-stuffs flex items-center gap-2">
-        <LabelSuggestions record={buttonRecord} existingNote={existingNote} />
-        <BackgroundSwatches selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
-        <div className="cursor-pointer rounded-full bg-black/5 p-2 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20">
-          <Ellipsis className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-        </div>
-        <button
-          type="submit"
-          className="ml-auto rounded-full bg-black/5 px-4 py-2 leading-5 text-neutral-700 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20"
-        >
-          {existingNote ? 'Save' : 'Done'}
-        </button>
-      </div>
+      <Toolbar
+        existingNote={existingNote}
+        buttonRecord={buttonRecord}
+        selectedBgColor={selectedBgColor}
+        setSelectedBgColor={setSelectedBgColor}
+      />
     </form>
   );
 }

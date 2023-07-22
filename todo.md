@@ -93,7 +93,6 @@ _remember: break every problem down to actionable steps_
 - [x] feat: delete note if after editing, both `title` and `content` are empty
 - [x] fix: `LabelSuggestions` bug when recording using button in NoteForm - editing
 - [x] fix: `LabelSuggestions` not show up in NoteForm - editing
-- [ ] merge useRecordLabel into one file, 2 versions: inline / button
-- [ ] make `AddStuffsBar` reusable
+- [x] make `Toolbar` reusable
 - [ ] add Radix's `Tooltip` for stuffs (swatch / button hovering,...)
 - [ ] reorder types
