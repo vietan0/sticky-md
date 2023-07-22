@@ -23,7 +23,7 @@ export default function LabelSuggestions({
   btnClasses: string;
   inline?: boolean;
   existingNote?: NoteDbData;
-  inNoteCard?: boolean;
+  inNoteCard: boolean;
   updateNoteToDb?: () => Promise<void>;
 }) {
   const allLabels = useContext(AllLabelsContext);
@@ -48,8 +48,6 @@ export default function LabelSuggestions({
     // changes to labelsToAdd should send Supabase request immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [record.labelsToAdd]);
-
-  // up next: same thing for bg_color`
 
   const regularLabelButton = (label_name: string, i: number) => (
     <label
@@ -134,18 +132,20 @@ export default function LabelSuggestions({
   // if use button and NoteForm is editing --> remove portal
   if (!inline && existingNote) renderedContent = content;
 
-  return (
-    <TooltipWrapper content="Add labels">
-      <Popover.Root defaultOpen={inline}>
-        <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
-          {!inline && (
-            <button className={btnClasses}>
-              <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-            </button>
-          )}
-        </Popover.Trigger>
-        {renderedContent}
-      </Popover.Root>
-    </TooltipWrapper>
+  const popoverRoot = (
+    <Popover.Root defaultOpen={inline}>
+      <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
+        {!inline && (
+          <button className={btnClasses}>
+            <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+          </button>
+        )}
+      </Popover.Trigger>
+      {renderedContent}
+    </Popover.Root>
   );
+
+  const tooltipWrapped = <TooltipWrapper content="Add labels">{popoverRoot}</TooltipWrapper>;
+
+  return inNoteCard ? tooltipWrapped : popoverRoot;
 }

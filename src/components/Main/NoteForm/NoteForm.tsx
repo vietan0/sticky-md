@@ -8,14 +8,11 @@ import useRecordLabel from '../../../hooks/useRecordLabel';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import NoteDbData from '../../../types/NoteDbData';
 import NoteUploadData from '../../../types/NoteUploadData';
-import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
 import Toolbar from '../Toolbar';
-import LabelSuggestions from './LabelSuggestions';
 import ToggleMdRaw from './ToggleMdRaw';
-import BackgroundSwatches from './BackgroundSwatches';
 
 export default function NoteForm({
   setFormOpen,
@@ -75,7 +72,7 @@ export default function NoteForm({
       onKeyDown={formKeyDown}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4 dark:outline dark:outline-1 dark:outline-neutral-700`}
+      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4`}
     >
       <ToggleMdRaw
         isTitle
@@ -130,6 +127,7 @@ export default function NoteForm({
         buttonRecord={buttonRecord}
         selectedBgColor={selectedBgColor}
         setSelectedBgColor={setSelectedBgColor}
+        updateNoteToDb={updateNoteToDb}
       />
     </form>
   );

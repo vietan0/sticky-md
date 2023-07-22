@@ -40,8 +40,11 @@ export default function CustomMd({
               customStyle={{
                 borderRadius: '4px',
                 margin: 0,
-                overflow: 'unset',
-                width: 'fit-content',
+                width: '100%',
+                border: htmlHasDark
+                  ? '1px solid hsl(0 100% 100% / 0.15)'
+                  : '1px solid hsl(0 0% 0% / 0.1)',
+                backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.9)' : 'hsl(0 100% 100% / 0.75)',
               }} // affect parent of <code>
               codeTagProps={{ className: 'text-[14px] tracking-tight' }} // affect <code> itself, overrides style
               language={match[1]}

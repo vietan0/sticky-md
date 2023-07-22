@@ -12,7 +12,7 @@ type Props = {
   setSelectedBgColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
   inNoteCard?: boolean;
   opacity?: string;
-  updateNoteToDb?: () => Promise<void>;
+  updateNoteToDb: () => Promise<void>;
 };
 export default function Toolbar({
   existingNote,

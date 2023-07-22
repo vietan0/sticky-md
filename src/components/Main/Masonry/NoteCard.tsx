@@ -10,7 +10,6 @@ import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
 import CustomMd from '../../CustomMd';
 import Close from '../../icons/Close';
-import Ellipsis from '../../icons/Ellipsis';
 import LabelButton from '../LabelButton';
 import NoteForm from '../NoteForm/NoteForm';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
@@ -138,7 +137,7 @@ export default function NoteCard({
             width: colWidth,
           }}
           className={`${getTwBgClasses(
-            selectedBgColor,
+            bg_color,
           )} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
           {title && (
