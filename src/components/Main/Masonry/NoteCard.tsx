@@ -19,6 +19,7 @@ import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import { Bg_Color } from '../../../types/Bg_Color';
 import NoteUploadData from '../../../types/NoteUploadData';
 import usePostDb from '../../../hooks/usePostDb';
+import TooltipWrapper from '../../TooltipWrapper';
 
 export default function NoteCard({
   note,
@@ -74,9 +75,9 @@ export default function NoteCard({
         e.stopPropagation();
         deleteNote(note_id);
       }}
-      className="delete-button absolute -right-3 -top-3 rounded-full bg-neutral-200 p-1 outline outline-1 outline-neutral-400 hover:bg-neutral-300 dark:bg-neutral-800 dark:outline-neutral-800 dark:hover:bg-neutral-700"
+      className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
     >
-      <Close className="h-4 w-4" />
+      <Close className="h-4 w-4 stroke-white stroke-2" />
     </button>
   );
 
@@ -138,7 +139,7 @@ export default function NoteCard({
           }}
           className={`${getTwBgClasses(
             selectedBgColor,
-          )} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500`}
+          )} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
           {title && (
             <h1 className="text-lg font-semibold [&_*]:text-lg">

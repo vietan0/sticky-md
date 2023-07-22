@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import Color from '../../icons/Color';
 import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
-import NoteDbData from '../../../types/NoteDbData';
+import TooltipWrapper from '../../TooltipWrapper';
 
 export default function BackgroundSwatches({
   selectedColor,
@@ -43,37 +43,39 @@ export default function BackgroundSwatches({
   }, [selectedColor]);
 
   return (
-    <Popover.Root>
-      <Popover.Trigger asChild onClick={(e) => e.stopPropagation()}>
-        <button className={btnClasses}>
-          <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-        </button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          align="start"
-          sideOffset={16}
-          className="flex flex-row gap-2 rounded bg-white p-3 outline outline-1 outline-neutral-400 dark:bg-neutral-950 dark:outline-neutral-700"
-        >
-          <RadioGroup.Root
-            className="flex gap-2"
-            defaultValue={selectedColor}
-            aria-label="Choose background color"
-            onValueChange={(value: Bg_Color) => setSelectedColor(value)}
+    <TooltipWrapper content="Change color">
+      <Popover.Root>
+        <Popover.Trigger asChild onClick={(e) => e.stopPropagation()}>
+          <button className={btnClasses}>
+            <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+          </button>
+        </Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Content
+            align="start"
+            sideOffset={16}
+            className="flex flex-row gap-2 rounded bg-white p-3 outline outline-1 outline-neutral-400 dark:bg-neutral-950 dark:outline-neutral-700"
           >
-            <RadioGroup.Item
-              value=""
-              aria-label="no color"
-              onClick={(e) => e.stopPropagation()}
-              className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline outline-1 outline-neutral-400 dark:outline-neutral-700"
+            <RadioGroup.Root
+              className="flex gap-2"
+              defaultValue={selectedColor}
+              aria-label="Choose background color"
+              onValueChange={(value: Bg_Color) => setSelectedColor(value)}
             >
-              <No className="h-5 w-5" />
-              <RadioGroup.Indicator className="absolute flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
-            </RadioGroup.Item>
-            {...coloredRadioItems}
-          </RadioGroup.Root>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+              <RadioGroup.Item
+                value=""
+                aria-label="no color"
+                onClick={(e) => e.stopPropagation()}
+                className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline outline-1 outline-neutral-400 dark:outline-neutral-700"
+              >
+                <No className="h-5 w-5" />
+                <RadioGroup.Indicator className="absolute flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
+              </RadioGroup.Item>
+              {...coloredRadioItems}
+            </RadioGroup.Root>
+          </Popover.Content>
+        </Popover.Portal>
+      </Popover.Root>
+    </TooltipWrapper>
   );
 }

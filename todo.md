@@ -94,5 +94,5 @@ _remember: break every problem down to actionable steps_
 - [x] fix: `LabelSuggestions` bug when recording using button in NoteForm - editing
 - [x] fix: `LabelSuggestions` not show up in NoteForm - editing
 - [x] make `Toolbar` reusable
-- [ ] add Radix's `Tooltip` for stuffs (swatch / button hovering,...)
+- [x] add Radix's `Tooltip` for stuffs (swatch / button hovering,...)
 - [ ] reorder types

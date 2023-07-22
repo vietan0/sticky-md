@@ -4,6 +4,7 @@ import Sun from '../icons/Sun';
 import Moon from '../icons/Moon';
 import Desktop from '../icons/Desktop';
 import { ThemeContext } from '../../contexts';
+import TooltipWrapper from '../TooltipWrapper';
 
 export default function ThemeToggle() {
   const { theme, setTheme, htmlHasDark } = useContext(ThemeContext);
@@ -22,13 +23,15 @@ export default function ThemeToggle() {
 
   return (
     <Root>
-      <Trigger className="rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
-        {themeIcon}
-      </Trigger>
-      <Portal>
+      <TooltipWrapper content="Change theme">
+        <Trigger className="rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
+          {themeIcon}
+        </Trigger>
+      </TooltipWrapper>
+      <Portal className="outline outline-1 outline-black">
         <Content
           align="end"
-          className="flex flex-col rounded bg-neutral-100 p-1 text-sm shadow-lg dark:bg-neutral-900"
+          className="flex flex-col rounded bg-white p-1 text-sm drop-shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:bg-neutral-900"
         >
           <CheckboxItem
             checked={theme === 'light'}
