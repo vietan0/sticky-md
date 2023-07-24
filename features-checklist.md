@@ -4,12 +4,11 @@
 - [x] be able to choose theme: Light / Dark / OS
 - [x] masonry layout (transform translate)
 - [x] each card can have persisting individual background color
-- [ ] display link previews
+- [x] display link previews and images
 - [ ] export to CSV
 - [ ] lazy loading
 - [x] code blocks themes (like ray.so)
 - [ ] dragging animation (Framer)
-- [ ] link preview
 - [x] can display modified time as local time
 - [ ] have a trash
 - [ ] sync on cloud

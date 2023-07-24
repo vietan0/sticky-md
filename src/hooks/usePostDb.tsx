@@ -7,18 +7,27 @@ import { createNotesLabels, deleteNotesLabels } from '../supabase/notes_labels';
 import NoteDbData from '../types/NoteDbData';
 import NoteUploadData from '../types/NoteUploadData';
 import labelExists from '../utils/labelExists';
+import shallowCompare from '../utils/shallowCompare';
 
 export default function usePostDb(noteUploadData: NoteUploadData, existingNote?: NoteDbData) {
   const currentUser = useContext(UserContext) as User;
   const allLabels = useContext(AllLabelsContext);
 
   async function updateNoteToDb() {
-    const { title, content, note_id, labels: existingLabels, bg_color } = existingNote as NoteDbData;
+    const {
+      title,
+      content,
+      note_id,
+      labels: existingLabels,
+      bg_color,
+      image_urls: existingImageUrls,
+    } = existingNote as NoteDbData;
     if (
       noteUploadData.title !== title ||
       noteUploadData.content !== content ||
-      noteUploadData.labels !== existingLabels ||
-      noteUploadData.bg_color !== bg_color
+      noteUploadData.bg_color !== bg_color ||
+      !shallowCompare(noteUploadData.labels, existingLabels) ||
+      !shallowCompare(noteUploadData.image_urls, existingImageUrls)
     ) {
       // only do this if there's something changed
       if (noteUploadData.title || noteUploadData.content) {
@@ -47,8 +56,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
             await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
           }
         });
-      }
-      else {
+      } else {
         // delete note
         await deleteNote(note_id);
       }

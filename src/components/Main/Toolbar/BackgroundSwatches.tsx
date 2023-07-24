@@ -6,6 +6,7 @@ import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
 import TooltipWrapper from '../../TooltipWrapper';
+import NoteDbData from '../../../types/NoteDbData';
 
 export default function BackgroundSwatches({
   selectedColor,
@@ -13,12 +14,14 @@ export default function BackgroundSwatches({
   btnClasses,
   inNoteCard,
   updateNoteToDb,
+  existingNote,
 }: {
   selectedColor: string;
   setSelectedColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
   btnClasses: string;
   inNoteCard: boolean;
   updateNoteToDb: () => Promise<void>;
+  existingNote?: NoteDbData;
 }) {
   const bgColors: Bg_Color[] = ['blue', 'red', 'pink', 'yellow', 'green'];
   const coloredRadioItems = bgColors.map((color) => {
@@ -38,7 +41,7 @@ export default function BackgroundSwatches({
   });
 
   useEffect(() => {
-    updateNoteToDb();
+    if (existingNote) updateNoteToDb();
     // changes to selectedColor should send Supabase request immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColor]);

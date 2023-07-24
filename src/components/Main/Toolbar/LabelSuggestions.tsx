@@ -16,14 +16,14 @@ export default function LabelSuggestions({
   btnClasses,
   inline = false,
   existingNote,
-  inNoteCard,
+  inNoteCard = false,
   updateNoteToDb,
 }: {
   record: RecordReturn | RecordButtonReturn;
   btnClasses: string;
   inline?: boolean;
   existingNote?: NoteDbData;
-  inNoteCard: boolean;
+  inNoteCard?: boolean;
   updateNoteToDb?: () => Promise<void>;
 }) {
   const allLabels = useContext(AllLabelsContext);

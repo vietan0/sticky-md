@@ -11,8 +11,12 @@ import NoteUploadData from '../../../types/NoteUploadData';
 import LabelButton from '../LabelButton';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
-import Toolbar from '../Toolbar';
+import Toolbar from '../Toolbar/Toolbar';
+import LinkPreviews from '../LinkPreviews';
+import Trash from '../../icons/Trash';
 import ToggleMdRaw from './ToggleMdRaw';
+import ImageView from './ImageViewInForm';
+import ImagesContainer from './ImageViewInForm';
 
 export default function NoteForm({
   setFormOpen,
@@ -30,6 +34,7 @@ export default function NoteForm({
   const [title, setTitle] = useState(existingNote?.title || '');
   const [content, setContent] = useState(existingNote?.content || '');
   const [labelsToAdd, setLabelsToAdd] = useState<string[]>(existingNote?.labels || []);
+  const [imageUrls, setImageUrls] = useState<string[]>(existingNote?.image_urls || []);
 
   const titleRecord = useRecordLabel(setTitle, titleRef, labelsToAdd, setLabelsToAdd);
   const contentRecord = useRecordLabel(setContent, contentRef, labelsToAdd, setLabelsToAdd);
@@ -43,6 +48,7 @@ export default function NoteForm({
     labels: labelsToAdd,
     user_id: currentUser.uid,
     bg_color: selectedBgColor,
+    image_urls: imageUrls,
   };
   const { updateNoteToDb, insertNoteToDb } = usePostDb(noteUploadData, existingNote);
 
@@ -72,63 +78,69 @@ export default function NoteForm({
       onKeyDown={formKeyDown}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex w-full max-w-xl flex-col gap-3 rounded-lg p-4`}
+      )} mx-auto flex flex-col rounded-lg`}
     >
-      <ToggleMdRaw
-        isTitle
-        value={title}
-        inputRef={titleRef}
-        formRef={formRef}
-        record={titleRecord}
-        existingNote={existingNote}
-      >
-        <input
-          type="text"
-          tabIndex={1}
-          placeholder="Title"
-          className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
-        />
-      </ToggleMdRaw>
-      <ToggleMdRaw
-        value={content}
-        inputRef={contentRef}
-        formRef={formRef}
-        record={contentRecord}
-        existingNote={existingNote}
-      >
-        <TextareaAutosize
-          autoFocus
-          minRows={2}
-          maxRows={15}
-          tabIndex={2}
-          placeholder="Write something…"
-          className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
-        />
-      </ToggleMdRaw>
-      <div className="mt-4 flex items-end justify-between gap-8">
-        <div className="flex flex-wrap gap-2">
-          {labelsToAdd.map((label) => (
-            <LabelButton key={label} label={label} removeLabel={removeLabel} />
-          ))}
+      <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls}/>
+      <div className="NoteForm-main-content flex w-full max-w-xl flex-col gap-3 p-4">
+        <ToggleMdRaw
+          isTitle
+          value={title}
+          inputRef={titleRef}
+          formRef={formRef}
+          record={titleRecord}
+          existingNote={existingNote}
+        >
+          <input
+            type="text"
+            tabIndex={1}
+            placeholder="Title"
+            className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+          />
+        </ToggleMdRaw>
+        <ToggleMdRaw
+          value={content}
+          inputRef={contentRef}
+          formRef={formRef}
+          record={contentRecord}
+          existingNote={existingNote}
+        >
+          <TextareaAutosize
+            autoFocus
+            minRows={2}
+            maxRows={15}
+            tabIndex={2}
+            placeholder="Write something…"
+            className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+          />
+        </ToggleMdRaw>
+        <div className="mt-4 flex items-end justify-between gap-8">
+          <div className="flex flex-wrap gap-2">
+            {labelsToAdd.map((label) => (
+              <LabelButton key={label} label={label} removeLabel={removeLabel} />
+            ))}
+          </div>
+          {existingNote && (
+            <p
+              className="min-w-fit text-right text-xs"
+              title={DateTime.fromISO(existingNote.last_modified_at).toLocaleString(
+                DateTime.DATETIME_MED,
+              )}
+            >
+              Edited {DateTime.fromISO(existingNote.last_modified_at).toRelative()}
+            </p>
+          )}
         </div>
-        {existingNote && (
-          <p
-            className="min-w-fit text-right text-xs"
-            title={DateTime.fromISO(existingNote.last_modified_at).toLocaleString(
-              DateTime.DATETIME_MED,
-            )}
-          >
-            Edited {DateTime.fromISO(existingNote.last_modified_at).toRelative()}
-          </p>
-        )}
+        {existingNote && <LinkPreviews note={existingNote} inNoteCard={false} />}
+        <Toolbar
+          existingNote={existingNote}
+          buttonRecord={buttonRecord}
+          selectedBgColor={selectedBgColor}
+          setSelectedBgColor={setSelectedBgColor}
+          imageUrls={imageUrls}
+          setImageUrls={setImageUrls}
+          updateNoteToDb={updateNoteToDb}
+        />
       </div>
-      <Toolbar
-        existingNote={existingNote}
-        buttonRecord={buttonRecord}
-        selectedBgColor={selectedBgColor}
-        setSelectedBgColor={setSelectedBgColor}
-        updateNoteToDb={updateNoteToDb}
-      />
     </form>
   );
 }

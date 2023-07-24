@@ -1,15 +1,17 @@
-import { RecordButtonReturn } from '../../hooks/useRecordLabelButton';
-import { Bg_Color } from '../../types/Bg_Color';
-import NoteDbData from '../../types/NoteDbData';
-import Ellipsis from '../icons/Ellipsis';
-import BackgroundSwatches from './NoteForm/BackgroundSwatches';
-import LabelSuggestions from './NoteForm/LabelSuggestions';
+import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
+import { Bg_Color } from '../../../types/Bg_Color';
+import NoteDbData from '../../../types/NoteDbData';
+import BackgroundSwatches from './BackgroundSwatches';
+import LabelSuggestions from './LabelSuggestions';
+import UploadImages from './UploadImages';
 
 type Props = {
   existingNote?: NoteDbData;
   buttonRecord: RecordButtonReturn;
   selectedBgColor: Bg_Color;
   setSelectedBgColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
+  imageUrls: string[];
+  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
   inNoteCard?: boolean;
   opacity?: string;
   updateNoteToDb: () => Promise<void>;
@@ -19,6 +21,8 @@ export default function Toolbar({
   buttonRecord,
   selectedBgColor,
   setSelectedBgColor,
+  imageUrls,
+  setImageUrls,
   inNoteCard = false,
   opacity,
   updateNoteToDb,
@@ -45,10 +49,15 @@ export default function Toolbar({
         btnClasses={btnClasses}
         inNoteCard={inNoteCard}
         updateNoteToDb={updateNoteToDb}
+        existingNote={existingNote}
       />
-      <div className="cursor-pointer rounded-full bg-black/5 p-2 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20">
-        <Ellipsis className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-      </div>
+      <UploadImages
+        imageUrls={imageUrls}
+        setImageUrls={setImageUrls}
+        btnClasses={btnClasses}
+        inNoteCard={inNoteCard}
+        updateNoteToDb={updateNoteToDb}
+      />
       {inNoteCard || (
         <button
           type="submit"

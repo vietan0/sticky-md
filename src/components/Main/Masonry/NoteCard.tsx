@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { nanoid } from 'nanoid';
 import { User } from 'firebase/auth';
@@ -13,11 +13,12 @@ import Close from '../../icons/Close';
 import LabelButton from '../LabelButton';
 import NoteForm from '../NoteForm/NoteForm';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
-import Toolbar from '../Toolbar';
+import Toolbar from '../Toolbar/Toolbar';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import { Bg_Color } from '../../../types/Bg_Color';
 import NoteUploadData from '../../../types/NoteUploadData';
 import usePostDb from '../../../hooks/usePostDb';
+import LinkPreviews from '../LinkPreviews';
 import TooltipWrapper from '../../TooltipWrapper';
 
 export default function NoteCard({
@@ -44,11 +45,12 @@ export default function NoteCard({
 }) {
   const currentUser = useContext(UserContext) as User;
   const [hover, setHover] = useState(false);
-  const { title, content, labels, note_id, bg_color } = note;
+  const { title, content, labels, note_id, bg_color, image_urls } = note;
 
   const [labelsToAdd, setLabelsToAdd] = useState<string[]>(labels);
   const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
   const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>(bg_color);
+  const [imageUrls, setImageUrls] = useState<string[]>(image_urls);
 
   const [editFormOpen, setEditFormOpen] = useState(false);
 
@@ -58,6 +60,7 @@ export default function NoteCard({
     labels: labelsToAdd,
     user_id: currentUser.uid,
     bg_color: selectedBgColor,
+    image_urls: imageUrls,
   };
   const { updateNoteToDb } = usePostDb(noteUploadData, note);
 
@@ -69,15 +72,17 @@ export default function NoteCard({
     <LabelButton label={label} removeLabel={deleteLabel} key={nanoid()} />
   ));
   const deleteButton = (
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        deleteNote(note_id);
-      }}
-      className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
-    >
-      <Close className="h-4 w-4 stroke-white stroke-2" />
-    </button>
+    <TooltipWrapper content="Delete note" asChild>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteNote(note_id);
+        }}
+        className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
+      >
+        <Close className="h-4 w-4 stroke-white stroke-2" />
+      </button>
+    </TooltipWrapper>
   );
 
   const card = useRef<HTMLDivElement>(null);
@@ -124,6 +129,12 @@ export default function NoteCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);
 
+  const images = useMemo(
+    () =>
+      image_urls.map((url) => <img src={url} key={url} alt="" className="w-full object-contain" />),
+    [image_urls],
+  );
+
   return (
     <Dialog.Root open={editFormOpen} onOpenChange={setEditFormOpen}>
       <Dialog.Trigger asChild>
@@ -138,24 +149,30 @@ export default function NoteCard({
           }}
           className={`${getTwBgClasses(
             bg_color,
-          )} NoteCard absolute flex max-h-[480px] cursor-pointer flex-col gap-3 rounded-lg p-4 pt-2 duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} NoteCard absolute max-h-[480px] cursor-pointer rounded-lg duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
-          {title && (
-            <h1 className="text-lg font-semibold [&_*]:text-lg">
-              <CustomMd>{title}</CustomMd>
-            </h1>
-          )}
-          {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
-          <div className="flex flex-wrap gap-2">{labelButtons}</div>
-          <Toolbar
-            existingNote={note}
-            buttonRecord={buttonRecord}
-            selectedBgColor={selectedBgColor}
-            setSelectedBgColor={setSelectedBgColor}
-            inNoteCard
-            opacity={hover ? '' : 'opacity-0'}
-            updateNoteToDb={updateNoteToDb}
-          />
+          <div className="images flex overflow-hidden rounded-t-lg">{images}</div>
+          <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
+            {title && (
+              <h1 className="text-lg font-semibold [&_*]:text-lg">
+                <CustomMd>{title}</CustomMd>
+              </h1>
+            )}
+            {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
+            <div className="flex flex-wrap gap-2">{labelButtons}</div>
+            <Toolbar
+              existingNote={note}
+              buttonRecord={buttonRecord}
+              selectedBgColor={selectedBgColor}
+              setSelectedBgColor={setSelectedBgColor}
+              imageUrls={imageUrls}
+              setImageUrls={setImageUrls}
+              inNoteCard
+              opacity={hover ? '' : 'opacity-0'}
+              updateNoteToDb={updateNoteToDb}
+            />
+          </div>
+          <LinkPreviews note={note} />
           {hover && deleteButton}
         </article>
       </Dialog.Trigger>

@@ -1,11 +1,11 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 
-type Props = { content: string; children: JSX.Element };
-export default function TooltipWrapper({ content, children }: Props) {
+type Props = { content: string; asChild?: boolean; children: JSX.Element };
+export default function TooltipWrapper({ content, asChild = false, children }: Props) {
   return (
     <Tooltip.Provider delayDuration={200}>
       <Tooltip.Root>
-        <Tooltip.Trigger>{children}</Tooltip.Trigger>
+        <Tooltip.Trigger asChild={asChild}>{children}</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
             side="bottom"

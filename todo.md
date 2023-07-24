@@ -95,4 +95,14 @@ _remember: break every problem down to actionable steps_
 - [x] fix: `LabelSuggestions` not show up in NoteForm - editing
 - [x] make `Toolbar` reusable
 - [x] add Radix's `Tooltip` for stuffs (swatch / button hovering,...)
-- [ ] reorder types
+- [x] preview link:
+  - [x] use `linkify` to hunt links from both `title` and `content`
+  - [x] remove duplicates
+  - [x] modify ui based on in Form or not
+  - [x] deploy scraper
+- [x] can add images
+  - [x] figure out uploading images to Supabase Storage
+  - [x] add col `images` (array of urls) to `notes` table
+  - [x] retrieve urls, add them to `images`
+- [ ] handle edge case: everything is long in card
+- [ ] loading icon (React Spinner?)

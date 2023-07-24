@@ -6,4 +6,5 @@ export default interface NoteUploadData {
   labels: string[];
   user_id: string;
   bg_color: Bg_Color;
+  image_urls: string[];
 }
