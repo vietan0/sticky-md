@@ -18,7 +18,7 @@ function ImageView({ url, setImageUrls, inNoteCard }: ImageViewProps) {
       onMouseLeave={() => setHover(false)}
       className="relative flex-auto"
     >
-      <img src={url} alt="" className="w-full object-contain max-h-80" />
+      <img src={url} alt="" className="h-full w-full object-contain" />
       {hover && !inNoteCard && (
         <TooltipWrapper asChild content="Remove image">
           <button
@@ -48,7 +48,7 @@ export default function ImagesContainer({
   inNoteCard = false,
 }: ImagesContainerProps) {
   return (
-    <div className="images flex overflow-hidden rounded-t-lg">
+    <div className={`images flex max-h-40 overflow-hidden rounded-t-lg`}>
       {imageUrls.map((url) => (
         <ImageView url={url} setImageUrls={setImageUrls} inNoteCard={inNoteCard} key={url} />
       ))}

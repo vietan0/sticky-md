@@ -105,7 +105,7 @@ _remember: break every problem down to actionable steps_
   - [x] add col `images` (array of urls) to `notes` table
   - [x] retrieve urls, add them to `images`
 - [x] find out what is making app slow
-- [ ] handle edge case: everything is long in card
+- [x] handle edge case: everything is long in card
 - [ ] use Tabs component for Edit/Preview MD in `NoteForm`
 - [ ] loading icon (React Spinner?)
 - [ ] add labels sidebar

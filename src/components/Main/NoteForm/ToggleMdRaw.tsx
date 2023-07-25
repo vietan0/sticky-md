@@ -7,7 +7,7 @@ import Mirror from './Mirror';
 export default function ToggleMdRaw({
   isTitle = false,
   value,
-  inputRef,
+  textAreaRef,
   formRef,
   record,
   existingNote,
@@ -15,7 +15,7 @@ export default function ToggleMdRaw({
 }: {
   isTitle?: boolean;
   value: string;
-  inputRef: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>;
+  textAreaRef: React.RefObject<HTMLTextAreaElement>;
   formRef: React.RefObject<HTMLFormElement>;
   record: RecordReturn;
   existingNote: NoteDbData | undefined;
@@ -27,11 +27,13 @@ export default function ToggleMdRaw({
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
       {isTitle ? (
-        <h1 className="min-h-[28px] text-lg font-semibold [&_*]:text-lg">
-          <CustomMd>{value}</CustomMd>
-        </h1>
+        <CustomMd className="max-h-20 min-h-[28px] overflow-scroll font-semibold [&_*]:text-ellipsis text-lg [&_*]:text-lg">
+          {value}
+        </CustomMd>
       ) : (
-        <CustomMd className="flex flex-col gap-2 text-[15px] min-h-[22.5px]">{value}</CustomMd>
+        <CustomMd className="flex max-h-52 min-h-[22.5px] flex-col gap-2 overflow-scroll text-[15px]">
+          {value}
+        </CustomMd>
       )}
     </div>
   );
@@ -43,7 +45,7 @@ export default function ToggleMdRaw({
     onHeightChange?: (height: number) => void;
   } = {
     value,
-    ref: inputRef,
+    ref: textAreaRef,
     onChange: record.fieldChange,
   };
   if (!isTitle) {
@@ -61,7 +63,7 @@ export default function ToggleMdRaw({
         setMirrorPos={setMirrorPos}
         isTitle={isTitle}
         value={value}
-        inputRef={inputRef}
+        textAreaRef={textAreaRef}
         formRef={formRef}
         record={record}
         existingNote={existingNote}

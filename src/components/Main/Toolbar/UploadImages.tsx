@@ -29,7 +29,7 @@ export default function UploadImages({
       const result = await getImageUrl(filename);
       return result;
     });
-    Promise.all(newUrls).then((urls) => setImageUrls(urls));
+    Promise.all(newUrls).then((urls) => setImageUrls((prev: string[]) => [...urls, ...prev]));
   }
 
   useEffect(() => {

@@ -22,6 +22,7 @@ import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
 import TooltipWrapper from '../../TooltipWrapper';
 import shallowCompare from '../../../utils/shallowCompare';
+import ImagesContainer from '../NoteForm/ImagesContainer';
 
 setUseWhatChange(true);
 
@@ -135,14 +136,6 @@ export default function NoteCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);
 
-  const images = useMemo(
-    () =>
-      image_urls.map((url) => <img src={url} key={url} alt="" className="w-full object-contain" />),
-    [image_urls],
-  );
-
-  console.count('NoteCard');
-
   return (
     <Dialog.Root open={editFormOpen} onOpenChange={setEditFormOpen}>
       <Dialog.Trigger asChild>
@@ -157,16 +150,20 @@ export default function NoteCard({
           }}
           className={`${getTwBgClasses(
             bg_color,
-          )} absolute max-h-[480px] cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} absolute cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
-          <div className="images flex overflow-hidden rounded-t-lg">{images}</div>
+          <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls} inNoteCard />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
-              <h1 className="text-lg font-semibold [&_*]:text-lg">
-                <CustomMd>{title}</CustomMd>
-              </h1>
+              <CustomMd className="font-semibold max-h-20 overflow-scroll text-lg [&_*]:text-lg">
+                {title}
+              </CustomMd>
             )}
-            {content && <CustomMd className="flex flex-col gap-2 text-[15px]">{content}</CustomMd>}
+            {content && (
+              <CustomMd className="flex flex-col gap-2 text-[15px] max-h-52 overflow-scroll">
+                {content}
+              </CustomMd>
+            )}
             <div className="flex flex-wrap gap-2">{labelButtons}</div>
             <Toolbar
               existingNote={note}

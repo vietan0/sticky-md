@@ -51,7 +51,7 @@ export default function CustomMd({
         ) : (
           <code
             {...props}
-            className={`${className} whitespace-pre-wrap rounded-md bg-black/10 px-1 py-[2px] text-sm dark:bg-white/10`}
+            className={`${className || ''} w-fit whitespace-pre-wrap rounded-md bg-black/10 px-1 py-[2px] text-sm dark:bg-white/10`}
           >
             {children}
           </code>

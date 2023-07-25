@@ -8,7 +8,7 @@ export default function Mirror({
   setMirrorPos,
   isTitle,
   value,
-  inputRef,
+  textAreaRef,
   formRef,
   record,
   existingNote,
@@ -23,7 +23,7 @@ export default function Mirror({
   >;
   isTitle: boolean;
   value: string;
-  inputRef: React.RefObject<HTMLTextAreaElement> | React.RefObject<HTMLInputElement>;
+  textAreaRef: React.RefObject<HTMLTextAreaElement>;
   formRef: React.RefObject<HTMLFormElement>;
   record: RecordReturn;
   existingNote?: NoteDbData;
@@ -31,8 +31,8 @@ export default function Mirror({
   useEffect(() => {
     // 1. setup mirror div position
     function syncMirror() {
-      if (inputRef.current && formRef.current) {
-        const { width, height, top: textareaTop } = inputRef.current.getBoundingClientRect();
+      if (textAreaRef.current && formRef.current) {
+        const { width, height, top: textareaTop } = textAreaRef.current.getBoundingClientRect();
         const { top: formTop } = formRef.current.getBoundingClientRect();
         // when normal, mirror's (0, 0) is document's corner
         // when in dialog, mirror's (0, 0) is form's corner (because of how Radix works)
@@ -50,7 +50,7 @@ export default function Mirror({
     return () => {
       window.removeEventListener('resize', syncMirror);
     };
-  }, [existingNote, formRef, inputRef, setMirrorPos]);
+  }, [existingNote, formRef, textAreaRef, setMirrorPos]);
 
   return (
     <div

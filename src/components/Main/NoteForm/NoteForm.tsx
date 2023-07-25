@@ -13,10 +13,8 @@ import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
 import Toolbar from '../Toolbar/Toolbar';
 import LinkPreviews from '../LinkPreviews';
-import Trash from '../../icons/Trash';
 import ToggleMdRaw from './ToggleMdRaw';
-import ImageView from './ImageViewInForm';
-import ImagesContainer from './ImageViewInForm';
+import ImagesContainer from './ImagesContainer';
 
 export default function NoteForm({
   setFormOpen,
@@ -28,7 +26,7 @@ export default function NoteForm({
   const currentUser = useContext(UserContext) as User;
 
   const formRef = useRef<HTMLFormElement>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const [title, setTitle] = useState(existingNote?.title || '');
@@ -78,28 +76,30 @@ export default function NoteForm({
       onKeyDown={formKeyDown}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex flex-col rounded-lg`}
+      )} mx-auto flex max-h-[600px] w-full max-w-xl flex-col overflow-scroll rounded-lg`}
     >
-      <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls}/>
-      <div className="NoteForm-main-content flex w-full max-w-xl flex-col gap-3 p-4">
+      <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls} />
+      <div className="NoteForm-main-content flex flex-col gap-3 p-4">
         <ToggleMdRaw
           isTitle
           value={title}
-          inputRef={titleRef}
+          textAreaRef={titleRef}
           formRef={formRef}
           record={titleRecord}
           existingNote={existingNote}
         >
-          <input
-            type="text"
+          <TextareaAutosize
+            minRows={1}
+            maxRows={3}
             tabIndex={1}
+            maxLength={400}
             placeholder="Title"
-            className="w-full bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
           />
         </ToggleMdRaw>
         <ToggleMdRaw
           value={content}
-          inputRef={contentRef}
+          textAreaRef={contentRef}
           formRef={formRef}
           record={contentRecord}
           existingNote={existingNote}
@@ -110,7 +110,7 @@ export default function NoteForm({
             maxRows={15}
             tabIndex={2}
             placeholder="Write something…"
-            className="w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
           />
         </ToggleMdRaw>
         <div className="mt-4 flex items-end justify-between gap-8">
