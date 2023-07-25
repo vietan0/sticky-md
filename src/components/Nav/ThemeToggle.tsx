@@ -23,11 +23,9 @@ export default function ThemeToggle() {
 
   return (
     <Root>
-      <TooltipWrapper content="Change theme">
-        <Trigger className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
-          {themeIcon}
-        </Trigger>
-      </TooltipWrapper>
+      <Trigger title='Switch theme' className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
+        {themeIcon}
+      </Trigger>
       <Portal className="outline outline-1 outline-black">
         <Content
           align="end"

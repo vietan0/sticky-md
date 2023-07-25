@@ -2,6 +2,9 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 
 type Props = { content: string; asChild?: boolean; children: JSX.Element };
 export default function TooltipWrapper({ content, asChild = false, children }: Props) {
+
+  // console.count(`TooltipWrapper: ${content}`);
+
   return (
     <Tooltip.Provider delayDuration={200}>
       <Tooltip.Root>

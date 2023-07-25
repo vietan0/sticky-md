@@ -12,14 +12,12 @@ export default function BackgroundSwatches({
   selectedColor,
   setSelectedColor,
   btnClasses,
-  inNoteCard,
   updateNoteToDb,
   existingNote,
 }: {
   selectedColor: string;
   setSelectedColor: React.Dispatch<React.SetStateAction<Bg_Color>>;
   btnClasses: string;
-  inNoteCard: boolean;
   updateNoteToDb: () => Promise<void>;
   existingNote?: NoteDbData;
 }) {
@@ -46,10 +44,10 @@ export default function BackgroundSwatches({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColor]);
 
-  const popoverRoot = (
+  return (
     <Popover.Root>
       <Popover.Trigger asChild onClick={(e) => e.stopPropagation()}>
-        <button className={btnClasses}>
+        <button className={btnClasses} title="Change color">
           <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
         </button>
       </Popover.Trigger>
@@ -80,8 +78,4 @@ export default function BackgroundSwatches({
       </Popover.Portal>
     </Popover.Root>
   );
-
-  const tooltipWrapped = <TooltipWrapper content="Change color">{popoverRoot}</TooltipWrapper>;
-
-  return inNoteCard ? tooltipWrapped : popoverRoot;
 }

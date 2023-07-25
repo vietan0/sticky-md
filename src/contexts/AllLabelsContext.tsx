@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { User } from 'firebase/auth';
-import LabelDbData from '../types/LabelDbData';
 import supabase from '../supabase/connect';
+import LabelDbData from '../types/LabelDbData';
 import { deleteLabelById, getAllLabels } from '../supabase/labels';
 import { getNotesLabels } from '../supabase/notes_labels';
 import { AllLabelsContext, UserContext } from '.';

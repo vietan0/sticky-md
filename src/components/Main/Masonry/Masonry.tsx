@@ -1,46 +1,39 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { User } from 'firebase/auth';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { setUseWhatChange, useWhatChanged } from '@simbathesailor/use-what-changed';
 import Dimension from '../../../types/Dimension';
-import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
-import { UserContext } from '../../../contexts';
-import supabase from '../../../supabase/connect';
-import { getAllNotes } from '../../../supabase/notes';
+import { AllNotesContext } from '../../../contexts';
 import NoteCard from './NoteCard';
 
+setUseWhatChange(true);
+
+const abs = { left: 32, top: 200 } as const;
+const gap = 12;
+const colWidth = 240;
+const mainPadding = 32;
+const breakpoints = Array(4)
+  .fill(0)
+  .map((_, i) => colWidth * (i + 2) + gap * (i + 1)); // [ 504, 768, 1032, 1296 ]
+
 export default function Masonry() {
-  const currentUser = useContext(UserContext) as User;
-  const [allNotes, setAllNotes] = useState<NoteDbData[]>([]);
+  const allNotes = useContext(AllNotesContext);
   const masonry = useRef<HTMLDivElement>(null);
-  const [availableSpace, setAvailableSpace] = useState<number>(0);
+  const [colNum, setColNum] = useState<1 | 2 | 3 | 4 | 5>(1);
 
   useEffect(() => {
-    // 1. fetch data
-    if (currentUser) {
-      const fetchNotes = async () => {
-        const fetchResult = await getAllNotes(currentUser.uid);
-        if (fetchResult) setAllNotes(fetchResult);
-        // if null, then there's error when fetching, redirect to 404 or something
-      };
-      fetchNotes();
-      supabase
-        .channel('notes-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'notes',
-            filter: `user_id=eq.${currentUser.uid}`,
-          },
-          (_payload) => fetchNotes(), // listen for changes, refetch if there is one
-        )
-        .subscribe();
-    }
-    // 2. prepare layout
     const syncWidth = () => {
-      const mainPadding = 32;
-      setAvailableSpace(window.innerWidth - mainPadding * 2);
+      const availableSpace = window.innerWidth - mainPadding * 2;
+      setColNum(
+        availableSpace < breakpoints[0]
+          ? 1
+          : availableSpace < breakpoints[1]
+          ? 2
+          : availableSpace < breakpoints[2]
+          ? 3
+          : availableSpace < breakpoints[3]
+          ? 4
+          : 5,
+      );
     };
     syncWidth();
     window.addEventListener('resize', syncWidth);
@@ -48,30 +41,15 @@ export default function Masonry() {
     return () => {
       window.removeEventListener('resize', syncWidth);
     };
-  }, [currentUser]);
+  }, []);
 
-  const abs = {
-    left: 32,
-    top: 200,
-  } as const;
-  const gap = 12;
-  const colWidth = 240;
-  const breakpoints = Array(4)
-    .fill(0)
-    .map((_, i) => colWidth * (i + 2) + gap * (i + 1)); // [ 504, 768, 1032, 1296 ]
-  const colNum =
-    availableSpace < breakpoints[0]
-      ? 1
-      : availableSpace < breakpoints[1]
-      ? 2
-      : availableSpace < breakpoints[2]
-      ? 3
-      : availableSpace < breakpoints[3]
-      ? 4
-      : 5;
-  const lefts = Array(colNum)
-    .fill(0)
-    .map((_, i) => colWidth * i + gap * i); // [ 0, 252, 504, 756, 1008 ]
+  const lefts = useMemo(
+    () =>
+      Array(colNum)
+        .fill(0)
+        .map((_, i) => colWidth * i + gap * i), // [ 0, 252, 504, 756, 1008 ]
+    [colNum],
+  );
 
   const [allCardDims, setAllCardDims] = useState<Dimension[]>(
     // initialize
@@ -162,7 +140,7 @@ export default function Masonry() {
       colWidth={colWidth}
       setAllCardDims={setAllCardDims}
       i={i}
-      nudge={nudges[i] || { left: 0, top: 0 }}
+      nudge={nudges[i] || { left: 0, top: 0, note_id: note.note_id }}
       allNotes={allNotes}
       lefts={lefts}
       abs={abs}
@@ -170,15 +148,12 @@ export default function Masonry() {
     />
   ));
 
-  const [masonryHeight, setMasonryHeight] = useState(0);
-  useEffect(() => {
-    setMasonryHeight(() => {
-      const bottoms = allCardDims.map((n) => n.bottom);
-      const maxBottom = bottoms.length > 0 ? Math.max(...bottoms) - abs.top : 0;
-      return maxBottom;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCardDims]);
+  function getMasonryHeight() {
+    const bottoms = allCardDims.map((n) => n.bottom);
+    const maxBottom = bottoms.length > 0 ? Math.max(...bottoms) - abs.top : 0;
+    return maxBottom;
+  }
+  const masonryHeight = getMasonryHeight();
 
   return (
     <div
@@ -191,7 +166,6 @@ export default function Masonry() {
       }}
       className="relative mx-auto duration-100"
     >
-      {/* <UrlPreview url="https://www.youtube.com/" /> */}
       {allCards}
     </div>
   );

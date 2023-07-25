@@ -1,9 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import * as Popover from '@radix-ui/react-popover';
-import { RecordReturn } from '../../../hooks/useRecordLabel';
-import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
+import { useEffect, useRef } from 'react';
 import Photo from '../../icons/Photo';
-import NoteDbData from '../../../types/NoteDbData';
 import TooltipWrapper from '../../TooltipWrapper';
 import { getImageUrl, uploadImage } from '../../../supabase/storage';
 
@@ -55,12 +51,25 @@ export default function UploadImages({
         multiple
         onClick={(e) => e.stopPropagation()}
         onChange={handleFileChange}
-        className="invisible absolute top-[-9999px] left-[-9999px]"
+        className="invisible absolute left-[-9999px] top-[-9999px]"
       />
     </>
   );
 
-  const tooltipWrapped = <TooltipWrapper content="Add images">{uploadButton}</TooltipWrapper>;
-
-  return inNoteCard ? tooltipWrapped : uploadButton;
+  return (
+    <>
+      <button className={btnClasses} title="Add images" onClick={triggerUpload}>
+        <Photo className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+      </button>
+      <input
+        ref={ghostInput}
+        type="file"
+        accept="image/*"
+        multiple
+        onClick={(e) => e.stopPropagation()}
+        onChange={handleFileChange}
+        className="invisible absolute left-[-9999px] top-[-9999px]"
+      />
+    </>
+  );
 }

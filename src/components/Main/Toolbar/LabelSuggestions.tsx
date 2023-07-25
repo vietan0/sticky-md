@@ -9,7 +9,6 @@ import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
 import NoteDbData from '../../../types/NoteDbData';
-import TooltipWrapper from '../../TooltipWrapper';
 
 export default function LabelSuggestions({
   record,
@@ -132,11 +131,11 @@ export default function LabelSuggestions({
   // if use button and NoteForm is editing --> remove portal
   if (!inline && existingNote) renderedContent = content;
 
-  const popoverRoot = (
+  return (
     <Popover.Root defaultOpen={inline}>
       <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
         {!inline && (
-          <button className={btnClasses}>
+          <button className={btnClasses} title='Add labels'>
             <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
           </button>
         )}
@@ -144,8 +143,4 @@ export default function LabelSuggestions({
       {renderedContent}
     </Popover.Root>
   );
-
-  const tooltipWrapped = <TooltipWrapper content="Add labels">{popoverRoot}</TooltipWrapper>;
-
-  return inNoteCard ? tooltipWrapped : popoverRoot;
 }

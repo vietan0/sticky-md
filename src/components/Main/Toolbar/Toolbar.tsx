@@ -47,7 +47,6 @@ export default function Toolbar({
         selectedColor={selectedBgColor}
         setSelectedColor={setSelectedBgColor}
         btnClasses={btnClasses}
-        inNoteCard={inNoteCard}
         updateNoteToDb={updateNoteToDb}
         existingNote={existingNote}
       />

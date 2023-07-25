@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AllNotesContextProvider from '../../contexts/AllNotesContext';
 import AllLabelsContextProvider from '../../contexts/AllLabelsContext';
 import Masonry from './Masonry/Masonry';
 import NoteForm from './NoteForm/NoteForm';
@@ -19,15 +20,17 @@ export default function Main() {
   }, []);
 
   return (
-    <AllLabelsContextProvider>
-      <main className="flex flex-col gap-8 p-8">
-        {formOpen ? (
-          <NoteForm setFormOpen={setFormOpen} />
-        ) : (
-          <NotePrompt setFormOpen={setFormOpen} />
-        )}
-        <Masonry />
-      </main>
-    </AllLabelsContextProvider>
+    <AllNotesContextProvider>
+      <AllLabelsContextProvider>
+        <main className="flex flex-col gap-8 p-8">
+          {formOpen ? (
+            <NoteForm setFormOpen={setFormOpen} />
+          ) : (
+            <NotePrompt setFormOpen={setFormOpen} />
+          )}
+          <Masonry />
+        </main>
+      </AllLabelsContextProvider>
+    </AllNotesContextProvider>
   );
 }

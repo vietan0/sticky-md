@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useWhatChanged, setUseWhatChange } from '@simbathesailor/use-what-changed';
 import * as Dialog from '@radix-ui/react-dialog';
 import { nanoid } from 'nanoid';
 import { User } from 'firebase/auth';
@@ -20,6 +21,9 @@ import NoteUploadData from '../../../types/NoteUploadData';
 import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
 import TooltipWrapper from '../../TooltipWrapper';
+import shallowCompare from '../../../utils/shallowCompare';
+
+setUseWhatChange(true);
 
 export default function NoteCard({
   note,
@@ -86,11 +90,9 @@ export default function NoteCard({
   );
 
   const card = useRef<HTMLDivElement>(null);
-
-  function handleTransitionEnd() {
+  function updateAllCardDims() {
     if (card.current) {
       const rect = card.current.getBoundingClientRect();
-
       setAllCardDims((prev) => {
         const dup = [...prev];
 
@@ -99,9 +101,7 @@ export default function NoteCard({
           const ids = allNotes.map((n) => n.note_id);
           return !ids.includes(dim.note_id);
         });
-        if (deleteTargetIndex !== -1) {
-          dup.splice(deleteTargetIndex, 1);
-        }
+        if (deleteTargetIndex !== -1) dup.splice(deleteTargetIndex, 1);
 
         let left = 0;
         for (let i = lefts.length - 1; i >= 0; i--) {
@@ -119,13 +119,19 @@ export default function NoteCard({
           width: rect.width,
           note_id,
         };
+
+        if (shallowCompare(prev, dup)) return prev;
         return dup;
       });
     }
   }
+  function handleTransitionEnd(e: React.TransitionEvent<HTMLElement>) {
+    // based on https://stackoverflow.com/a/73421669/17673377
+    if (e.target === e.currentTarget) updateAllCardDims();
+  }
 
   useEffect(() => {
-    handleTransitionEnd();
+    updateAllCardDims();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);
 
@@ -134,6 +140,8 @@ export default function NoteCard({
       image_urls.map((url) => <img src={url} key={url} alt="" className="w-full object-contain" />),
     [image_urls],
   );
+
+  console.count('NoteCard');
 
   return (
     <Dialog.Root open={editFormOpen} onOpenChange={setEditFormOpen}>
@@ -149,7 +157,7 @@ export default function NoteCard({
           }}
           className={`${getTwBgClasses(
             bg_color,
-          )} NoteCard absolute max-h-[480px] cursor-pointer rounded-lg duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} absolute max-h-[480px] cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
           <div className="images flex overflow-hidden rounded-t-lg">{images}</div>
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
@@ -177,8 +185,8 @@ export default function NoteCard({
         </article>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/40" />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Overlay className="fixed inset-0 bg-black/40" />
+        <Dialog.Content className="fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
           <NoteForm setFormOpen={setEditFormOpen} existingNote={note} />
         </Dialog.Content>
       </Dialog.Portal>
