@@ -106,7 +106,8 @@ _remember: break every problem down to actionable steps_
   - [x] retrieve urls, add them to `images`
 - [x] find out what is making app slow
 - [x] handle edge case: everything is long in card
-- [ ] use Tabs component for Edit/Preview MD in `NoteForm`
 - [ ] loading icon (React Spinner?)
 - [ ] add labels sidebar
+- [ ] write `README.md`
 - [ ] add a default demo account with example notes to showcase app features 
+- [ ] use Tabs component for Edit/Preview MD in `NoteForm`?

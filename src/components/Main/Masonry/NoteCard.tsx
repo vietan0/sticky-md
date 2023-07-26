@@ -20,7 +20,6 @@ import { Bg_Color } from '../../../types/Bg_Color';
 import NoteUploadData from '../../../types/NoteUploadData';
 import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
-import TooltipWrapper from '../../TooltipWrapper';
 import shallowCompare from '../../../utils/shallowCompare';
 import ImagesContainer from '../NoteForm/ImagesContainer';
 
@@ -63,31 +62,29 @@ export default function NoteCard({
     title,
     content,
     labels: labelsToAdd,
-    user_id: currentUser.uid,
+    user_id: currentUser?.uid,
     bg_color: selectedBgColor,
     image_urls: imageUrls,
   };
   const { updateNoteToDb } = usePostDb(noteUploadData, note);
 
   const deleteLabel = (label: string) => {
-    removeLabelFromNote(note_id, label, currentUser.uid);
+    removeLabelFromNote(note_id, label, currentUser?.uid);
   };
 
   const labelButtons = labels.map((label) => (
     <LabelButton label={label} removeLabel={deleteLabel} key={nanoid()} />
   ));
   const deleteButton = (
-    <TooltipWrapper content="Delete note" asChild>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          deleteNote(note_id);
-        }}
-        className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
-      >
-        <Close className="h-4 w-4 stroke-white stroke-2" />
-      </button>
-    </TooltipWrapper>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        deleteNote(note_id);
+      }}
+      className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
+    >
+      <Close className="h-4 w-4 stroke-white stroke-2" />
+    </button>
   );
 
   const card = useRef<HTMLDivElement>(null);
@@ -132,6 +129,7 @@ export default function NoteCard({
   }
 
   useEffect(() => {
+    console.log('allNotes changed, updateAllCardDims')
     updateAllCardDims();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);
@@ -152,15 +150,15 @@ export default function NoteCard({
             bg_color,
           )} absolute cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
-          <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls} inNoteCard />
+          <ImagesContainer imageUrls={image_urls} setImageUrls={setImageUrls} inNoteCard />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
-              <CustomMd className="font-semibold max-h-20 overflow-scroll text-lg [&_*]:text-lg">
+              <CustomMd className="max-h-20 overflow-scroll text-lg font-semibold [&_*]:text-lg">
                 {title}
               </CustomMd>
             )}
             {content && (
-              <CustomMd className="flex flex-col gap-2 text-[15px] max-h-52 overflow-scroll">
+              <CustomMd className="flex max-h-52 flex-col gap-2 overflow-scroll text-[15px]">
                 {content}
               </CustomMd>
             )}

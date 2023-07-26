@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import Photo from '../../icons/Photo';
-import TooltipWrapper from '../../TooltipWrapper';
 import { getImageUrl, uploadImage } from '../../../supabase/storage';
 
 export default function UploadImages({

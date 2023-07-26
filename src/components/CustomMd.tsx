@@ -20,6 +20,7 @@ export default function CustomMd({
       h1: ({ node, ...props }) => <h1 {...props} className="text-lg font-semibold" />,
       h2: ({ node, ...props }) => <h2 {...props} className="text-base font-medium" />,
       ul: ({ node, ordered, ...props }) => <ul {...props} className="list-disc ps-4" />,
+      ol: ({ node, ordered, ...props }) => <ol {...props} className="list-decimal ps-4" />,
       a: ({ node, ...props }) => (
         <a
           {...props}
@@ -58,7 +59,7 @@ export default function CustomMd({
         );
       },
     }),
-    [],
+    [htmlHasDark],
   );
 
   return (

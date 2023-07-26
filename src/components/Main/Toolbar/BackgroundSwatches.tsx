@@ -5,7 +5,6 @@ import Color from '../../icons/Color';
 import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
-import TooltipWrapper from '../../TooltipWrapper';
 import NoteDbData from '../../../types/NoteDbData';
 
 export default function BackgroundSwatches({

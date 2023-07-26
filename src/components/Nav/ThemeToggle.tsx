@@ -4,7 +4,6 @@ import Sun from '../icons/Sun';
 import Moon from '../icons/Moon';
 import Desktop from '../icons/Desktop';
 import { ThemeContext } from '../../contexts';
-import TooltipWrapper from '../TooltipWrapper';
 
 export default function ThemeToggle() {
   const { theme, setTheme, htmlHasDark } = useContext(ThemeContext);

@@ -37,7 +37,7 @@ export default function SignUp() {
   return (
     <div
       id="SignUp"
-      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-2xl xs:m-auto xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
     >
       <HomeLink className="mb-2" />
       <p className="mb-6 text-xl font-bold">Sign Up</p>

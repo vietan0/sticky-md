@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Close from '../icons/Close';
-import TooltipWrapper from '../TooltipWrapper';
 
 export default function LabelButton({
   label,
@@ -22,16 +21,14 @@ export default function LabelButton({
     >
       <span>{label}</span>
       {hovering && (
-        <TooltipWrapper content="Remove label">
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              removeLabel(label);
-            }}
-          >
-            <Close className="absolute right-0 top-0 h-6 w-6 rounded-full bg-black/10 p-1 hover:bg-black/25 dark:bg-white/10 dark:hover:bg-white/25" />
-          </div>
-        </TooltipWrapper>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            removeLabel(label);
+          }}
+        >
+          <Close className="absolute right-0 top-0 h-6 w-6 rounded-full bg-black/10 p-1 hover:bg-black/25 dark:bg-white/10 dark:hover:bg-white/25" />
+        </div>
       )}
     </button>
   );
