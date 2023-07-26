@@ -129,7 +129,6 @@ export default function NoteCard({
   }
 
   useEffect(() => {
-    console.log('allNotes changed, updateAllCardDims')
     updateAllCardDims();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allNotes]);

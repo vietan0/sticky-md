@@ -1,11 +1,8 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { setUseWhatChange, useWhatChanged } from '@simbathesailor/use-what-changed';
 import Dimension from '../../../types/Dimension';
 import Nudge from '../../../types/Nudge';
 import { AllNotesContext } from '../../../contexts';
 import NoteCard from './NoteCard';
-
-setUseWhatChange(true);
 
 const abs = { left: 32, top: 200 } as const;
 const gap = 12;

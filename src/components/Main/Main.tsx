@@ -20,17 +20,13 @@ export default function Main() {
   }, []);
 
   return (
-    <AllNotesContextProvider>
-      <AllLabelsContextProvider>
-        <main className="flex flex-col gap-8 p-8">
-          {formOpen ? (
-            <NoteForm setFormOpen={setFormOpen} />
-          ) : (
-            <NotePrompt setFormOpen={setFormOpen} />
-          )}
-          <Masonry />
-        </main>
-      </AllLabelsContextProvider>
-    </AllNotesContextProvider>
+    <main className="flex flex-col mt-20 gap-8 p-8">
+      {formOpen ? (
+        <NoteForm setFormOpen={setFormOpen} />
+      ) : (
+        <NotePrompt setFormOpen={setFormOpen} />
+      )}
+      <Masonry />
+    </main>
   );
 }
