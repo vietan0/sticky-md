@@ -1,6 +1,6 @@
 # Sticky MD
 
-Sticky MD is (an attempt at) a note app like Google Keep but with Markdown support. 
+[Sticky MD](https://sticky-md.web.app/) is (an attempt at) a note app like Google Keep but with Markdown support.
 
 ![screenshot](screenshot.jpg)
 
@@ -14,6 +14,7 @@ Sticky MD is (an attempt at) a note app like Google Keep but with Markdown suppo
 - 📸 Can contain images (`.jpg`, `.png`, `.gif`)
 
 ## Built with
+
 - React
 - TypeScript
 - React-Markdown

@@ -22,7 +22,7 @@ export default function UploadImages({
     if (ghostInput.current) ghostInput.current.click();
   }
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const list = Array.from(e.target.files);
+    const list = Array.from(e.target.files as Iterable<File> | ArrayLike<File>);
     const newUrls = list.map(async (file) => {
       const filename = (await uploadImage(file)) as string;
       const result = await getImageUrl(filename);
