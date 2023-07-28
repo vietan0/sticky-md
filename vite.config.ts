@@ -7,9 +7,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true,
-    proxy: {
-      '/api': process.env.VITE_SCRAPER_URL,
-    },
   },
   css: {
     devSourcemap: true,

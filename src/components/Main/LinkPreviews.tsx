@@ -21,7 +21,10 @@ function LinkCard({ url }: { url: string }) {
   const { title, favicon, image } = data;
   useEffect(() => {
     async function get() {
-      const res = await fetch(`/api?url=${url}`);
+      const res = await fetch(
+        `https://sticky-md-scraper-production.up.railway.app/api?url=${url}`,
+        { mode: 'cors' },
+      );
       const data = await res.json();
       setData(data);
     }
