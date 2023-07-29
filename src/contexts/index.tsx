@@ -6,6 +6,15 @@ import LabelDbData from '../types/LabelDbData';
 export const UserContext = createContext<User | 'loading' | null>(null);
 export const AllNotesContext = createContext<NoteDbData[]>([]);
 export const AllLabelsContext = createContext<LabelDbData[]>([]);
+export const SearchContext = createContext<{
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}>({
+  searchValue: '',
+  setSearchValue: () => {
+    /*  */
+  },
+});
 export const ThemeContext = createContext<{
   theme: 'light' | 'dark' | 'os';
   setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark' | 'os'>>;

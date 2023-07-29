@@ -37,10 +37,10 @@ export default function CustomMd({
         thead: ({ node, ...props }) => (
           <thead {...props} className="bg-black/10 dark:bg-white/10" />
         ),
-        th: ({ node, ...props }) => (
+        th: ({ node, isHeader, ...props }) => (
           <th {...props} className="border border-black/40 p-2 dark:border-white/20" />
         ),
-        td: ({ node, ...props }) => (
+        td: ({ node, isHeader, ...props }) => (
           <td {...props} className="border border-black/40 p-2 dark:border-white/20" />
         ),
         a: ({ node, ...props }) => (

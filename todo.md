@@ -111,7 +111,7 @@ _remember: break every problem down to actionable steps_
 - [x] fix scraper problem (must work in prod)
 - [x] click `LinkPreview` will open in new tab
 - [x] design `NotFound` page
-- [ ] add search feature
+- [x] add search feature
 - [ ] refresh how Masonry logic was created
 - [ ] use Tabs component for Edit/Preview MD in `NoteForm`?
 - [ ] `LinkPreviews` shouldn't fetch again when open `NoteForm`

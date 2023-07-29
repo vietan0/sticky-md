@@ -4,6 +4,7 @@ import AllNotesContextProvider from '../contexts/AllNotesContext';
 import AllLabelsContextProvider from '../contexts/AllLabelsContext';
 import Nav from '../components/Nav/Nav';
 import { UserContext } from '../contexts';
+import SearchContextProvider from '../contexts/SearchContextProvider';
 
 export default function Home() {
   const currentUser = useContext(UserContext);
@@ -14,13 +15,15 @@ export default function Home() {
   }, [currentUser, nav]);
 
   return (
-    <AllNotesContextProvider>
-      <AllLabelsContextProvider>
-        <div id="Home" className="min-h-screen">
-          <Nav />
-          <Outlet />
-        </div>
-      </AllLabelsContextProvider>
-    </AllNotesContextProvider>
+    <SearchContextProvider>
+      <AllNotesContextProvider>
+        <AllLabelsContextProvider>
+          <div id="Home" className="min-h-screen">
+            <Nav />
+            <Outlet />
+          </div>
+        </AllLabelsContextProvider>
+      </AllNotesContextProvider>
+    </SearchContextProvider>
   );
 }
