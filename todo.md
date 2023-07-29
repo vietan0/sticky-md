@@ -105,17 +105,15 @@ _remember: break every problem down to actionable steps_
   - [x] add col `images` (array of urls) to `notes` table
   - [x] retrieve urls, add them to `images`
 - [x] find out what is making app slow
+- [x] write `README.md`
+- [x] add a default demo account with example notes to showcase app features 
 - [x] handle edge case: everything is long in card
 - [x] fix scraper problem (must work in prod)
 - [x] click `LinkPreview` will open in new tab
-- [ ] reduce requests / temporarily turn off supabase
+- [x] design `NotFound` page
+- [ ] add search feature
 - [ ] refresh how Masonry logic was created
 - [ ] use Tabs component for Edit/Preview MD in `NoteForm`?
-- [ ] fix inline label recording
-- [ ] add search feature
-- [ ] design `NotFound` page
 - [ ] `LinkPreviews` shouldn't fetch again when open `NoteForm`
 - [ ] loading icon (React Spinner?)
 - [ ] add labels sidebar
-- [x] write `README.md`
-- [x] add a default demo account with example notes to showcase app features 
