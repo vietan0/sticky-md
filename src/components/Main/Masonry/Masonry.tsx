@@ -134,6 +134,7 @@ export default function Masonry() {
   const allCards = allNotes.map((note, i) => (
     <NoteCard
       note={note}
+      colNum={colNum}
       colWidth={colWidth}
       setAllCardDims={setAllCardDims}
       i={i}
@@ -158,10 +159,10 @@ export default function Masonry() {
       id="masonry"
       style={{
         height: masonryHeight,
-        width: colNum * colWidth + (colNum - 1) * gap,
+        width: colNum > 1 ? colNum * colWidth + (colNum - 1) * gap : '100%',
         maxWidth: breakpoints[3],
       }}
-      className="relative mx-auto duration-100"
+      className={`${colNum > 1 ? 'relative' : 'flex flex-col gap-3'} mx-auto duration-100`}
     >
       {allCards}
     </div>

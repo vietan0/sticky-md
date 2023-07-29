@@ -27,6 +27,7 @@ setUseWhatChange(true);
 
 export default function NoteCard({
   note,
+  colNum,
   colWidth,
   setAllCardDims,
   i,
@@ -36,6 +37,7 @@ export default function NoteCard({
   abs,
 }: {
   note: NoteDbData;
+  colNum: number;
   colWidth: number;
   setAllCardDims: React.Dispatch<React.SetStateAction<Dimension[]>>;
   i: number;
@@ -142,12 +144,13 @@ export default function NoteCard({
           onMouseLeave={() => setHover(false)}
           onTransitionEnd={handleTransitionEnd}
           style={{
-            transform: `translate(${nudge.left}px, ${nudge.top}px)`,
-            width: colWidth,
+            transform: colNum > 1 ? `translate(${nudge.left}px, ${nudge.top}px)` : '',
+            width: colNum > 1 ? colWidth : '100%',
+            position: colNum > 1 ? 'absolute' : 'initial',
           }}
           className={`${getTwBgClasses(
             bg_color,
-          )} absolute cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
           <ImagesContainer imageUrls={image_urls} setImageUrls={setImageUrls} inNoteCard />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
@@ -179,8 +182,8 @@ export default function NoteCard({
         </article>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed z-20 inset-0 bg-black/40" />
-        <Dialog.Content className="z-30 fixed left-[50%] top-[50%] w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Overlay className="fixed inset-0 z-20 bg-black/40" />
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
           <NoteForm setFormOpen={setEditFormOpen} existingNote={note} />
         </Dialog.Content>
       </Dialog.Portal>

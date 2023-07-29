@@ -14,12 +14,12 @@ export default function SearchBar() {
   return (
     <form onSubmit={handleSubmit} id="SearchBar" className="max-w-xl flex-grow">
       <label className="relative inline-block w-full">
-        <Search className="absolute left-3 top-[9px] h-5 w-5" />
+        <Search className="absolute left-2 xs:left-3 top-[9px] h-5 w-5" />
         <input
           placeholder="Search by words, labels, colors,…"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="w-full rounded bg-white/20 px-6 py-2 pl-12 text-[15px] outline outline-1 outline-neutral-300 placeholder:text-neutral-500 dark:bg-neutral-900/20 dark:outline-neutral-800"
+          className="w-full rounded bg-white/20 px-6 py-2 pl-9 xs:pl-12 text-[15px] outline outline-1 outline-neutral-300 placeholder:text-neutral-500 dark:bg-neutral-900/20 dark:outline-neutral-800"
         />
         {inputValue && (
           <div className="absolute bottom-1 right-1 top-1 my-auto flex items-center">
