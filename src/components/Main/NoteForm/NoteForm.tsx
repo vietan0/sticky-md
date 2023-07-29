@@ -78,11 +78,13 @@ export default function NoteForm({
         existingNote ? existingNote.bg_color : selectedBgColor,
       )} mx-auto flex max-h-[600px] w-full max-w-xl flex-col overflow-scroll rounded-lg`}
     >
-      <ImagesContainer
-        imageUrls={imageUrls}
-        setImageUrls={setImageUrls}
-        updateNoteToDb={updateNoteToDb}
-      />
+      {imageUrls.length > 0 && (
+        <ImagesContainer
+          imageUrls={imageUrls}
+          setImageUrls={setImageUrls}
+          updateNoteToDb={updateNoteToDb}
+        />
+      )}
       <div className="NoteForm-main-content flex flex-col gap-3 p-4">
         <ToggleMdRaw
           isTitle

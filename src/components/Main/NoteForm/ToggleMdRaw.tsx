@@ -27,7 +27,7 @@ export default function ToggleMdRaw({
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
       {isTitle ? (
-        <CustomMd className="max-h-20 min-h-[28px] overflow-scroll font-semibold [&_*]:text-ellipsis text-lg [&_*]:text-lg">
+        <CustomMd className="max-h-20 min-h-[28px] overflow-scroll text-lg font-semibold [&_*]:text-ellipsis [&_*]:text-lg">
           {value}
         </CustomMd>
       ) : (
@@ -55,21 +55,5 @@ export default function ToggleMdRaw({
 
   const childFieldWithRef = cloneElement(childField, propsToPass);
 
-  return editing ? (
-    <>
-      {childFieldWithRef}
-      <Mirror
-        mirrorPos={mirrorPos}
-        setMirrorPos={setMirrorPos}
-        isTitle={isTitle}
-        value={value}
-        textAreaRef={textAreaRef}
-        formRef={formRef}
-        record={record}
-        existingNote={existingNote}
-      />
-    </>
-  ) : (
-    md
-  );
+  return editing ? childFieldWithRef : md;
 }
