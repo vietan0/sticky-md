@@ -108,7 +108,7 @@ export default function LabelSuggestions({
     <Popover.Content
       align="start"
       sideOffset={inline ? 0 : 16}
-      className="max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
+      className="z-40 max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
     >
       <input
         autoFocus
@@ -135,7 +135,7 @@ export default function LabelSuggestions({
     <Popover.Root defaultOpen={inline}>
       <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
         {!inline && (
-          <button className={btnClasses} title='Add labels'>
+          <button className={btnClasses} title="Add labels">
             <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
           </button>
         )}

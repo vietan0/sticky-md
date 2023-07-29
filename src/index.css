@@ -14,3 +14,43 @@ body {
 .input-global {
   @apply w-full bg-neutral-100 placeholder:text-neutral-500 dark:bg-neutral-900;
 }
+
+#demo-sign-in {
+  position: relative;
+  background: linear-gradient(90deg, #4322bb -10%, #04027c 100%);
+}
+
+#demo-sign-in:before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(#3b1baf -10%, #07058f 100%);
+  transform: translate3d(2px, 0px, 0);
+  filter: blur(20px);
+  opacity: var(0.7);
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+#demo-sign-in::after {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: inherit;
+}
+
+.task-list-item input[type='checkbox'] {
+  @apply relative cursor-default mr-1 h-2.5 w-2.5 rounded-sm bg-black/10 outline outline-1 outline-black/50 dark:bg-white/10 dark:outline-white/50;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

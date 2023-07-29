@@ -37,13 +37,13 @@ export default function SignIn() {
   return (
     <div
       id="SignIn"
-      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:w-[400px] xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
     >
       <HomeLink className="mb-2" />
       <p className="mb-6 text-xl font-bold">Sign In</p>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col gap-4">
         <label htmlFor="email" className="relative">
-          <Mail className="h-6 w-6 absolute left-2 top-2" />
+          <Mail className="absolute left-2 top-2 h-6 w-6" />
           <input
             id="email"
             type="email"
@@ -51,18 +51,22 @@ export default function SignIn() {
             {...register('email', { required: true })}
             className="input-global rounded px-4 py-2 pl-12"
           />
+          {errors.email && (
+            <span className="mt-1 inline-block text-sm text-red-500">Email is required</span>
+          )}
         </label>
         <label htmlFor="password" className="relative">
-          <Lock className="h-6 w-6 absolute left-2 top-2" />
+          <Lock className="absolute left-2 top-2 h-6 w-6" />
           <input
             type="password"
             placeholder="Password"
             {...register('password', { required: true })}
             className="input-global rounded px-4 py-2 pl-12"
           />
+          {errors.password && (
+            <span className="mt-1 inline-block text-sm text-red-500">Password is required</span>
+          )}
         </label>
-        {errors.email && <span>Email is required</span>}
-        {errors.password && <span>Password is required</span>}
         <button
           type="submit"
           onClick={handleSubmit(onSubmit, onError)}
@@ -73,6 +77,15 @@ export default function SignIn() {
       </form>
       <span className="text-center text-sm">or</span>
       <div className="flex flex-col justify-center gap-3">
+        <button
+          id="demo-sign-in"
+          onClick={async () => {
+            emailSignIn(import.meta.env.VITE_DEMO_EMAIL, import.meta.env.VITE_DEMO_PASSWORD);
+          }}
+          className="rounded p-2 px-4 py-2 text-white outline outline-1 outline-blue-800"
+        >
+          Use Demo Account
+        </button>
         <button
           onClick={async () => await oAuthSignIn(googleProvider)}
           className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-neutral-200 dark:hover:bg-neutral-800"
