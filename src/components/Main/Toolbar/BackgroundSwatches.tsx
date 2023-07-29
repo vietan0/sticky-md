@@ -54,7 +54,7 @@ export default function BackgroundSwatches({
         <Popover.Content
           align="start"
           sideOffset={16}
-          className="flex flex-row gap-2 rounded bg-white p-3 outline outline-1 outline-neutral-400 dark:bg-neutral-950 dark:outline-neutral-700"
+          className="z-40 flex flex-row gap-2 rounded bg-white p-3 outline outline-1 outline-neutral-400 dark:bg-neutral-950 dark:outline-neutral-700"
         >
           <RadioGroup.Root
             className="flex gap-2"

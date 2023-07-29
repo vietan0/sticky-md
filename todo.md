@@ -107,9 +107,9 @@ _remember: break every problem down to actionable steps_
 - [x] find out what is making app slow
 - [x] handle edge case: everything is long in card
 - [x] fix scraper problem (must work in prod)
+- [x] click `LinkPreview` will open in new tab
 - [ ] reduce requests / temporarily turn off supabase
 - [ ] refresh how Masonry logic was created
-- [ ] add to `LinkPreview` open in new tab, delete buttons
 - [ ] use Tabs component for Edit/Preview MD in `NoteForm`?
 - [ ] fix inline label recording
 - [ ] add search feature

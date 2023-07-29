@@ -37,10 +37,20 @@ export default function SignIn() {
   return (
     <div
       id="SignIn"
-      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:w-[400px] xs:p-8 xs:outline xs:outline-neutral-300 xs:dark:outline-neutral-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:w-[400px] xs:p-8 xs:outline xs:outline-blue-100 xs:dark:outline-neutral-800"
     >
       <HomeLink className="mb-2" />
       <p className="mb-6 text-xl font-bold">Sign In</p>
+      <button
+        id="demo-sign-in"
+        onClick={async () => {
+          emailSignIn(import.meta.env.VITE_DEMO_EMAIL, import.meta.env.VITE_DEMO_PASSWORD);
+        }}
+        className="rounded font-medium p-2 px-4 py-2"
+      >
+        Use Demo Account
+      </button>
+      <span className="text-center text-sm">or</span>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex flex-col gap-4">
         <label htmlFor="email" className="relative">
           <Mail className="absolute left-2 top-2 h-6 w-6" />
@@ -49,7 +59,7 @@ export default function SignIn() {
             type="email"
             placeholder="Email"
             {...register('email', { required: true })}
-            className="input-global rounded px-4 py-2 pl-12"
+            className="w-full rounded bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
           />
           {errors.email && (
             <span className="mt-1 inline-block text-sm text-red-500">Email is required</span>
@@ -61,7 +71,7 @@ export default function SignIn() {
             type="password"
             placeholder="Password"
             {...register('password', { required: true })}
-            className="input-global rounded px-4 py-2 pl-12"
+            className="w-full rounded bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
           />
           {errors.password && (
             <span className="mt-1 inline-block text-sm text-red-500">Password is required</span>
@@ -70,7 +80,7 @@ export default function SignIn() {
         <button
           type="submit"
           onClick={handleSubmit(onSubmit, onError)}
-          className="rounded bg-blue-800 px-4 py-2 text-white hover:bg-blue-900"
+          className="rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/50"
         >
           Sign In
         </button>
@@ -78,24 +88,15 @@ export default function SignIn() {
       <span className="text-center text-sm">or</span>
       <div className="flex flex-col justify-center gap-3">
         <button
-          id="demo-sign-in"
-          onClick={async () => {
-            emailSignIn(import.meta.env.VITE_DEMO_EMAIL, import.meta.env.VITE_DEMO_PASSWORD);
-          }}
-          className="rounded p-2 px-4 py-2 text-white outline outline-1 outline-blue-800"
-        >
-          Use Demo Account
-        </button>
-        <button
           onClick={async () => await oAuthSignIn(googleProvider)}
-          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+          className="flex gap-4 rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
         >
           <Google className="w-5" />
           <span>Sign in with Google</span>
         </button>
         <button
           onClick={async () => await oAuthSignIn(githubProvider)}
-          className="flex gap-4 rounded p-2 outline outline-1 outline-blue-800 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+          className="flex gap-4 rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
         >
           <Github className="w-5" />
           <span>Sign in with Github</span>
