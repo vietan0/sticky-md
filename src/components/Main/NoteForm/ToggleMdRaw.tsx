@@ -24,11 +24,11 @@ export default function ToggleMdRaw({
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
       {isTitle ? (
-        <CustomMd className="max-h-20 min-h-[28px] overflow-scroll text-lg font-semibold [&_*]:text-ellipsis [&_*]:text-lg">
+        <CustomMd className="max-h-20 min-h-[28px] overflow-y-auto text-lg font-semibold [&_*]:text-ellipsis [&_*]:text-lg">
           {value}
         </CustomMd>
       ) : (
-        <CustomMd className="flex max-h-52 min-h-[22.5px] flex-col gap-2 overflow-scroll text-[15px]">
+        <CustomMd className="flex max-h-52 min-h-[22.5px] flex-col gap-2 overflow-y-auto text-[15px]">
           {value}
         </CustomMd>
       )}

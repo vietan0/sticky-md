@@ -40,7 +40,7 @@ export default function CustomMd({
             className="text-blue-700 hover:underline dark:text-blue-500"
           />
         ),
-        pre: ({ node, ...props }) => <pre {...props} className="myPre max-h-64 overflow-scroll" />,
+        pre: ({ node, ...props }) => <pre {...props} className="myPre max-h-64 overflow-y-scroll" />,
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
@@ -55,7 +55,7 @@ export default function CustomMd({
                   : '1px solid hsl(0 0% 0% / 0.1)',
                 backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.9)' : 'hsl(0 100% 100% / 0.75)',
               }} // affect parent of <code>
-              codeTagProps={{ className: 'text-[14px] tracking-tight' }} // affect <code> itself, overrides style
+              codeTagProps={{ className: 'text-[14px] overflow-hidden tracking-tight' }} // affect <code> itself, overrides style
               language={match[1]}
             >
               {String(children).replace(/\n$/, '')}

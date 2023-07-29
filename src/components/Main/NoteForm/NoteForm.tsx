@@ -76,7 +76,7 @@ export default function NoteForm({
       onKeyDown={formKeyDown}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex max-h-[600px] w-full max-w-xl flex-col overflow-scroll rounded-lg`}
+      )} mx-auto flex max-h-[600px] w-full max-w-xl flex-col rounded-lg`}
     >
       {imageUrls.length > 0 && (
         <ImagesContainer

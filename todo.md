@@ -117,5 +117,5 @@ _remember: break every problem down to actionable steps_
 - [ ] `LinkPreviews` shouldn't fetch again when open `NoteForm`
 - [ ] loading icon (React Spinner?)
 - [ ] add labels sidebar
-- [ ] write `README.md`
-- [ ] add a default demo account with example notes to showcase app features 
+- [x] write `README.md`
+- [x] add a default demo account with example notes to showcase app features 
