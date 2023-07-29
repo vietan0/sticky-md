@@ -8,9 +8,7 @@ export default function ToggleMdRaw({
   isTitle = false,
   value,
   textAreaRef,
-  formRef,
   record,
-  existingNote,
   children: childField,
 }: {
   isTitle?: boolean;
@@ -22,7 +20,6 @@ export default function ToggleMdRaw({
   children: JSX.Element;
 }) {
   const [editing, setEditing] = useState(value === '' ? true : false);
-  const [mirrorPos, setMirrorPos] = useState({ width: 0, height: 0, top: 0 });
 
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
@@ -48,10 +45,6 @@ export default function ToggleMdRaw({
     ref: textAreaRef,
     onChange: record.fieldChange,
   };
-  if (!isTitle) {
-    // if it's textarea
-    propsToPass.onHeightChange = (height: number) => setMirrorPos((prev) => ({ ...prev, height }));
-  }
 
   const childFieldWithRef = cloneElement(childField, propsToPass);
 
