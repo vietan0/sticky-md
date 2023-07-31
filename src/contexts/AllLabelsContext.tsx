@@ -9,6 +9,23 @@ import { AllLabelsContext, UserContext } from '.';
 export default function AllLabelsContextProvider({ children }: { children: JSX.Element }) {
   const currentUser = useContext(UserContext) as User;
   const [allLabels, setAllLabels] = useState<LabelDbData[]>([]);
+
+  /* code for supabase realtime update: notes
+    supabase
+      .channel('notes-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notes',
+          filter: `user_id=eq.${currentUser.uid}`,
+        },
+        async (_payload) => await getAllNotes(currentUser.uid), // listen for changes, refetch if there is one
+      )
+      .subscribe();
+   */
+
   useEffect(() => {
     if (currentUser) {
       const fetchLabels = async () => {

@@ -2,6 +2,8 @@ import NoteUploadData from '../types/NoteUploadData';
 import supabase from './connect';
 
 async function getAllNotes(uid: string) {
+  // console.count('getAllNotes gets called!');
+  // console.log('uid', uid);
   const { data, error } = await supabase
     .from('notes')
     .select('*')

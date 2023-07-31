@@ -88,3 +88,12 @@ function Toggle({ content, children: input }) {
 #### 11. How to make a web scraper to get an URL's meta info
 
 [Guide by Fireship](https://fireship.io/lessons/web-scraping-guide/)
+
+#### 12. `Firebase Auth`: Avoid unnecessarily rendering children when currentUser (in context) is not initiated
+
+[WebDevSimplified (Timestamp)](https://youtu.be/PKwu15ldZ7k?t=1528)
+
+[SO post referring same video](https://stackoverflow.com/questions/68104551/react-firebase-authentication-and-usecontext)
+
+#### 12. How to use `react-query`
+

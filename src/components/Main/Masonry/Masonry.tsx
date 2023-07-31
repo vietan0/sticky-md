@@ -1,7 +1,12 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { User } from 'firebase/auth';
+import ReactLoading from 'react-loading';
 import Dimension from '../../../types/Dimension';
 import Nudge from '../../../types/Nudge';
-import { AllNotesContext } from '../../../contexts';
+import { getAllNotes } from '../../../supabase/notes';
+import NoteDbData from '../../../types/NoteDbData';
+import { UserContext } from '../../../contexts';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
@@ -13,9 +18,17 @@ const breakpoints = Array(4)
   .map((_, i) => colWidth * (i + 2) + gap * (i + 1)); // [ 504, 768, 1032, 1296 ]
 
 export default function Masonry() {
-  const allNotes = useContext(AllNotesContext);
+  // if Masonry rendered then currentUser is definitely not null (see UserContextProvider)
+  const currentUser = useContext(UserContext) as User;
   const masonry = useRef<HTMLDivElement>(null);
   const [colNum, setColNum] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const lefts = useMemo(
+    () =>
+      Array(colNum)
+        .fill(0)
+        .map((_, i) => colWidth * i + gap * i), // [ 0, 252, 504, 756, 1008 ]
+    [colNum],
+  );
 
   useEffect(() => {
     const syncWidth = () => {
@@ -40,14 +53,12 @@ export default function Masonry() {
     };
   }, []);
 
-  const lefts = useMemo(
-    () =>
-      Array(colNum)
-        .fill(0)
-        .map((_, i) => colWidth * i + gap * i), // [ 0, 252, 504, 756, 1008 ]
-    [colNum],
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ['notes'], // noun
+    queryFn: async () => await getAllNotes(currentUser.uid),
+  });
 
+  const allNotes = useMemo(() => (data as NoteDbData[]) || [], [data]);
   const [allCardDims, setAllCardDims] = useState<Dimension[]>(
     // initialize
     allNotes.map(
@@ -152,19 +163,26 @@ export default function Masonry() {
     return maxBottom;
   }
   const masonryHeight = getMasonryHeight();
-
+  const masonryWidth = colNum > 1 ? colNum * colWidth + (colNum - 1) * gap : '100%';
   return (
     <div
       ref={masonry}
-      id="masonry"
+      id="Masonry"
       style={{
         height: masonryHeight,
-        width: colNum > 1 ? colNum * colWidth + (colNum - 1) * gap : '100%',
+        width: masonryWidth,
         maxWidth: breakpoints[3],
       }}
       className={`${colNum > 1 ? 'relative' : 'flex flex-col gap-3'} mx-auto duration-100`}
     >
-      {allCards}
+      {isLoading ? (
+        <div className="flex items-center justify-center gap-4">
+          <ReactLoading type="spin" color="#3b82f6" height={20} width={20} />
+          Getting your notes…
+        </div>
+      ) : (
+        allCards
+      )}
     </div>
   );
 }

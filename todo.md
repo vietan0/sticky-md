@@ -112,8 +112,19 @@ _remember: break every problem down to actionable steps_
 - [x] click `LinkPreview` will open in new tab
 - [x] design `NotFound` page
 - [x] add search feature
+- [ ] loading icon (React Loading), use `react-query` to restructure querying/loading states
+  - [x] replace `context` with `react-query` (notes)
+  - [ ] invalidate / refetch when mutation to notes (add/delete/edit)
+    - [ ] delete note
+    - [ ] create note
+    - [ ] edit title/content
+    - [ ] add label
+    - [ ] remove label
+    - [ ] change color
+  - [ ] loading icon in `Nav` whenever there's a request
+- [ ] use `useWhatChanged` to sniff out extra renders
+- [ ] rename every `...ContextProvider` to `...Provider`
 - [ ] refresh how Masonry logic was created
 - [ ] use Tabs component for Edit/Preview MD in `NoteForm`?
 - [ ] `LinkPreviews` shouldn't fetch again when open `NoteForm`
-- [ ] loading icon (React Spinner?)
 - [ ] add labels sidebar

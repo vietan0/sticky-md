@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import AllNotesContextProvider from '../../contexts/AllNotesContext';
-import AllLabelsContextProvider from '../../contexts/AllLabelsContext';
 import Masonry from './Masonry/Masonry';
 import NoteForm from './NoteForm/NoteForm';
 import NotePrompt from './NoteForm/NotePrompt';

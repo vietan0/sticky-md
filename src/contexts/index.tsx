@@ -1,10 +1,8 @@
 import { createContext } from 'react';
-import { User } from 'firebase/auth';
-import NoteDbData from '../types/NoteDbData';
 import LabelDbData from '../types/LabelDbData';
+import { auth } from '../firebase/auth';
 
-export const UserContext = createContext<User | 'loading' | null>(null);
-export const AllNotesContext = createContext<NoteDbData[]>([]);
+export const UserContext = createContext(auth.currentUser);
 export const AllLabelsContext = createContext<LabelDbData[]>([]);
 export const SearchContext = createContext<{
   searchValue: string;
