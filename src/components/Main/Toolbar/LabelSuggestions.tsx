@@ -9,6 +9,7 @@ import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
 import NoteDbData from '../../../types/NoteDbData';
+import TooltipWrapper from '../../TooltipWrapper';
 
 export default function LabelSuggestions({
   record,
@@ -135,9 +136,11 @@ export default function LabelSuggestions({
     <Popover.Root defaultOpen={inline}>
       <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
         {!inline && (
-          <button className={btnClasses} title="Add labels">
-            <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-          </button>
+          <TooltipWrapper content="Add labels">
+            <button className={btnClasses}>
+              <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+            </button>
+          </TooltipWrapper>
         )}
       </Popover.Trigger>
       {renderedContent}

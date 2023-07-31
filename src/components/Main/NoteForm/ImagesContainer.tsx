@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Trash from '../../icons/Trash';
 
 type ImageViewProps = {
@@ -15,9 +16,9 @@ function ImageView({ url, setImageUrls, inNoteCard }: ImageViewProps) {
       rel="noreferrer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative flex-auto"
+      className={`${inNoteCard ? 'pointer-events-none' : ''} relative flex-auto`}
     >
-      <img src={url} alt="" className="h-full w-full object-contain" />
+      <img src={url} alt="" className="h-full w-full object-cover" />
       {hover && !inNoteCard && (
         <button
           onClick={(e) => {
@@ -46,15 +47,20 @@ export default function ImagesContainer({
   updateNoteToDb,
   inNoteCard = false,
 }: ImagesContainerProps) {
-  
+  const queryClient = useQueryClient();
+  const imageMutation = useMutation({
+    mutationFn: updateNoteToDb,
+    onSuccess: () => queryClient.invalidateQueries(['notes']),
+  });
+
   useEffect(() => {
-    if (updateNoteToDb) updateNoteToDb();
+    if (updateNoteToDb) imageMutation.mutate();
     // changes to imageUrls should send Supabase request immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrls]);
 
   return (
-    <div className={`images flex max-h-40 overflow-hidden rounded-t-lg`}>
+    <div className="flex rounded-t-lg">
       {imageUrls.map((url) => (
         <ImageView url={url} setImageUrls={setImageUrls} inNoteCard={inNoteCard} key={url} />
       ))}

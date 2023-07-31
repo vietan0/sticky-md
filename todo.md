@@ -121,6 +121,7 @@ _remember: break every problem down to actionable steps_
     - [ ] add label
     - [ ] remove label
     - [x] change color
+    - [x] add/remove image
   - [ ] loading icon in `Nav` whenever there's a request
 - [ ] pass note data as `context` to child components instead of prop-drilling
 - [ ] use `useWhatChanged` to sniff out extra renders

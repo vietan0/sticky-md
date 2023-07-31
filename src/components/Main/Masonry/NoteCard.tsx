@@ -22,6 +22,7 @@ import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
 import shallowCompare from '../../../utils/shallowCompare';
 import ImagesContainer from '../NoteForm/ImagesContainer';
+import TooltipWrapper from '../../TooltipWrapper';
 
 export default function NoteCard({
   note,
@@ -72,36 +73,32 @@ export default function NoteCard({
 
   const deleteNoteMutation = useMutation({
     mutationFn: (note_id: string) => deleteNote(note_id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
-      // refetch labels too (later)
-    },
+    onSuccess: () => queryClient.invalidateQueries(['notes']),
   });
 
   const deleteLabelMutation = useMutation({
     mutationFn: (label: string) => removeLabelFromNote(note_id, label, currentUser.uid),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
-      // refetch labels too (later)
-    },
+    onSuccess: () => queryClient.invalidateQueries(['notes']),
   });
   const deleteLabel = (label: string) => {
-    deleteLabelMutation.mutate(label)
+    deleteLabelMutation.mutate(label);
   };
 
   const labelButtons = labels.map((label) => (
     <LabelButton label={label} removeLabel={deleteLabel} key={nanoid()} />
   ));
   const deleteButton = (
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        deleteNoteMutation.mutate(note_id);
-      }}
-      className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
-    >
-      <Close className="h-4 w-4 stroke-white stroke-2" />
-    </button>
+    <TooltipWrapper asChild content="Delete note">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteNoteMutation.mutate(note_id);
+        }}
+        className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
+      >
+        <Close className="h-4 w-4 stroke-white stroke-2" />
+      </button>
+    </TooltipWrapper>
   );
 
   const card = useRef<HTMLDivElement>(null);

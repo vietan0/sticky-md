@@ -7,6 +7,7 @@ import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
 import getTwBgClasses from '../../../utils/getTwBgClasses';
 import NoteDbData from '../../../types/NoteDbData';
+import TooltipWrapper from '../../TooltipWrapper';
 
 export default function BackgroundSwatches({
   selectedColor,
@@ -54,9 +55,11 @@ export default function BackgroundSwatches({
   return (
     <Popover.Root>
       <Popover.Trigger asChild onClick={(e) => e.stopPropagation()}>
-        <button className={btnClasses} title="Change color">
-          <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-        </button>
+        <TooltipWrapper content="Change color">
+          <button className={btnClasses}>
+            <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+          </button>
+        </TooltipWrapper>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
