@@ -31,7 +31,7 @@ export default function SignIn() {
   };
 
   useEffect(() => {
-    if (currentUser !== null && currentUser !== 'loading') nav('/');
+    if (currentUser !== null) nav('/');
   }, [currentUser, nav]);
 
   return (

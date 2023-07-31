@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import * as RadioGroup from '@radix-ui/react-radio-group';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Color from '../../icons/Color';
 import No from '../../icons/No';
 import { Bg_Color } from '../../../types/Bg_Color';
@@ -37,8 +38,15 @@ export default function BackgroundSwatches({
     );
   });
 
+  const queryClient = useQueryClient();
+
+  const colorMutation = useMutation({
+    mutationFn: updateNoteToDb,
+    onSuccess: () => queryClient.invalidateQueries(['notes']),
+  });
+
   useEffect(() => {
-    if (existingNote) updateNoteToDb();
+    if (existingNote) colorMutation.mutate();
     // changes to selectedColor should send Supabase request immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedColor]);
