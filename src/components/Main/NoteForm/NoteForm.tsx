@@ -2,6 +2,7 @@ import { User } from 'firebase/auth';
 import { DateTime } from 'luxon';
 import { useContext, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { UserContext } from '../../../contexts';
 import usePostDb from '../../../hooks/usePostDb';
 import useRecordLabel from '../../../hooks/useRecordLabel';
@@ -48,20 +49,37 @@ export default function NoteForm({
     bg_color: selectedBgColor,
     image_urls: imageUrls,
   };
-  const { updateNoteToDb, insertNoteToDb } = usePostDb(noteUploadData, existingNote);
+  const { insertNoteToDb, updateNoteToDb } = usePostDb(noteUploadData, existingNote);
+
+  const queryClient = useQueryClient();
+
+  const createNoteMutation = useMutation({
+    mutationFn: insertNoteToDb,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notes']);
+      // refetch labels too (later)
+    },
+  });
+
+  const updateNoteMutation = useMutation({
+    mutationFn: updateNoteToDb,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notes']);
+      // refetch labels too (later)
+    },
+  });
 
   function formClick(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
     e.stopPropagation();
   }
-  function formSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function formSubmit() {
     setFormOpen(false); // close NoteForm
-    existingNote ? updateNoteToDb() : insertNoteToDb();
-  }
-  function formKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
-    if (e.key === 'Escape') {
-      setFormOpen(false); // close NoteForm
-      existingNote ? updateNoteToDb() : insertNoteToDb();
+    if (existingNote) {
+      // prevent duplicate requests
+      if (!updateNoteMutation.isLoading) updateNoteMutation.mutate();
+    } else {
+      // prevent duplicate requests
+      if (!createNoteMutation.isLoading) createNoteMutation.mutate();
     }
   }
   function removeLabel(target: string) {
@@ -72,8 +90,13 @@ export default function NoteForm({
     <form
       ref={formRef}
       onClick={formClick}
-      onSubmit={formSubmit}
-      onKeyDown={formKeyDown}
+      onSubmit={(e) => {
+        e.preventDefault();
+        formSubmit();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') formSubmit();
+      }}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
       )} mx-auto flex max-h-[600px] w-full max-w-xl flex-col rounded-lg`}

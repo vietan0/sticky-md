@@ -115,13 +115,14 @@ _remember: break every problem down to actionable steps_
 - [ ] loading icon (React Loading), use `react-query` to restructure querying/loading states
   - [x] replace `context` with `react-query` (notes)
   - [ ] invalidate / refetch when mutation to notes (add/delete/edit)
-    - [ ] delete note
-    - [ ] create note
-    - [ ] edit title/content
+    - [x] create note
+    - [x] delete note
+    - [x] edit title/content
     - [ ] add label
     - [ ] remove label
     - [ ] change color
   - [ ] loading icon in `Nav` whenever there's a request
+- [ ] pass note data as `context` to child components instead of prop-drilling
 - [ ] use `useWhatChanged` to sniff out extra renders
 - [ ] rename every `...ContextProvider` to `...Provider`
 - [ ] refresh how Masonry logic was created

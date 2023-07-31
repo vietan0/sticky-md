@@ -1,8 +1,8 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useWhatChanged, setUseWhatChange } from '@simbathesailor/use-what-changed';
+import { useContext, useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { nanoid } from 'nanoid';
 import { User } from 'firebase/auth';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
@@ -22,8 +22,6 @@ import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
 import shallowCompare from '../../../utils/shallowCompare';
 import ImagesContainer from '../NoteForm/ImagesContainer';
-
-setUseWhatChange(true);
 
 export default function NoteCard({
   note,
@@ -70,8 +68,25 @@ export default function NoteCard({
   };
   const { updateNoteToDb } = usePostDb(noteUploadData, note);
 
+  const queryClient = useQueryClient();
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: (note_id: string) => deleteNote(note_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notes']);
+      // refetch labels too (later)
+    },
+  });
+
+  const deleteLabelMutation = useMutation({
+    mutationFn: (label: string) => removeLabelFromNote(note_id, label, currentUser.uid),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notes']);
+      // refetch labels too (later)
+    },
+  });
   const deleteLabel = (label: string) => {
-    removeLabelFromNote(note_id, label, currentUser?.uid);
+    deleteLabelMutation.mutate(label)
   };
 
   const labelButtons = labels.map((label) => (
@@ -81,7 +96,7 @@ export default function NoteCard({
     <button
       onClick={(e) => {
         e.stopPropagation();
-        deleteNote(note_id);
+        deleteNoteMutation.mutate(note_id);
       }}
       className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
     >
