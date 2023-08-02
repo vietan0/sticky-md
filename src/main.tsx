@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from './App';
 import './index.css';
-import UserContextProvider from './contexts/UserContextProvider';
-import ThemeContextProvider from './contexts/ThemeContextProvider';
+import UserProvider from './contexts/UserProvider';
+import ThemeProvider from './contexts/ThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,11 +20,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeContextProvider>
-          <UserContextProvider>
+        <ThemeProvider>
+          <UserProvider>
             <App />
-          </UserContextProvider>
-        </ThemeContextProvider>
+          </UserProvider>
+        </ThemeProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </BrowserRouter>

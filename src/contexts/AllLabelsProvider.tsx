@@ -6,7 +6,7 @@ import { deleteLabelById, getAllLabels } from '../supabase/labels';
 import { getNotesLabels } from '../supabase/notes_labels';
 import { AllLabelsContext, UserContext } from '.';
 
-export default function AllLabelsContextProvider({ children }: { children: JSX.Element }) {
+export default function AllLabelsProvider({ children }: { children: JSX.Element }) {
   const currentUser = useContext(UserContext) as User;
   const [allLabels, setAllLabels] = useState<LabelDbData[]>([]);
 

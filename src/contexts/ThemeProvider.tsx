@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ThemeContext } from '.';
 
-export default function ThemeContextProvider({ children }: { children: JSX.Element }) {
+export default function ThemeProvider({ children }: { children: JSX.Element }) {
   const [theme, setTheme] = useState<'light' | 'dark' | 'os'>(() => {
     // must check localStorage before init theme
     if (localStorage.getItem('theme') === 'light') return 'light';

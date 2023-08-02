@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { auth } from '../firebase/auth';
 import { UserContext } from '.';
 
-export default function UserContextProvider({ children }: { children: JSX.Element }) {
+export default function UserProvider({ children }: { children: JSX.Element }) {
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

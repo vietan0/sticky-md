@@ -1,9 +1,9 @@
 import { useEffect, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import AllLabelsContextProvider from '../contexts/AllLabelsContext';
+import AllLabelsProvider from '../contexts/AllLabelsProvider';
 import Nav from '../components/Nav/Nav';
 import { UserContext } from '../contexts';
-import SearchContextProvider from '../contexts/SearchContextProvider';
+import SearchProvider from '../contexts/SearchProvider';
 
 export default function Home() {
   const currentUser = useContext(UserContext);
@@ -14,13 +14,13 @@ export default function Home() {
   }, [currentUser, nav]);
 
   return (
-    <SearchContextProvider>
-        <AllLabelsContextProvider>
+    <SearchProvider>
+        <AllLabelsProvider>
           <div id="Home" className="min-h-screen">
             <Nav />
             <Outlet />
           </div>
-        </AllLabelsContextProvider>
-    </SearchContextProvider>
+        </AllLabelsProvider>
+    </SearchProvider>
   );
 }

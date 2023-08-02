@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SearchContext } from '.';
 
-export default function SearchContextProvider({ children }: { children: JSX.Element }) {
+export default function SearchProvider({ children }: { children: JSX.Element }) {
   const [searchValue, setSearchValue] = useState('');
 
   return (
