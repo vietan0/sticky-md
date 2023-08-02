@@ -4,7 +4,6 @@ import Sun from '../icons/Sun';
 import Moon from '../icons/Moon';
 import Desktop from '../icons/Desktop';
 import { ThemeContext } from '../../contexts';
-import TooltipWrapper from '../TooltipWrapper';
 
 export default function ThemeToggle() {
   const { theme, setTheme, htmlHasDark } = useContext(ThemeContext);
@@ -23,14 +22,12 @@ export default function ThemeToggle() {
 
   return (
     <Root>
-      <TooltipWrapper content="Switch theme">
-        <Trigger
-          title="Switch theme"
-          className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800"
-        >
-          {themeIcon}
-        </Trigger>
-      </TooltipWrapper>
+      <Trigger
+        title="Switch theme"
+        className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800"
+      >
+        {themeIcon}
+      </Trigger>
       <Portal className="outline outline-1 outline-black">
         <Content
           align="end"

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Photo from '../../icons/Photo';
 import { getImageUrl, uploadImage } from '../../../supabase/storage';
-import TooltipWrapper from '../../TooltipWrapper';
 
 export default function UploadImages({
   imageUrls,
@@ -48,11 +47,9 @@ export default function UploadImages({
 
   return (
     <>
-      <TooltipWrapper content="Add images">
-        <button className={btnClasses} onClick={triggerUpload}>
-          <Photo className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-        </button>
-      </TooltipWrapper>
+      <button title="Add images" className={btnClasses} onClick={triggerUpload}>
+        <Photo className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+      </button>
       <input
         ref={ghostInput}
         type="file"

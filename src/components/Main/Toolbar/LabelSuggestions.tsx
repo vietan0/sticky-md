@@ -9,7 +9,6 @@ import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
 import NoteDbData from '../../../types/NoteDbData';
-import TooltipWrapper from '../../TooltipWrapper';
 
 export default function LabelSuggestions({
   record,
@@ -109,7 +108,7 @@ export default function LabelSuggestions({
     <Popover.Content
       align="start"
       sideOffset={inline ? 0 : 16}
-      className="z-40 max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
+      className="POPOVER_CONTENT z-40 max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
     >
       <input
         autoFocus
@@ -134,13 +133,11 @@ export default function LabelSuggestions({
 
   return (
     <Popover.Root defaultOpen={inline}>
-      <Popover.Trigger asChild={!inline} onClick={(e) => e.stopPropagation()}>
+      <Popover.Trigger asChild={!inline}>
         {!inline && (
-          <TooltipWrapper content="Add labels">
-            <button className={btnClasses}>
-              <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
-            </button>
-          </TooltipWrapper>
+          <button title="Add labels" onClick={(e) => e.stopPropagation()} className={btnClasses}>
+            <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+          </button>
         )}
       </Popover.Trigger>
       {renderedContent}
