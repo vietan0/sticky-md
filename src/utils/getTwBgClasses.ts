@@ -33,7 +33,7 @@ export default function getTwBgClasses(bg_color: Bg_Color) {
       break;
     case '':
       bgClasses
-        = 'bg-white dark:bg-neutral-950 outline outline-1 outline-neutral-300 dark:outline-neutral-700';
+        = 'bg-white dark:bg-neutral-950 outline-solid outline-1 outline-neutral-300 dark:outline-neutral-700';
 
       break;
   }

@@ -34,7 +34,7 @@ export default function ThemeToggle() {
       <Portal className="outline outline-1 outline-black">
         <Content
           align="end"
-          className="z-50 flex flex-col rounded bg-white p-1 text-sm drop-shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:bg-neutral-900"
+          className="z-50 flex flex-col rounded-sm bg-white p-1 text-sm drop-shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:bg-neutral-900"
         >
           <CheckboxItem
             checked={theme === 'light'}

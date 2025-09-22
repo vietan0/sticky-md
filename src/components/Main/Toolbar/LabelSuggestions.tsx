@@ -56,13 +56,13 @@ export default function LabelSuggestions({
     <label
       className={`${
         record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-900'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-none dark:hover:bg-neutral-900`}
+      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-hidden dark:hover:bg-neutral-900`}
       key={label_name}
       onClick={e => e.stopPropagation()}
     >
       <Checkbox.Root
         checked={record.labelsToAdd.includes(label_name)}
-        className="flex h-3 w-3 appearance-none items-center justify-center rounded-sm outline outline-1 outline-neutral-500"
+        className="flex h-3 w-3 appearance-none items-center justify-center rounded-xs outline-solid outline-1 outline-neutral-500"
         onCheckedChange={(checked) => {
           if (checked) {
             const updated = record.labelsToAdd.includes(label_name)
@@ -92,7 +92,7 @@ export default function LabelSuggestions({
     <button
       className={`${
         record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-none dark:hover:bg-neutral-900`}
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-hidden dark:hover:bg-neutral-900`}
       key={label_name}
       onClick={() =>
         record.setLabelsToAdd(prev => (prev.includes(label_name) ? prev : [...prev, label_name]))}
@@ -118,12 +118,12 @@ export default function LabelSuggestions({
   const content = (
     <Popover.Content
       align="start"
-      className="POPOVER_CONTENT z-40 max-h-64 w-48 overflow-y-scroll rounded bg-white outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
+      className="POPOVER_CONTENT z-40 max-h-64 w-48 overflow-y-scroll rounded-sm bg-white outline-solid outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
       sideOffset={inline ? 0 : 16}
     >
       <input
         autoFocus
-        className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950"
+        className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-950"
         onChange={handleChange}
         onClick={e => e.stopPropagation()}
         onKeyDown={record.searchKeyDown}

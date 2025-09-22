@@ -121,7 +121,7 @@ export default function NoteForm({
           value={title}
         >
           <TextareaAutosize
-            className="max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-hidden dark:placeholder:text-neutral-400"
             maxLength={400}
             maxRows={3}
             minRows={1}
@@ -138,7 +138,7 @@ export default function NoteForm({
         >
           <TextareaAutosize
             autoFocus
-            className="max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-hidden dark:placeholder:text-neutral-400"
             maxRows={15}
             minRows={2}
             placeholder="Write something…"

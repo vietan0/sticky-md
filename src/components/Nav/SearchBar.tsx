@@ -13,11 +13,11 @@ export default function SearchBar() {
   }
 
   return (
-    <form className="max-w-xl flex-grow" id="SearchBar" onSubmit={handleSubmit}>
+    <form className="max-w-xl grow" id="SearchBar" onSubmit={handleSubmit}>
       <label className="relative inline-block w-full">
         <Search className="absolute left-2 xs:left-3 top-[9px] h-5 w-5" />
         <input
-          className="w-full rounded bg-white/20 px-6 py-2 pl-9 xs:pl-12 text-[15px] outline outline-1 outline-neutral-300 placeholder:text-neutral-500 dark:bg-neutral-900/20 dark:outline-neutral-800"
+          className="w-full rounded-sm bg-white/20 px-6 py-2 pl-9 xs:pl-12 text-[15px] outline-solid outline-1 outline-neutral-300 placeholder:text-neutral-500 dark:bg-neutral-900/20 dark:outline-neutral-800"
           onChange={e => setInputValue(e.target.value)}
           placeholder="Search by words, labels, colors,…"
           value={inputValue}
@@ -35,7 +35,7 @@ export default function SearchBar() {
               <Close className="h-5 w-5" />
             </button>
             <button
-              className="inset-auto bottom-1 top-1 rounded px-2 py-1 outline-1 outline-neutral-500 hover:bg-blue-100 dark:hover:bg-transparent dark:hover:outline dark:hover:outline-blue-600"
+              className="inset-auto bottom-1 top-1 rounded-sm px-2 py-1 outline-1 outline-neutral-500 hover:bg-blue-100 dark:hover:bg-transparent dark:hover:outline-solid dark:hover:outline-blue-600"
               type="submit"
             >
               Search

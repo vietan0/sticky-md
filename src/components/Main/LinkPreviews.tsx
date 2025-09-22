@@ -39,8 +39,8 @@ function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
   return (
     <a
       className={`${
-        note.bg_color ? 'bg-white/60' : 'bg-black/[.05]'
-      } relative flex h-14 border-t-2 border-black/10 hover:bg-transparent dark:border-white/10 dark:bg-white/[0.13]`}
+        note.bg_color ? 'bg-white/60' : 'bg-black/5'
+      } relative flex h-14 border-t-2 border-black/10 hover:bg-transparent dark:border-white/10 dark:bg-white/13`}
       href={url}
       onClick={e => e.stopPropagation()}
       rel="noreferrer"
@@ -48,22 +48,22 @@ function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
     >
       {image
         ? (
-            <div className="flex h-14 flex-shrink-0 basis-14 bg-white/30 dark:bg-white/[.07]">
+            <div className="flex h-14 shrink-0 basis-14 bg-white/30 dark:bg-white/[.07]">
               <img alt="" className="object-cover" src={image} />
             </div>
           )
         : favicon
           ? (
-              <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
-                <img alt="" className="flex-grow object-cover" src={favicon} />
+              <div className="flex h-14 shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
+                <img alt="" className="grow object-cover" src={favicon} />
               </div>
             )
           : (
-              <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
+              <div className="flex h-14 shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
                 <Globe className="h-6 w-6 opacity-50" />
               </div>
             )}
-      <div className="flex w-auto min-w-0 flex-grow flex-col justify-center gap-px p-2 px-[10px] pr-4">
+      <div className="flex w-auto min-w-0 grow flex-col justify-center gap-px p-2 px-[10px] pr-4">
         <p className="truncate text-sm font-medium">{title || description || '…'}</p>
         <p className="truncate text-xs opacity-60">{new URL(url).origin}</p>
       </div>

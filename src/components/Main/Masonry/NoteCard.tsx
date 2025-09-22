@@ -161,7 +161,7 @@ export default function NoteCard({
         <article
           className={`${getTwBgClasses(
             bg_color,
-          )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline-solid hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onTransitionEnd={handleTransitionEnd}
@@ -175,7 +175,7 @@ export default function NoteCard({
           <ImagesContainer imageUrls={image_urls} inNoteCard setImageUrls={setImageUrls} />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
-              <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold [&_*]:text-lg">
+              <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold **:text-lg">
                 {title}
               </CustomMd>
             )}
@@ -203,7 +203,7 @@ export default function NoteCard({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-20 bg-black/40" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%/35%)_0px_10px_38px_-10px,hsl(206_22%_7%/20%)_0px_10px_20px_-15px] focus:outline-hidden">
           <NoteForm existingNote={note} setFormOpen={setEditFormOpen} />
         </Dialog.Content>
       </Dialog.Portal>

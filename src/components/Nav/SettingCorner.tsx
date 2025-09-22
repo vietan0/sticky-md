@@ -30,14 +30,14 @@ export default function SettingCorner() {
       <Portal>
         <Content
           align="end"
-          className="flex flex-col z-20 rounded bg-neutral-100 p-1 text-sm shadow-lg dark:bg-neutral-900"
+          className="flex flex-col z-20 rounded-sm bg-neutral-100 p-1 text-sm shadow-lg dark:bg-neutral-900"
         >
-          <Item className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800">
+          <Item className="flex cursor-pointer items-center gap-2 rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800">
             <Settings className="h-5 w-5" />
             <span>Settings</span>
           </Item>
           <Item
-            className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+            className="flex cursor-pointer items-center gap-2 rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
             onClick={async () => await signOut(auth)}
           >
             <SignOut className="h-5 w-5" />

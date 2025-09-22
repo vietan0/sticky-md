@@ -41,7 +41,7 @@ export default function SignIn() {
 
   return (
     <div
-      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:w-[400px] xs:p-8 xs:outline xs:outline-blue-100 xs:dark:outline-neutral-800"
+      className="flex flex-col gap-4 rounded-lg p-4 pb-12 shadow-lg xs:m-auto xs:w-[400px] xs:p-8 xs:outline-solid xs:outline-blue-100 xs:dark:outline-neutral-800"
       id="SignIn"
     >
       <HomeLink className="mb-2" />
@@ -64,7 +64,7 @@ export default function SignIn() {
             placeholder="Email"
             type="email"
             {...register('email', { required: true })}
-            className="w-full rounded bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
+            className="w-full rounded-sm bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
           />
           {errors.email && (
             <span className="mt-1 inline-block text-sm text-red-500">Email is required</span>
@@ -76,14 +76,14 @@ export default function SignIn() {
             placeholder="Password"
             type="password"
             {...register('password', { required: true })}
-            className="w-full rounded bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
+            className="w-full rounded-sm bg-neutral-200 px-4 py-2 pl-12 placeholder:text-neutral-700 dark:bg-neutral-900 dark:placeholder:text-neutral-500"
           />
           {errors.password && (
             <span className="mt-1 inline-block text-sm text-red-500">Password is required</span>
           )}
         </label>
         <button
-          className="rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/50"
+          className="rounded px-4 py-2 outline-solid outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/50"
           onClick={handleSubmit(onSubmit, onError)}
           type="submit"
         >
@@ -93,14 +93,14 @@ export default function SignIn() {
       <span className="text-center text-sm">or</span>
       <div className="flex flex-col justify-center gap-3">
         <button
-          className="flex gap-4 rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
+          className="flex gap-4 rounded-sm px-4 py-2 outline-solid outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
           onClick={async () => await oAuthSignIn(googleProvider)}
         >
           <Google className="w-5" />
           <span>Sign in with Google</span>
         </button>
         <button
-          className="flex gap-4 rounded px-4 py-2 outline outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
+          className="flex gap-4 rounded-sm px-4 py-2 outline-solid outline-1 outline-blue-300 hover:bg-blue-100 focus-visible:outline-white dark:text-white dark:outline-blue-900 dark:hover:bg-blue-900/30"
           onClick={async () => await oAuthSignIn(githubProvider)}
         >
           <Github className="w-5" />
