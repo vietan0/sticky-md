@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Masonry from './Masonry/Masonry';
 import NoteForm from './NoteForm/NoteForm';
 import NotePrompt from './NoteForm/NotePrompt';
@@ -10,6 +10,7 @@ export default function Main() {
     function toggleformOpen() {
       setFormOpen(false);
     }
+
     document.addEventListener('click', toggleformOpen);
 
     return () => {
@@ -19,11 +20,13 @@ export default function Main() {
 
   return (
     <main className="flex flex-col mt-20 gap-8 p-8">
-      {formOpen ? (
-        <NoteForm setFormOpen={setFormOpen} />
-      ) : (
-        <NotePrompt setFormOpen={setFormOpen} />
-      )}
+      {formOpen
+        ? (
+            <NoteForm setFormOpen={setFormOpen} />
+          )
+        : (
+            <NotePrompt setFormOpen={setFormOpen} />
+          )}
       <Masonry />
     </main>
   );

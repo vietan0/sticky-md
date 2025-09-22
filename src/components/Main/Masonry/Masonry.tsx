@@ -1,19 +1,20 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import type { User } from 'firebase/auth';
+import type Dimension from '../../../types/Dimension';
+import type NoteDbData from '../../../types/NoteDbData';
+import type Nudge from '../../../types/Nudge';
 import { useQuery } from '@tanstack/react-query';
-import { User } from 'firebase/auth';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import ReactLoading from 'react-loading';
-import Dimension from '../../../types/Dimension';
-import Nudge from '../../../types/Nudge';
-import { getAllNotes } from '../../../supabase/notes';
-import NoteDbData from '../../../types/NoteDbData';
 import { UserContext } from '../../../contexts';
+import { getAllNotes } from '../../../supabase/notes';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
 const gap = 12;
 const colWidth = 240;
 const mainPadding = 32;
-const breakpoints = Array(4)
+
+const breakpoints = Array.from({ length: 4 })
   .fill(0)
   .map((_, i) => colWidth * (i + 2) + gap * (i + 1)); // [ 504, 768, 1032, 1296 ]
 
@@ -22,9 +23,10 @@ export default function Masonry() {
   const currentUser = useContext(UserContext) as User;
   const masonry = useRef<HTMLDivElement>(null);
   const [colNum, setColNum] = useState<1 | 2 | 3 | 4 | 5>(1);
+
   const lefts = useMemo(
     () =>
-      Array(colNum)
+      Array.from({ length: colNum })
         .fill(0)
         .map((_, i) => colWidth * i + gap * i), // [ 0, 252, 504, 756, 1008 ]
     [colNum],
@@ -33,18 +35,20 @@ export default function Masonry() {
   useEffect(() => {
     const syncWidth = () => {
       const availableSpace = window.innerWidth - mainPadding * 2;
+
       setColNum(
         availableSpace < breakpoints[0]
           ? 1
           : availableSpace < breakpoints[1]
-          ? 2
-          : availableSpace < breakpoints[2]
-          ? 3
-          : availableSpace < breakpoints[3]
-          ? 4
-          : 5,
+            ? 2
+            : availableSpace < breakpoints[2]
+              ? 3
+              : availableSpace < breakpoints[3]
+                ? 4
+                : 5,
       );
     };
+
     syncWidth();
     window.addEventListener('resize', syncWidth);
 
@@ -54,11 +58,12 @@ export default function Masonry() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['notes'], // noun
+    queryKey: ['notes', currentUser.uid], // noun
     queryFn: async () => await getAllNotes(currentUser.uid),
   });
 
   const allNotes = useMemo(() => (data as NoteDbData[]) || [], [data]);
+
   const [allCardDims, setAllCardDims] = useState<Dimension[]>(
     // initialize
     allNotes.map(
@@ -73,6 +78,7 @@ export default function Masonry() {
       }),
     ),
   );
+
   // store nudge amount for each card
   const [nudges, setNudges] = useState<Nudge[]>(
     allNotes.map(({ note_id }) => ({ left: 0, top: 0, note_id })),
@@ -85,9 +91,11 @@ export default function Masonry() {
 
       // handle delete card
       const deleteTargetIndex = prev.findIndex((dim) => {
-        const ids = allNotes.map((n) => n.note_id);
+        const ids = allNotes.map(n => n.note_id);
+
         return !ids.includes(dim.note_id);
       });
+
       if (deleteTargetIndex !== -1) {
         updated.splice(deleteTargetIndex, 1);
       }
@@ -96,26 +104,31 @@ export default function Masonry() {
         // allNotes, allCardDims & nudges have the same order
         const rect = allCardDims[i];
         let nudge: Nudge = { left: 0, top: 0, note_id: rect.note_id };
+
         if (i > 0) {
           if (i < colNum) {
             // first row
             nudge = { left: lefts[i], top: 0, note_id: rect.note_id };
-          } else {
+          }
+          else {
             // subsequent rows
             const lowestCards = lefts.map((left) => {
               const bottomsOfSameCol = previewUpdatedDims
-                .filter((dim) => dim.left === left + abs.left)
-                .map((dim) => dim.bottom);
+                .filter(dim => dim.left === left + abs.left)
+                .map(dim => dim.bottom);
 
               const lowestCardOfEachCol = Math.max(...bottomsOfSameCol);
+
               return { left, bottom: lowestCardOfEachCol };
             });
 
+            // eslint-disable-next-line array-callback-return
             const cardOnTop = lowestCards.find((obj, _, a) => {
               // in possible cardOnTops (card with blank space below),
               // return one with smallest bottom
-              const smallestBottom = Math.min(...a.map((obj) => obj.bottom));
-              if (obj.bottom === smallestBottom) return obj;
+              const smallestBottom = Math.min(...a.map(obj => obj.bottom));
+              if (obj.bottom === smallestBottom)
+                return obj;
               // TS complains that find() could return undefined, but with this logic it cannot
             }) as { left: number; bottom: number };
 
@@ -125,6 +138,7 @@ export default function Masonry() {
               note_id: rect.note_id,
             };
           }
+
           // add changes to rect (must resemble position returned from getBoundingClientRect(),
           // which means calculate from 0, 0)
           rect.left = nudge.left + abs.left;
@@ -132,6 +146,7 @@ export default function Masonry() {
           rect.top = nudge.top + abs.top;
           rect.bottom = nudge.top + abs.top + rect.height;
         }
+
         // push preview updated position to previewUpdatedDims
         previewUpdatedDims.push(rect);
         updated[i] = nudge;
@@ -139,50 +154,54 @@ export default function Masonry() {
 
       return updated;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colNum, allNotes, allCardDims]);
 
   const allCards = allNotes.map((note, i) => (
     <NoteCard
-      note={note}
+      abs={abs}
+      allNotes={allNotes}
       colNum={colNum}
       colWidth={colWidth}
-      setAllCardDims={setAllCardDims}
       i={i}
-      nudge={nudges[i] || { left: 0, top: 0, note_id: note.note_id }}
-      allNotes={allNotes}
-      lefts={lefts}
-      abs={abs}
       key={note.note_id}
+      lefts={lefts}
+      note={note}
+      nudge={nudges[i] || { left: 0, top: 0, note_id: note.note_id }}
+      setAllCardDims={setAllCardDims}
     />
   ));
 
   function getMasonryHeight() {
-    const bottoms = allCardDims.map((n) => n.bottom);
+    const bottoms = allCardDims.map(n => n.bottom);
     const maxBottom = bottoms.length > 0 ? Math.max(...bottoms) - abs.top : 0;
+
     return maxBottom;
   }
+
   const masonryHeight = getMasonryHeight();
   const masonryWidth = colNum > 1 ? colNum * colWidth + (colNum - 1) * gap : '100%';
+
   return (
     <div
-      ref={masonry}
+      className={`${colNum > 1 ? 'relative' : 'flex flex-col gap-3'} mx-auto duration-100`}
       id="Masonry"
+      ref={masonry}
       style={{
         height: masonryHeight,
         width: masonryWidth,
         maxWidth: breakpoints[3],
       }}
-      className={`${colNum > 1 ? 'relative' : 'flex flex-col gap-3'} mx-auto duration-100`}
     >
-      {isLoading ? (
-        <div className="flex items-center justify-center gap-4">
-          <ReactLoading type="spin" color="#3b82f6" height={20} width={20} />
-          Getting your notes…
-        </div>
-      ) : (
-        allCards
-      )}
+      {isLoading
+        ? (
+            <div className="flex items-center justify-center gap-4">
+              <ReactLoading color="#3b82f6" height={20} type="spin" width={20} />
+              Getting your notes…
+            </div>
+          )
+        : (
+            allCards
+          )}
     </div>
   );
 }

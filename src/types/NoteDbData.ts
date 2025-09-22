@@ -1,4 +1,4 @@
-import { Bg_Color } from './Bg_Color';
+import type { Bg_Color } from './Bg_Color';
 
 export default interface NoteDbData {
   title: string;

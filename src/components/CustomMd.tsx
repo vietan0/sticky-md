@@ -14,6 +14,7 @@ export default function CustomMd({
   className?: string;
 }) {
   const { htmlHasDark } = useContext(ThemeContext);
+
   const style = htmlHasDark
     ? (vsDarkPlus as {
         [key: string]: React.CSSProperties;
@@ -25,7 +26,6 @@ export default function CustomMd({
   return (
     <ReactMarkdown
       className={className}
-      remarkPlugins={[remarkGfm]}
       components={{
         h1: ({ node, ...props }) => <h1 {...props} className="text-lg font-semibold" />,
         h2: ({ node, ...props }) => <h2 {...props} className="text-base font-medium" />,
@@ -46,9 +46,9 @@ export default function CustomMd({
         a: ({ node, ...props }) => (
           <a
             {...props}
-            target="_blank"
-            onClick={(e) => e.stopPropagation()}
             className="text-blue-700 hover:underline dark:text-blue-500"
+            onClick={e => e.stopPropagation()}
+            target="_blank"
           />
         ),
         pre: ({ node, ...props }) => (
@@ -56,35 +56,39 @@ export default function CustomMd({
         ),
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || '');
-          return !inline && match ? (
-            <SyntaxHighlighter
-              style={style}
-              customStyle={{
-                borderRadius: '4px',
-                margin: 0,
-                width: '100%',
-                border: htmlHasDark
-                  ? '1px solid hsl(0 100% 100% / 0.15)'
-                  : '1px solid hsl(0 0% 0% / 0.1)',
-                backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.9)' : 'hsl(0 100% 100% / 0.75)',
-              }} // affect parent of <code>
-              codeTagProps={{ className: 'text-[14px] overflow-hidden tracking-tight' }} // affect <code> itself, overrides style
-              language={match[1]}
-            >
-              {String(children).replace(/\n$/, '')}
-            </SyntaxHighlighter>
-          ) : (
-            <code
-              {...props}
-              className={`${
-                className || ''
-              } w-fit whitespace-pre-wrap rounded-md bg-black/10 px-1 py-[2px] text-sm dark:bg-white/10`}
-            >
-              {children}
-            </code>
-          );
+
+          return !inline && match
+            ? (
+                <SyntaxHighlighter
+                  codeTagProps={{ className: 'text-[14px] overflow-hidden tracking-tight' }} // affect <code> itself, overrides style
+                  customStyle={{
+                    borderRadius: '4px',
+                    margin: 0,
+                    width: '100%',
+                    border: htmlHasDark
+                      ? '1px solid hsl(0 100% 100% / 0.15)'
+                      : '1px solid hsl(0 0% 0% / 0.1)',
+                    backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.9)' : 'hsl(0 100% 100% / 0.75)',
+                  }} // affect parent of <code>
+                  language={match[1]}
+                  style={style}
+                >
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
+              )
+            : (
+                <code
+                  {...props}
+                  className={`${
+                    className || ''
+                  } w-fit whitespace-pre-wrap rounded-md bg-black/10 px-1 py-[2px] text-sm dark:bg-white/10`}
+                >
+                  {children}
+                </code>
+              );
         },
       }}
+      remarkPlugins={[remarkGfm]}
     >
       {children}
     </ReactMarkdown>

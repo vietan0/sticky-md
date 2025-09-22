@@ -1,7 +1,7 @@
+import type { RecordReturn } from '../../../hooks/useRecordLabel';
+import type NoteDbData from '../../../types/NoteDbData';
 import { cloneElement, useState } from 'react';
 import CustomMd from '../../CustomMd';
-import { RecordReturn } from '../../../hooks/useRecordLabel';
-import NoteDbData from '../../../types/NoteDbData';
 import Mirror from './Mirror';
 
 export default function ToggleMdRaw({
@@ -21,20 +21,22 @@ export default function ToggleMdRaw({
   existingNote: NoteDbData | undefined;
   children: JSX.Element;
 }) {
-  const [editing, setEditing] = useState(value === '' ? true : false);
+  const [editing, setEditing] = useState(value === '');
   const [mirrorPos, setMirrorPos] = useState({ width: 0, height: 0, top: 0 });
 
   const md = (
     <div className="cursor-pointer" onClick={() => setEditing(true)}>
-      {isTitle ? (
-        <CustomMd className="max-h-20 min-h-[28px] overflow-y-auto text-lg font-semibold [&_*]:text-ellipsis [&_*]:text-lg">
-          {value}
-        </CustomMd>
-      ) : (
-        <CustomMd className="flex max-h-52 min-h-[22.5px] flex-col gap-2 overflow-y-auto text-[15px]">
-          {value}
-        </CustomMd>
-      )}
+      {isTitle
+        ? (
+            <CustomMd className="max-h-20 min-h-[28px] overflow-y-auto text-lg font-semibold [&_*]:text-ellipsis [&_*]:text-lg">
+              {value}
+            </CustomMd>
+          )
+        : (
+            <CustomMd className="flex max-h-52 min-h-[22.5px] flex-col gap-2 overflow-y-auto text-[15px]">
+              {value}
+            </CustomMd>
+          )}
     </div>
   );
 
@@ -51,21 +53,23 @@ export default function ToggleMdRaw({
 
   const childFieldWithRef = cloneElement(childField, propsToPass);
 
-  return editing ? (
-    <>
-      {childFieldWithRef}
-      <Mirror
-        mirrorPos={mirrorPos}
-        setMirrorPos={setMirrorPos}
-        isTitle={isTitle}
-        value={value}
-        textAreaRef={textAreaRef}
-        formRef={formRef}
-        record={record}
-        existingNote={existingNote}
-      />
-    </>
-  ) : (
-    md
-  );
+  return editing
+    ? (
+        <>
+          {childFieldWithRef}
+          <Mirror
+            existingNote={existingNote}
+            formRef={formRef}
+            isTitle={isTitle}
+            mirrorPos={mirrorPos}
+            record={record}
+            setMirrorPos={setMirrorPos}
+            textAreaRef={textAreaRef}
+            value={value}
+          />
+        </>
+      )
+    : (
+        md
+      );
 }

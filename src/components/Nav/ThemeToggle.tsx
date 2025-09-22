@@ -1,30 +1,33 @@
+import { Arrow, CheckboxItem, Content, Portal, Root, Trigger } from '@radix-ui/react-dropdown-menu';
 import { useContext } from 'react';
-import { Root, Trigger, Portal, CheckboxItem, Content, Arrow } from '@radix-ui/react-dropdown-menu';
-import Sun from '../icons/Sun';
-import Moon from '../icons/Moon';
-import Desktop from '../icons/Desktop';
 import { ThemeContext } from '../../contexts';
+import Desktop from '../icons/Desktop';
+import Moon from '../icons/Moon';
+import Sun from '../icons/Sun';
 
 export default function ThemeToggle() {
   const { theme, setTheme, htmlHasDark } = useContext(ThemeContext);
-
   let themeIcon;
+
   if (theme === 'light') {
     themeIcon = <Sun className="h-6 w-6 stroke-blue-500" />;
   }
+
   if (theme === 'dark') {
     themeIcon = <Moon className="h-6 w-6 stroke-blue-500" />;
   }
+
   if (theme === 'os') {
-    if (htmlHasDark) themeIcon = <Moon className="h-6 w-6 opacity-40" />;
+    if (htmlHasDark)
+      themeIcon = <Moon className="h-6 w-6 opacity-40" />;
     else themeIcon = <Sun className="h-6 w-6 opacity-40" />;
   }
 
   return (
     <Root>
       <Trigger
-        title="Switch theme"
         className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800"
+        title="Switch theme"
       >
         {themeIcon}
       </Trigger>
@@ -35,36 +38,39 @@ export default function ThemeToggle() {
         >
           <CheckboxItem
             checked={theme === 'light'}
-            onCheckedChange={(checked) => {
-              if (checked) setTheme('light');
-            }}
             className={`${
               theme === 'light' ? 'text-blue-600' : ''
             } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
+            onCheckedChange={(checked) => {
+              if (checked)
+                setTheme('light');
+            }}
           >
             <Sun className="h-5 w-5" />
             <span>Light Mode</span>
           </CheckboxItem>
           <CheckboxItem
             checked={theme === 'dark'}
-            onCheckedChange={(checked) => {
-              if (checked) setTheme('dark');
-            }}
             className={`${
               theme === 'dark' ? 'text-blue-600' : ''
             } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
+            onCheckedChange={(checked) => {
+              if (checked)
+                setTheme('dark');
+            }}
           >
             <Moon className="h-5 w-5" />
             <span>Dark Mode</span>
           </CheckboxItem>
           <CheckboxItem
             checked={theme === 'os'}
-            onCheckedChange={(checked) => {
-              if (checked) setTheme('os');
-            }}
             className={`${
               theme === 'os' ? 'text-blue-600' : ''
             } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
+            onCheckedChange={(checked) => {
+              if (checked)
+                setTheme('os');
+            }}
           >
             <Desktop className="h-5 w-5" />
             <span>System</span>

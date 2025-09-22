@@ -1,10 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import {
+  createUserWithEmailAndPassword,
+  getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  getAuth,
   signInWithPopup,
 } from 'firebase/auth';
 import { createUser } from '../supabase/users';
@@ -24,7 +24,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
@@ -34,7 +33,8 @@ async function emailSignUp(email: string, password: string) {
     console.log('signed up with email!');
     const { uid } = userCred.user;
     createUser(uid);
-  } catch (error) {
+  }
+  catch (error) {
     console.log('sign up with email failed!');
     console.log(error);
   }
@@ -45,8 +45,8 @@ async function emailSignIn(email: string, password: string) {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     console.log('signed in with email!');
     console.log(userCred);
-    const { user } = userCred; // The signed-in user info
-  } catch (error) {
+  }
+  catch (error) {
     console.log('sign in with email failed!');
     console.log(error);
   }
@@ -58,10 +58,11 @@ async function oAuthSignIn(provider: GoogleAuthProvider | GithubAuthProvider) {
     console.log('signed in with oauth!');
     const { uid } = result.user;
     createUser(uid);
-  } catch (error) {
+  }
+  catch (error) {
     console.log('sign in with oauth failed!');
     console.log(error);
   }
 }
 
-export { auth, emailSignUp, emailSignIn, oAuthSignIn, githubProvider, googleProvider };
+export { auth, emailSignIn, emailSignUp, githubProvider, googleProvider, oAuthSignIn };

@@ -64,46 +64,46 @@ export default {
     color: '#db4c69',
     background: '#f8f8f8',
   },
-  comment: {
+  'comment': {
     color: '#008000',
   },
-  prolog: {
+  'prolog': {
     color: '#008000',
   },
-  punctuation: {
+  'punctuation': {
     color: '#393A34',
   },
-  operator: {
+  'operator': {
     color: '#393A34',
   },
-  url: {
+  'url': {
     color: '#36acaa',
   },
-  boolean: {
+  'boolean': {
     color: '#36acaa',
   },
-  number: {
+  'number': {
     color: '#36acaa',
   },
-  variable: {
+  'variable': {
     color: '#36acaa',
   },
-  constant: {
+  'constant': {
     color: '#36acaa',
   },
-  symbol: {
+  'symbol': {
     color: '#36acaa',
   },
-  inserted: {
+  'inserted': {
     color: '#36acaa',
   },
-  deleted: {
+  'deleted': {
     color: '#9a050f',
   },
-  atrule: {
+  'atrule': {
     color: '#0000ff',
   },
-  keyword: {
+  'keyword': {
     color: '#0000ff',
   },
   'attr-value': {
@@ -121,27 +121,27 @@ export default {
   'code[class*="language-css"]': {
     color: '#0000ff',
   },
-  function: {
+  'function': {
     color: '#393A34',
   },
 
   '.language-autohotkey .token.tag': {
     color: '#9a050f',
   },
-  selector: {
+  'selector': {
     color: '#800000',
   },
   '.language-autohotkey .token.keyword': {
     color: '#00009f',
   },
-  important: {
+  'important': {
     color: '#e90',
     fontWeight: 'bold',
   },
-  bold: {
+  'bold': {
     fontWeight: 'bold',
   },
-  italic: {
+  'italic': {
     fontStyle: 'italic',
   },
   'class-name': {
@@ -150,19 +150,19 @@ export default {
   '.language-json .token.property': {
     color: '#2B91AF',
   },
-  tag: {
+  'tag': {
     color: '#800000',
   },
   'attr-name': {
     color: '#ff0000',
   },
-  property: {
+  'property': {
     color: '#ff0000',
   },
-  regex: {
+  'regex': {
     color: '#ff0000',
   },
-  entity: {
+  'entity': {
     color: '#ff0000',
   },
   'directive.tag.tag': {

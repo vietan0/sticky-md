@@ -1,11 +1,12 @@
-import { User, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { auth } from '../firebase/auth';
 import { UserContext } from '.';
+import { auth } from '../firebase/auth';
 
 export default function UserProvider({ children }: { children: JSX.Element }) {
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setLoading(false);

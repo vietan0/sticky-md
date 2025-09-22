@@ -68,16 +68,16 @@ export default {
   'doctype.name': {
     color: '#9cdcfe',
   },
-  comment: {
+  'comment': {
     color: '#6a9955',
   },
-  prolog: {
+  'prolog': {
     color: '#6a9955',
   },
-  punctuation: {
+  'punctuation': {
     color: '#d4d4d4',
   },
-  operator: {
+  'operator': {
     color: '#d4d4d4',
   },
   '.language-html .language-css .token.punctuation': {
@@ -86,62 +86,62 @@ export default {
   '.language-html .language-javascript .token.punctuation': {
     color: '#d4d4d4',
   },
-  property: {
+  'property': {
     color: '#9cdcfe',
   },
-  tag: {
+  'tag': {
     color: '#569cd6',
   },
-  boolean: {
+  'boolean': {
     color: '#569cd6',
   },
-  number: {
+  'number': {
     color: '#b5cea8',
   },
-  variable: {
+  'variable': {
     color: '#b5cea8',
   },
-  constant: {
+  'constant': {
     color: '#9cdcfe',
   },
-  symbol: {
+  'symbol': {
     color: '#b5cea8',
   },
-  inserted: {
+  'inserted': {
     color: '#b5cea8',
   },
-  unit: {
+  'unit': {
     color: '#b5cea8',
   },
-  selector: {
+  'selector': {
     color: '#d7ba7d',
   },
   'attr-name': {
     color: '#9cdcfe',
   },
-  string: {
+  'string': {
     color: '#ce9178',
   },
-  char: {
+  'char': {
     color: '#ce9178',
   },
-  builtin: {
+  'builtin': {
     color: '#ce9178',
   },
-  deleted: {
+  'deleted': {
     color: '#ce9178',
   },
   '.language-css .token.string.url': {
     textDecoration: 'underline',
   },
 
-  entity: {
+  'entity': {
     color: '#569cd6',
   },
   'operator.arrow': {
     color: '#569CD6',
   },
-  atrule: {
+  'atrule': {
     color: '#ce9178',
   },
   'atrule.rule': {
@@ -156,7 +156,7 @@ export default {
   'atrule.url.punctuation': {
     color: '#d4d4d4',
   },
-  keyword: {
+  'keyword': {
     color: '#569CD6',
   },
   'keyword.module': {
@@ -165,19 +165,19 @@ export default {
   'keyword.control-flow': {
     color: '#c586c0',
   },
-  function: {
+  'function': {
     color: '#dcdcaa',
   },
   'function.maybe-class-name': {
     color: '#dcdcaa',
   },
-  regex: {
+  'regex': {
     color: '#d16969',
   },
-  important: {
+  'important': {
     color: '#569cd6',
   },
-  italic: {
+  'italic': {
     fontStyle: 'italic',
   },
   'class-name': {
@@ -186,13 +186,13 @@ export default {
   'maybe-class-name': {
     color: '#4ec9b0',
   },
-  console: {
+  'console': {
     color: '#9cdcfe',
   },
-  parameter: {
+  'parameter': {
     color: '#9cdcfe',
   },
-  interpolation: {
+  'interpolation': {
     color: '#9cdcfe',
   },
   'punctuation.interpolation-punctuation': {
@@ -204,13 +204,13 @@ export default {
   'exports.maybe-class-name': {
     color: '#9cdcfe',
   },
-  escape: {
+  'escape': {
     color: '#d7ba7d',
   },
   'tag.punctuation': {
     color: '#808080',
   },
-  cdata: {
+  'cdata': {
     color: '#808080',
   },
   'attr-value': {
@@ -222,7 +222,7 @@ export default {
   'attr-value.punctuation.attr-equals': {
     color: '#d4d4d4',
   },
-  namespace: {
+  'namespace': {
     color: '#4ec9b0',
   },
   'pre[class*="language-javascript"]': {

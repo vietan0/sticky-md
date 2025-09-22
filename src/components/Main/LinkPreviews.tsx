@@ -1,15 +1,16 @@
+import type NoteDbData from '../../types/NoteDbData';
 import * as linkify from 'linkifyjs';
 import { useEffect, useState } from 'react';
 import Globe from '../icons/Globe';
-import NoteDbData from '../../types/NoteDbData';
 
-type Data = {
+interface Data {
   url: string;
   title: string;
   description: string;
   favicon: string;
   image: string;
-};
+}
+
 function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
   const [data, setData] = useState<Data>({
     url: '',
@@ -18,6 +19,7 @@ function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
     favicon: '',
     image: '',
   });
+
   const { title, description, favicon, image } = data;
 
   useEffect(() => {
@@ -26,35 +28,41 @@ function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
         `https://sticky-md-scraper.onrender.com/api?url=${url}`,
         { mode: 'cors' },
       );
+
       const data = await res.json();
       setData(data);
     }
+
     get();
   }, [url]);
 
   return (
     <a
-      onClick={(e) => e.stopPropagation()}
-      href={url}
-      target="_blank"
-      rel="noreferrer"
       className={`${
         note.bg_color ? 'bg-white/60' : 'bg-black/[.05]'
       } relative flex h-14 border-t-2 border-black/10 hover:bg-transparent dark:border-white/10 dark:bg-white/[0.13]`}
+      href={url}
+      onClick={e => e.stopPropagation()}
+      rel="noreferrer"
+      target="_blank"
     >
-      {image ? (
-        <div className="flex h-14 flex-shrink-0 basis-14 bg-white/30 dark:bg-white/[.07]">
-          <img src={image} alt="" className="object-cover" />
-        </div>
-      ) : favicon ? (
-        <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
-          <img src={favicon} alt="" className="flex-grow object-cover" />
-        </div>
-      ) : (
-        <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
-          <Globe className="h-6 w-6 opacity-50" />
-        </div>
-      )}
+      {image
+        ? (
+            <div className="flex h-14 flex-shrink-0 basis-14 bg-white/30 dark:bg-white/[.07]">
+              <img alt="" className="object-cover" src={image} />
+            </div>
+          )
+        : favicon
+          ? (
+              <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
+                <img alt="" className="flex-grow object-cover" src={favicon} />
+              </div>
+            )
+          : (
+              <div className="flex h-14 flex-shrink-0 basis-14 items-center justify-center bg-white/30 dark:bg-white/[.07]">
+                <Globe className="h-6 w-6 opacity-50" />
+              </div>
+            )}
       <div className="flex w-auto min-w-0 flex-grow flex-col justify-center gap-px p-2 px-[10px] pr-4">
         <p className="truncate text-sm font-medium">{title || description || '…'}</p>
         <p className="truncate text-xs opacity-60">{new URL(url).origin}</p>
@@ -73,8 +81,9 @@ export default function LinkPreviews({
   const links = [...linkify.find(note.title, 'url'), ...linkify.find(note.content, 'url')].map(
     ({ href }) => href,
   );
+
   const noDups = Array.from(new Set(links));
-  const linkCards = noDups.map((link) => <LinkCard url={link} note={note} key={link} />);
+  const linkCards = noDups.map(link => <LinkCard key={link} note={note} url={link} />);
 
   return (
     <div className={`${inNoteCard ? 'rounded-t-none' : ''} overflow-hidden rounded-md`}>

@@ -1,11 +1,11 @@
+import type { User } from 'firebase/auth';
+import type NoteDbData from '../types/NoteDbData';
+import type NoteUploadData from '../types/NoteUploadData';
 import { useContext } from 'react';
-import { User } from 'firebase/auth';
-import { UserContext, AllLabelsContext } from '../contexts';
-import { createNote, deleteNote, updateNote } from '../supabase/notes';
+import { AllLabelsContext, UserContext } from '../contexts';
 import { createLabels, getLabelId, getLabelIds } from '../supabase/labels';
+import { createNote, deleteNote, updateNote } from '../supabase/notes';
 import { createNotesLabels, deleteNotesLabels } from '../supabase/notes_labels';
-import NoteDbData from '../types/NoteDbData';
-import NoteUploadData from '../types/NoteUploadData';
 import labelExists from '../utils/labelExists';
 import shallowCompare from '../utils/shallowCompare';
 
@@ -22,12 +22,13 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
       bg_color,
       image_urls: existingImageUrls,
     } = existingNote as NoteDbData;
+
     if (
-      noteUploadData.title !== title ||
-      noteUploadData.content !== content ||
-      noteUploadData.bg_color !== bg_color ||
-      !shallowCompare(noteUploadData.labels, existingLabels) ||
-      !shallowCompare(noteUploadData.image_urls, existingImageUrls)
+      noteUploadData.title !== title
+      || noteUploadData.content !== content
+      || noteUploadData.bg_color !== bg_color
+      || !shallowCompare(noteUploadData.labels, existingLabels)
+      || !shallowCompare(noteUploadData.image_urls, existingImageUrls)
     ) {
       // only do this if there's something changed
       if (noteUploadData.title || noteUploadData.content) {
@@ -37,26 +38,31 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
           ...noteUploadData,
           last_modified_at: new Date().toISOString(),
         });
+
         // 2. update to labels
-        const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
+        const newLabels = noteUploadData.labels.filter(label => !labelExists(label, allLabels));
         await createLabels(newLabels, currentUser.uid);
+
         // 3. update to notes_labels
         // these labels aren't in note before editing (but exist in Supabase)
         const newLabelsOfNote = noteUploadData.labels.filter(
-          (newLabel) => !existingLabels.includes(newLabel),
+          newLabel => !existingLabels.includes(newLabel),
         );
+
         // get their ids to insert new rows to notes_labels
         newLabelsOfNote.forEach(async (newLabel) => {
           const label_id = await getLabelId(newLabel, currentUser.uid);
           await createNotesLabels(note_id, [label_id], currentUser.uid);
         });
+
         existingLabels.forEach(async (existingLabel) => {
           if (!noteUploadData.labels.includes(existingLabel)) {
             // an old label was removed --> delete from notes_labels
             await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
           }
         });
-      } else {
+      }
+      else {
         // delete note
         await deleteNote(note_id);
       }
@@ -72,7 +78,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
 
       if (noteUploadData.labels.length > 0) {
         // 2. insert to labels
-        const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
+        const newLabels = noteUploadData.labels.filter(label => !labelExists(label, allLabels));
         await createLabels(newLabels, noteUploadData.user_id);
 
         // 3. insert to notes_labels
@@ -81,5 +87,6 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
       }
     }
   }
+
   return { updateNoteToDb, insertNoteToDb };
 }

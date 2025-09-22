@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext } from 'react';
-import { User } from 'firebase/auth';
+import type { User } from 'firebase/auth';
+import type LabelDbData from '../types/LabelDbData';
+import { useContext, useEffect, useState } from 'react';
+import { AllLabelsContext, UserContext } from '.';
 import supabase from '../supabase/connect';
-import LabelDbData from '../types/LabelDbData';
 import { deleteLabelById, getAllLabels } from '../supabase/labels';
 import { getNotesLabels } from '../supabase/notes_labels';
-import { AllLabelsContext, UserContext } from '.';
 
 export default function AllLabelsProvider({ children }: { children: JSX.Element }) {
   const currentUser = useContext(UserContext) as User;
@@ -30,9 +30,12 @@ export default function AllLabelsProvider({ children }: { children: JSX.Element 
     if (currentUser) {
       const fetchLabels = async () => {
         const fetchResult = await getAllLabels(currentUser.uid);
-        if (fetchResult) setAllLabels(fetchResult);
+        if (fetchResult)
+          setAllLabels(fetchResult);
       };
+
       fetchLabels();
+
       supabase
         .channel('labels-changes')
         .on(
@@ -43,7 +46,7 @@ export default function AllLabelsProvider({ children }: { children: JSX.Element 
             table: 'labels',
             filter: `user_id=eq.${currentUser.uid}`,
           },
-          (_payload) => fetchLabels(), // listen for changes, refetch if there is one
+          _payload => fetchLabels(), // listen for changes, refetch if there is one
         )
         .on(
           'postgres_changes',
@@ -56,6 +59,7 @@ export default function AllLabelsProvider({ children }: { children: JSX.Element 
           async (payload) => {
             const deletedLabelId = payload.old.label_id;
             const notesLabelsWithThisLabelId = await getNotesLabels(deletedLabelId);
+
             if (notesLabelsWithThisLabelId && notesLabelsWithThisLabelId.length === 0) {
               // if there's no row in `notes_labels` with this label_id
               // then there is no note with this label

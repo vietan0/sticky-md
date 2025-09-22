@@ -1,11 +1,11 @@
-import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
-import { Bg_Color } from '../../../types/Bg_Color';
-import NoteDbData from '../../../types/NoteDbData';
+import type { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
+import type { Bg_Color } from '../../../types/Bg_Color';
+import type NoteDbData from '../../../types/NoteDbData';
 import BackgroundSwatches from './BackgroundSwatches';
 import LabelSuggestions from './LabelSuggestions';
 import UploadImages from './UploadImages';
 
-type Props = {
+interface Props {
   existingNote?: NoteDbData;
   buttonRecord: RecordButtonReturn;
   selectedBgColor: Bg_Color;
@@ -15,7 +15,8 @@ type Props = {
   inNoteCard?: boolean;
   opacity?: string;
   updateNoteToDb: () => Promise<void>;
-};
+}
+
 export default function Toolbar({
   existingNote,
   buttonRecord,
@@ -38,29 +39,29 @@ export default function Toolbar({
       } ${inNoteCard ? 'gap-1' : 'gap-2'}`}
     >
       <LabelSuggestions
-        record={buttonRecord}
         btnClasses={btnClasses}
         inNoteCard={inNoteCard}
+        record={buttonRecord}
         updateNoteToDb={updateNoteToDb}
       />
       <BackgroundSwatches
+        btnClasses={btnClasses}
+        existingNote={existingNote}
         selectedColor={selectedBgColor}
         setSelectedColor={setSelectedBgColor}
-        btnClasses={btnClasses}
         updateNoteToDb={updateNoteToDb}
-        existingNote={existingNote}
       />
       <UploadImages
-        imageUrls={imageUrls}
-        setImageUrls={setImageUrls}
         btnClasses={btnClasses}
+        imageUrls={imageUrls}
         inNoteCard={inNoteCard}
+        setImageUrls={setImageUrls}
         updateNoteToDb={updateNoteToDb}
       />
       {inNoteCard || (
         <button
-          type="submit"
           className="ml-auto rounded-full bg-black/5 px-4 py-2 leading-5 text-neutral-700 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20"
+          type="submit"
         >
           {existingNote ? 'Save' : 'Done'}
         </button>

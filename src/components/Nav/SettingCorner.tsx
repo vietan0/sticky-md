@@ -1,7 +1,8 @@
-import { useContext } from 'react';
-import { Root, Trigger, Portal, Content, Arrow, Item } from '@radix-ui/react-dropdown-menu';
-import { User, signOut } from 'firebase/auth';
+import type { User } from 'firebase/auth';
+import { Arrow, Content, Item, Portal, Root, Trigger } from '@radix-ui/react-dropdown-menu';
 import Avatar from 'boring-avatars';
+import { signOut } from 'firebase/auth';
+import { useContext } from 'react';
 import { UserContext } from '../../contexts';
 import { auth } from '../../firebase/auth';
 import Settings from '../icons/Settings';
@@ -13,16 +14,18 @@ export default function SettingCorner() {
   return (
     <Root>
       <Trigger className="rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800">
-        {currentUser?.photoURL ? (
-          <img src={currentUser.photoURL} alt="" className="w-8 rounded-full" />
-        ) : (
-          <Avatar
-            size={32}
-            name={currentUser?.uid || ''}
-            variant="beam"
-            colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
-          />
-        )}
+        {currentUser?.photoURL
+          ? (
+              <img alt="" className="w-8 rounded-full" src={currentUser.photoURL} />
+            )
+          : (
+              <Avatar
+                colors={['#92A1C6', '#146A7C', '#F0AB3D', '#C271B4', '#C20D90']}
+                name={currentUser?.uid || ''}
+                size={32}
+                variant="beam"
+              />
+            )}
       </Trigger>
       <Portal>
         <Content
@@ -34,8 +37,8 @@ export default function SettingCorner() {
             <span>Settings</span>
           </Item>
           <Item
-            onClick={async () => await signOut(auth)}
             className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+            onClick={async () => await signOut(auth)}
           >
             <SignOut className="h-5 w-5" />
             <span>Sign Out</span>

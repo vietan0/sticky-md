@@ -1,5 +1,5 @@
+import type LabelDbData from '../types/LabelDbData';
 import { createContext } from 'react';
-import LabelDbData from '../types/LabelDbData';
 import { auth } from '../firebase/auth';
 
 export const UserContext = createContext(auth.currentUser);
