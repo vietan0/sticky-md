@@ -1,12 +1,10 @@
 import type { RecordReturn } from '../../../hooks/useRecordLabel';
 import type { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
-import type NoteDbData from '../../../types/NoteDbData';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import * as Popover from '@radix-ui/react-popover';
+import { Checkbox, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AllLabelsContext } from '../../../contexts';
+import cn from '../../../utils/cn';
 import labelExists from '../../../utils/labelExists';
-import Check from '../../icons/Check';
 import Label from '../../icons/Label';
 import Plus from '../../icons/Plus';
 
@@ -14,14 +12,12 @@ export default function LabelSuggestions({
   record,
   btnClasses,
   inline = false,
-  existingNote,
   inNoteCard = false,
   updateNoteToDb,
 }: {
   record: RecordReturn | RecordButtonReturn;
   btnClasses: string;
   inline?: boolean;
-  existingNote?: NoteDbData;
   inNoteCard?: boolean;
   updateNoteToDb?: () => Promise<void>;
 }) {
@@ -52,53 +48,56 @@ export default function LabelSuggestions({
     // changes to labelsToAdd should send Supabase request immediately
   }, [record.labelsToAdd]);
 
-  const regularLabelButton = (label_name: string, i: number) => (
-    <label
-      className={`${
-        record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-900'
-      } flex cursor-pointer items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-hidden dark:hover:bg-neutral-900`}
+  const regularLabelButton = (label_name: string) => (
+    <Checkbox
+      classNames={{
+        base: 'max-w-none m-0 hover:bg-default-100',
+      }}
+      color="default"
+      isSelected={record.labelsToAdd.includes(label_name)}
       key={label_name}
-      onClick={e => e.stopPropagation()}
+      onValueChange={(isSelected) => {
+        if (isSelected) {
+          const updated = record.labelsToAdd.includes(label_name)
+            ? record.labelsToAdd
+            : [...record.labelsToAdd, label_name];
+
+          record.setLabelsToAdd(updated);
+        }
+        else {
+          const updated = record.labelsToAdd.filter(
+            existingLabel => existingLabel !== label_name,
+          );
+
+          record.setLabelsToAdd(updated);
+        }
+      }}
+      size="sm"
     >
-      <Checkbox.Root
-        checked={record.labelsToAdd.includes(label_name)}
-        className="flex h-3 w-3 appearance-none items-center justify-center rounded-xs outline-solid outline-1 outline-neutral-500"
-        onCheckedChange={(checked) => {
-          if (checked) {
-            const updated = record.labelsToAdd.includes(label_name)
-              ? record.labelsToAdd
-              : [...record.labelsToAdd, label_name];
-
-            record.setLabelsToAdd(updated);
-          }
-          else {
-            const updated = record.labelsToAdd.filter(
-              existingLabel => existingLabel !== label_name,
-            );
-
-            record.setLabelsToAdd(updated);
-          }
-        }}
-      >
-        <Checkbox.Indicator>
-          <Check className="h-3 w-3" />
-        </Checkbox.Indicator>
-      </Checkbox.Root>
-      <span>{label_name}</span>
-    </label>
+      {label_name}
+    </Checkbox>
   );
 
   const addNewLabelButton = (label_name: string, i: number) => (
     <button
-      className={`${
-        record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-hidden dark:hover:bg-neutral-900`}
+      className={cn(
+        record.focusedLabelIndex === i && `
+          bg-neutral-200
+          dark:bg-neutral-800
+        `,
+        `
+          flex items-center gap-2 p-2 text-left text-[13px]
+          hover:bg-neutral-200
+          focus:outline-hidden
+          dark:hover:bg-neutral-900
+        `,
+      )}
       key={label_name}
       onClick={() =>
         record.setLabelsToAdd(prev => (prev.includes(label_name) ? prev : [...prev, label_name]))}
       type="button"
     >
-      <Plus className="h-4 w-4" />
+      <Plus className="size-4" />
       <span>
         Create &apos;
         <span className="font-bold">{label_name}</span>
@@ -112,47 +111,48 @@ export default function LabelSuggestions({
       return labelExists(elem, allLabels) ? null : addNewLabelButton(elem, i);
     }
 
-    return regularLabelButton(elem.label_name, i);
+    return regularLabelButton(elem.label_name);
   });
 
-  const content = (
-    <Popover.Content
-      align="start"
-      className="POPOVER_CONTENT z-40 max-h-64 w-48 overflow-y-scroll rounded-sm bg-white outline-solid outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-700"
-      sideOffset={inline ? 0 : 16}
-    >
-      <input
-        autoFocus
-        className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-950"
-        onChange={handleChange}
-        onClick={e => e.stopPropagation()}
-        onKeyDown={record.searchKeyDown}
-        placeholder="Search for labels…"
-        type="text"
-        value={value}
-      />
-      <div className="grid grid-cols-1 divide-y divide-neutral-300 pb-1 dark:divide-neutral-700">
-        {labelElems}
-      </div>
-    </Popover.Content>
-  );
-
-  const portaled = <Popover.Portal>{content}</Popover.Portal>;
-  let renderedContent = portaled;
-  // if use button and NoteForm is editing --> remove portal
-  if (!inline && existingNote)
-    renderedContent = content;
-
   return (
-    <Popover.Root defaultOpen={inline}>
-      <Popover.Trigger asChild={!inline}>
+    <Popover
+      classNames={{
+        base: cn('overflow-hidden rounded-small border border-default-400'),
+        content: cn('items-stretch rounded-none bg-default-50 p-0'),
+      }}
+      placement="bottom-start"
+    >
+      <PopoverTrigger>
         {!inline && (
           <button className={btnClasses} onClick={e => e.stopPropagation()} title="Add labels">
-            <Label className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+            <Label className={`
+              size-5 stroke-neutral-700
+              dark:stroke-neutral-200
+            `}
+            />
           </button>
         )}
-      </Popover.Trigger>
-      {renderedContent}
-    </Popover.Root>
+      </PopoverTrigger>
+      <PopoverContent>
+        <input
+          autoFocus
+          className={`
+            w-full border-b-2 border-default-200 bg-white px-3 py-2 text-[13px]
+            placeholder:text-neutral-500
+            focus:outline-hidden
+            dark:bg-neutral-950
+          `}
+          onChange={handleChange}
+          onClick={e => e.stopPropagation()}
+          onKeyDown={record.searchKeyDown}
+          placeholder="Search for labels…"
+          type="text"
+          value={value}
+        />
+        <div className="flex flex-col divide-y divide-default-200 pb-1">
+          {labelElems}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

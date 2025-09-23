@@ -1,6 +1,7 @@
-import { Arrow, CheckboxItem, Content, Portal, Root, Trigger } from '@radix-ui/react-dropdown-menu';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts';
+import Check from '../icons/Check';
 import Desktop from '../icons/Desktop';
 import Moon from '../icons/Moon';
 import Sun from '../icons/Sun';
@@ -10,74 +11,68 @@ export default function ThemeToggle() {
   let themeIcon;
 
   if (theme === 'light') {
-    themeIcon = <Sun className="h-6 w-6 stroke-blue-500" />;
+    themeIcon = <Sun className="size-6 stroke-blue-500" />;
   }
 
   if (theme === 'dark') {
-    themeIcon = <Moon className="h-6 w-6 stroke-blue-500" />;
+    themeIcon = <Moon className="size-6 stroke-blue-500" />;
   }
 
   if (theme === 'os') {
     if (htmlHasDark)
-      themeIcon = <Moon className="h-6 w-6 opacity-40" />;
-    else themeIcon = <Sun className="h-6 w-6 opacity-40" />;
+      themeIcon = <Moon className="size-6" />;
+    else themeIcon = <Sun className="size-6" />;
   }
 
   return (
-    <Root>
-      <Trigger
-        className="DROPDOWN_TRIGGER rounded-full p-2 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-800"
-        title="Switch theme"
-      >
-        {themeIcon}
-      </Trigger>
-      <Portal className="outline outline-1 outline-black">
-        <Content
-          align="end"
-          className="z-50 flex flex-col rounded-sm bg-white p-1 text-sm drop-shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:bg-neutral-900"
+    <Dropdown
+      classNames={{
+        content: 'min-w-0 outline outline-default-300 shadow-none',
+      }}
+      placement="bottom-end"
+      radius="sm"
+      showArrow
+    >
+      <DropdownTrigger>
+        <Button
+          aria-label="Theme dropdown trigger"
+          color="primary"
+          isIconOnly
+          radius="full"
+          variant="light"
         >
-          <CheckboxItem
-            checked={theme === 'light'}
-            className={`${
-              theme === 'light' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
-            onCheckedChange={(checked) => {
-              if (checked)
-                setTheme('light');
-            }}
-          >
-            <Sun className="h-5 w-5" />
-            <span>Light Mode</span>
-          </CheckboxItem>
-          <CheckboxItem
-            checked={theme === 'dark'}
-            className={`${
-              theme === 'dark' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
-            onCheckedChange={(checked) => {
-              if (checked)
-                setTheme('dark');
-            }}
-          >
-            <Moon className="h-5 w-5" />
-            <span>Dark Mode</span>
-          </CheckboxItem>
-          <CheckboxItem
-            checked={theme === 'os'}
-            className={`${
-              theme === 'os' ? 'text-blue-600' : ''
-            } flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800`}
-            onCheckedChange={(checked) => {
-              if (checked)
-                setTheme('os');
-            }}
-          >
-            <Desktop className="h-5 w-5" />
-            <span>System</span>
-          </CheckboxItem>
-          <Arrow className="fill-neutral-100 dark:fill-neutral-900" />
-        </Content>
-      </Portal>
-    </Root>
+          {themeIcon}
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Choose themes"
+        color="primary"
+        onAction={key => setTheme(key as 'light' | 'dark' | 'os')}
+        selectionMode="single"
+        variant="flat"
+      >
+        <DropdownItem
+          key="light"
+          selectedIcon={() => theme === 'light' && <Check className="size-4" />}
+          startContent={<Sun className="size-5" />}
+        >
+          Light
+        </DropdownItem>
+        <DropdownItem
+          key="dark"
+          selectedIcon={() => theme === 'dark' && <Check className="size-4" />}
+          startContent={<Moon className="size-5" />}
+        >
+          Dark
+        </DropdownItem>
+        <DropdownItem
+          key="os"
+          selectedIcon={() => theme === 'os' && <Check className="size-4" />}
+          startContent={<Desktop className="size-5" />}
+        >
+          System
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   );
 }

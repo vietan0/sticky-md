@@ -10,7 +10,8 @@ import { UserContext } from '../../../contexts';
 import usePostDb from '../../../hooks/usePostDb';
 import useRecordLabel from '../../../hooks/useRecordLabel';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
-import getTwBgClasses from '../../../utils/getTwBgClasses';
+import bgVariantClass from '../../../utils/bgVariantClass';
+import cn from '../../../utils/cn';
 import LabelButton from '../LabelButton';
 import LinkPreviews from '../LinkPreviews';
 import Toolbar from '../Toolbar/Toolbar';
@@ -18,11 +19,11 @@ import ImagesContainer from './ImagesContainer';
 import ToggleMdRaw from './ToggleMdRaw';
 
 export default function NoteForm({
-  setFormOpen,
   existingNote,
+  onClose,
 }: {
-  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   existingNote?: NoteDbData;
+  onClose: () => void;
 }) {
   const currentUser = useContext(UserContext) as User;
   const formRef = useRef<HTMLFormElement>(null);
@@ -70,7 +71,7 @@ export default function NoteForm({
   }
 
   function formSubmit() {
-    setFormOpen(false); // close NoteForm
+    onClose();
 
     if (existingNote) {
       // prevent duplicate requests
@@ -90,9 +91,10 @@ export default function NoteForm({
 
   return (
     <form
-      className={`${getTwBgClasses(
-        existingNote ? existingNote.bg_color : selectedBgColor,
-      )} mx-auto flex max-h-[600px] overflow-y-auto w-full max-w-xl flex-col rounded-lg`}
+      className={cn(
+        bgVariantClass[existingNote ? existingNote.bg_color : selectedBgColor],
+        `mx-auto flex max-h-[600px] w-full max-w-xl flex-col overflow-y-auto rounded-lg`,
+      )}
       onClick={formClick}
       onKeyDown={(e) => {
         if (e.key === 'Escape')
@@ -111,7 +113,7 @@ export default function NoteForm({
           updateNoteToDb={updateNoteToDb}
         />
       )}
-      <div className="NoteForm-main-content flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3 p-4">
         <ToggleMdRaw
           existingNote={existingNote}
           formRef={formRef}
@@ -121,7 +123,13 @@ export default function NoteForm({
           value={title}
         >
           <TextareaAutosize
-            className="max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-hidden dark:placeholder:text-neutral-400"
+            className={`
+              max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium
+              tracking-tight
+              placeholder:text-neutral-700
+              focus:outline-hidden
+              dark:placeholder:text-neutral-400
+            `}
             maxLength={400}
             maxRows={3}
             minRows={1}
@@ -138,7 +146,12 @@ export default function NoteForm({
         >
           <TextareaAutosize
             autoFocus
-            className="max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-hidden dark:placeholder:text-neutral-400"
+            className={`
+              max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight
+              placeholder:text-neutral-700
+              focus:outline-hidden
+              dark:placeholder:text-neutral-400
+            `}
             maxRows={15}
             minRows={2}
             placeholder="Write something…"

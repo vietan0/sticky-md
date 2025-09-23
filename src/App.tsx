@@ -9,7 +9,10 @@ import SignUp from './routes/SignUp';
 export default function App() {
   return (
     <div
-      className="flex min-h-screen flex-col xs:justify-center"
+      className={`
+        flex min-h-screen flex-col
+        xs:justify-center
+      `}
       id="App"
     >
       <h1 className="sr-only">Sticky MD</h1>

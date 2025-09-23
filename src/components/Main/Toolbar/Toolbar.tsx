@@ -34,9 +34,13 @@ export default function Toolbar({
 
   return (
     <div
-      className={`add-stuffs flex items-center transition-opacity duration-100 ${
-        typeof opacity === 'string' ? opacity : ''
-      } ${inNoteCard ? 'gap-1' : 'gap-2'}`}
+      className={`
+        flex items-center transition-opacity duration-100
+        ${
+    typeof opacity === 'string' ? opacity : ''
+    }
+        ${inNoteCard ? 'gap-1' : 'gap-2'}
+      `}
     >
       <LabelSuggestions
         btnClasses={btnClasses}
@@ -60,7 +64,12 @@ export default function Toolbar({
       />
       {inNoteCard || (
         <button
-          className="ml-auto rounded-full bg-black/5 px-4 py-2 leading-5 text-neutral-700 hover:bg-black/10 focus:bg-black/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20"
+          className={`
+            ml-auto rounded-full bg-black/5 px-4 py-2 leading-5 text-neutral-700
+            hover:bg-black/10
+            focus:bg-black/20
+            dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/20
+          `}
           type="submit"
         >
           {existingNote ? 'Save' : 'Done'}

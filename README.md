@@ -18,5 +18,5 @@
 - React
 - TypeScript
 - React-Markdown
-- Radix UI
+- Hero UI
 - Supabase

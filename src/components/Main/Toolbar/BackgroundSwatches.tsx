@@ -1,10 +1,10 @@
 import type { Bg_Color } from '../../../types/Bg_Color';
 import type NoteDbData from '../../../types/NoteDbData';
-import * as Popover from '@radix-ui/react-popover';
-import * as RadioGroup from '@radix-ui/react-radio-group';
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import getTwBgClasses from '../../../utils/getTwBgClasses';
+import bgVariantClass from '../../../utils/bgVariantClass';
+import cn from '../../../utils/cn';
 import Color from '../../icons/Color';
 import No from '../../icons/No';
 
@@ -21,24 +21,6 @@ export default function BackgroundSwatches({
   updateNoteToDb: () => Promise<void>;
   existingNote?: NoteDbData;
 }) {
-  const bgColors: Bg_Color[] = ['blue', 'red', 'pink', 'yellow', 'green'];
-
-  const coloredRadioItems = bgColors.map((color) => {
-    return (
-      <RadioGroup.Item
-        aria-label={color}
-        className={`${getTwBgClasses(
-          color,
-        )} dark:border h-8 w-8 cursor-pointer rounded-full dark:border dark:border-neutral-800`}
-        key={color}
-        onClick={e => e.stopPropagation()}
-        value={color}
-      >
-        <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline-solid after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
-      </RadioGroup.Item>
-    );
-  });
-
   const queryClient = useQueryClient();
 
   const colorMutation = useMutation({
@@ -52,38 +34,46 @@ export default function BackgroundSwatches({
     // changes to selectedColor should send Supabase request immediately
   }, [selectedColor]);
 
+  const bgColors: Bg_Color[] = ['', 'blue', 'red', 'pink', 'yellow', 'green'];
+
+  const coloredRadioItems = bgColors.map(color => (
+    <Button
+      className={cn(bgVariantClass[color], color === selectedColor && `border border-primary`,
+      )}
+      isDisabled={colorMutation.isLoading}
+      isIconOnly
+      key={color}
+      onPress={() => setSelectedColor(color)}
+      radius="full"
+      size="sm"
+    >
+      {color ? null : <No className="w-6 stroke-default-500" />}
+    </Button>
+  ));
+
   return (
-    <Popover.Root>
-      <Popover.Trigger asChild onClick={e => e.stopPropagation()}>
+    <Popover
+      classNames={{
+        content: cn(`
+          z-40 flex-row gap-1 p-3 outline-1 outline-default-400
+          dark:bg-neutral-950
+        `),
+      }}
+      placement="bottom-start"
+      radius="sm"
+    >
+      <PopoverTrigger>
         <button className={btnClasses} title="Change color">
-          <Color className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+          <Color className={`
+            size-5 stroke-neutral-700
+            dark:stroke-neutral-200
+          `}
+          />
         </button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          align="start"
-          className="z-40 flex flex-row gap-2 rounded-sm bg-white p-3 outline-solid outline-1 outline-neutral-400 dark:bg-neutral-950 dark:outline-neutral-700"
-          sideOffset={16}
-        >
-          <RadioGroup.Root
-            aria-label="Choose background color"
-            className="flex gap-2"
-            defaultValue={selectedColor}
-            onValueChange={(value: Bg_Color) => setSelectedColor(value)}
-          >
-            <RadioGroup.Item
-              aria-label="no color"
-              className="relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline-solid outline-1 outline-neutral-400 dark:outline-neutral-800"
-              onClick={e => e.stopPropagation()}
-              value=""
-            >
-              <No className="h-5 w-5" />
-              <RadioGroup.Indicator className="absolute flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline-solid after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
-            </RadioGroup.Item>
-            {...coloredRadioItems}
-          </RadioGroup.Root>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+      </PopoverTrigger>
+      <PopoverContent>
+        {...coloredRadioItems}
+      </PopoverContent>
+    </Popover>
   );
 }

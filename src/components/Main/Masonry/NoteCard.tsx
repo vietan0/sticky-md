@@ -4,7 +4,7 @@ import type Dimension from '../../../types/Dimension';
 import type NoteDbData from '../../../types/NoteDbData';
 import type NoteUploadData from '../../../types/NoteUploadData';
 import type Nudge from '../../../types/Nudge';
-import * as Dialog from '@radix-ui/react-dialog';
+import { Modal, ModalContent, useDisclosure } from '@heroui/modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { nanoid } from 'nanoid';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -13,7 +13,8 @@ import usePostDb from '../../../hooks/usePostDb';
 import useRecordLabelButton from '../../../hooks/useRecordLabelButton';
 import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
-import getTwBgClasses from '../../../utils/getTwBgClasses';
+import bgVariantClass from '../../../utils/bgVariantClass';
+import cn from '../../../utils/cn';
 import shallowCompare from '../../../utils/shallowCompare';
 import CustomMd from '../../CustomMd';
 import Close from '../../icons/Close';
@@ -54,7 +55,7 @@ export default function NoteCard({
   const buttonRecord = useRecordLabelButton(labelsToAdd, setLabelsToAdd);
   const [selectedBgColor, setSelectedBgColor] = useState<Bg_Color>(bg_color);
   const [imageUrls, setImageUrls] = useState<string[]>(image_urls);
-  const [editFormOpen, setEditFormOpen] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const noteUploadData: NoteUploadData = {
     title,
@@ -88,14 +89,17 @@ export default function NoteCard({
 
   const deleteButton = (
     <button
-      className="delete-button absolute -right-3 -top-3 rounded-full bg-black/30 p-1 hover:bg-black/50 dark:bg-white/20 dark:hover:bg-white/40"
+      className={`
+        absolute -top-3 -right-3 rounded-full bg-foreground/20 p-1
+        hover:bg-foreground/40
+      `}
       onClick={(e) => {
         e.stopPropagation();
         deleteNoteMutation.mutate(note_id);
       }}
-      title="Delte note"
+      title="Delete note"
     >
-      <Close className="h-4 w-4 stroke-white stroke-2" />
+      <Close className="size-4 stroke-white stroke-2" />
     </button>
   );
 
@@ -156,57 +160,69 @@ export default function NoteCard({
   }, [allNotes]);
 
   return (
-    <Dialog.Root onOpenChange={setEditFormOpen} open={editFormOpen}>
-      <Dialog.Trigger asChild>
-        <article
-          className={`${getTwBgClasses(
-            bg_color,
-          )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline-solid hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onTransitionEnd={handleTransitionEnd}
-          ref={card}
-          style={{
-            transform: colNum > 1 ? `translate(${nudge.left}px, ${nudge.top}px)` : '',
-            width: colNum > 1 ? colWidth : '100%',
-            position: colNum > 1 ? 'absolute' : 'initial',
-          }}
-        >
-          <ImagesContainer imageUrls={image_urls} inNoteCard setImageUrls={setImageUrls} />
-          <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
-            {title && (
-              <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold **:text-lg">
-                {title}
-              </CustomMd>
-            )}
-            {content && (
-              <CustomMd className="flex max-h-52 flex-col gap-2 overflow-y-auto text-[15px]">
-                {content}
-              </CustomMd>
-            )}
-            <div className="flex flex-wrap gap-2">{labelButtons}</div>
-            <Toolbar
-              buttonRecord={buttonRecord}
-              existingNote={note}
-              imageUrls={imageUrls}
-              inNoteCard
-              opacity={hover ? '' : 'opacity-0'}
-              selectedBgColor={selectedBgColor}
-              setImageUrls={setImageUrls}
-              setSelectedBgColor={setSelectedBgColor}
-              updateNoteToDb={updateNoteToDb}
-            />
-          </div>
-          <LinkPreviews note={note} />
-          {hover && deleteButton}
-        </article>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-20 bg-black/40" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%/35%)_0px_10px_38px_-10px,hsl(206_22%_7%/20%)_0px_10px_20px_-15px] focus:outline-hidden">
-          <NoteForm existingNote={note} setFormOpen={setEditFormOpen} />
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <>
+      <article
+        className={cn(
+          bgVariantClass[bg_color],
+          `
+            cursor-pointer rounded-lg transition-transform duration-75
+            hover:outline-1 hover:outline-default-400
+            dark:hover:outline-default-100
+          `,
+        )}
+        onClick={onOpen}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onTransitionEnd={handleTransitionEnd}
+        ref={card}
+        style={{
+          transform: colNum > 1 ? `translate(${nudge.left}px, ${nudge.top}px)` : '',
+          width: colNum > 1 ? colWidth : '100%',
+          position: colNum > 1 ? 'absolute' : 'initial',
+        }}
+      >
+        <ImagesContainer imageUrls={image_urls} inNoteCard setImageUrls={setImageUrls} />
+        <div className="flex flex-col gap-3 p-4 pt-2">
+          {title && (
+            <CustomMd className={`
+              max-h-20 overflow-y-auto text-lg font-semibold
+              **:text-lg
+            `}
+            >
+              {title}
+            </CustomMd>
+          )}
+          {content && (
+            <CustomMd className="flex max-h-52 flex-col gap-2 overflow-y-auto text-[15px]">
+              {content}
+            </CustomMd>
+          )}
+          <div className="flex flex-wrap gap-2">{labelButtons}</div>
+          <Toolbar
+            buttonRecord={buttonRecord}
+            existingNote={note}
+            imageUrls={imageUrls}
+            inNoteCard
+            opacity={hover ? '' : 'opacity-0'}
+            selectedBgColor={selectedBgColor}
+            setImageUrls={setImageUrls}
+            setSelectedBgColor={setSelectedBgColor}
+            updateNoteToDb={updateNoteToDb}
+          />
+        </div>
+        <LinkPreviews note={note} />
+        {hover && deleteButton}
+      </article>
+      <Modal
+        hideCloseButton
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="xl"
+      >
+        <ModalContent>
+          {onClose => <NoteForm existingNote={note} onClose={onClose} />}
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

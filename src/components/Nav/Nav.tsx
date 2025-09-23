@@ -6,12 +6,21 @@ import ThemeToggle from './ThemeToggle';
 export default function Nav() {
   return (
     <header
-      className="fixed z-10 flex w-full items-center justify-between gap-1 border-b-2 bg-white/80 px-4 py-2 backdrop-blur-xl dark:border-neutral-800 dark:bg-neutral-950/80 sm:gap-4 sm:px-8"
+      className={`
+        fixed z-10 flex w-full items-center justify-between gap-1 border-b-2 bg-white/80 px-4 py-2
+        backdrop-blur-xl
+        sm:gap-4 sm:px-8
+        dark:border-neutral-800 dark:bg-neutral-950/80
+      `}
       id="Nav"
     >
       <HomeLink />
       <SearchBar />
-      <div className="nav-right flex items-center gap-0 xs:gap-1">
+      <div className={`
+        flex items-center gap-0
+        xs:gap-1
+      `}
+      >
         <ThemeToggle />
         <SettingCorner />
       </div>

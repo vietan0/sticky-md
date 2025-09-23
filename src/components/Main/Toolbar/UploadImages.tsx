@@ -55,11 +55,15 @@ export default function UploadImages({
   return (
     <>
       <button className={btnClasses} onClick={triggerUpload} title="Add images">
-        <Photo className="h-5 w-5 stroke-neutral-700 dark:stroke-neutral-200" />
+        <Photo className={`
+          size-5 stroke-neutral-700
+          dark:stroke-neutral-200
+        `}
+        />
       </button>
       <input
         accept="image/*"
-        className="invisible absolute left-[-9999px] top-[-9999px]"
+        className="invisible absolute top-[-9999px] left-[-9999px]"
         multiple
         onChange={handleFileChange}
         onClick={e => e.stopPropagation()}

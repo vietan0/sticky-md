@@ -68,6 +68,15 @@ export default antfu(
     plugins: {
       'better-tailwindcss': eslintPluginBetterTailwindcss,
     },
+    rules: {
+      ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
+      'better-tailwindcss/no-unregistered-classes': ['warn', {
+        ignore: ['task-list-item'],
+      }],
+      'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', {
+        printWidth: 100,
+      }],
+    },
     settings: {
       'better-tailwindcss': {
         entryPoint: 'src/index.css',

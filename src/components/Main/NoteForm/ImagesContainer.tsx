@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import cn from '../../../utils/cn';
 import Trash from '../../icons/Trash';
 
 interface ImageViewProps {
@@ -13,24 +14,31 @@ function ImageView({ url, setImageUrls, inNoteCard }: ImageViewProps) {
 
   return (
     <a
-      className={`${inNoteCard ? 'pointer-events-none' : ''} relative flex-auto`}
+      className={cn(
+        'relative flex-auto',
+        inNoteCard && 'pointer-events-none',
+      )}
       href={url}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       rel="noreferrer"
       target="_blank"
     >
-      <img alt="" className="h-full w-full object-cover" src={url} />
+      <img alt="" className="size-full object-cover" src={url} />
       {hover && !inNoteCard && (
         <button
-          className="delete-button absolute right-3 top-3 rounded-full bg-black/30 p-2 hover:bg-black/50 dark:bg-black/40 dark:hover:bg-black/60"
+          className={`
+            absolute top-3 right-3 rounded-full bg-black/30 p-2
+            hover:bg-black/50
+            dark:bg-black/40 dark:hover:bg-black/60
+          `}
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
             setImageUrls(prev => prev.filter(urlInPrev => urlInPrev !== url));
           }}
         >
-          <Trash className="h-5 w-5 stroke-white stroke-2" />
+          <Trash className="size-5 stroke-white stroke-2" />
         </button>
       )}
     </a>
@@ -64,7 +72,7 @@ export default function ImagesContainer({
   }, [imageUrls]);
 
   return (
-    <div className="flex rounded-t-lg">
+    <div className="flex overflow-hidden rounded-t-lg">
       {imageUrls.map(url => (
         <ImageView inNoteCard={inNoteCard} key={url} setImageUrls={setImageUrls} url={url} />
       ))}

@@ -2,11 +2,12 @@ import type { User } from 'firebase/auth';
 import type Dimension from '../../../types/Dimension';
 import type NoteDbData from '../../../types/NoteDbData';
 import type Nudge from '../../../types/Nudge';
+import { Spinner } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import ReactLoading from 'react-loading';
 import { UserContext } from '../../../contexts';
 import { getAllNotes } from '../../../supabase/notes';
+import cn from '../../../utils/cn';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
@@ -183,7 +184,10 @@ export default function Masonry() {
 
   return (
     <div
-      className={`${colNum > 1 ? 'relative' : 'flex flex-col gap-3'} mx-auto duration-100`}
+      className={cn(
+        colNum > 1 ? 'relative' : 'flex flex-col gap-3',
+        'mx-auto duration-100',
+      )}
       id="Masonry"
       ref={masonry}
       style={{
@@ -193,15 +197,8 @@ export default function Masonry() {
       }}
     >
       {isLoading
-        ? (
-            <div className="flex items-center justify-center gap-4">
-              <ReactLoading color="#3b82f6" height={20} type="spin" width={20} />
-              Getting your notes…
-            </div>
-          )
-        : (
-            allCards
-          )}
+        ? <Spinner label="Getting your notes…" variant="simple" />
+        : allCards}
     </div>
   );
 }

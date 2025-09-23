@@ -1,3 +1,4 @@
+import { HeroUIProvider } from '@heroui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
@@ -20,11 +21,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
-        </ThemeProvider>
+        <HeroUIProvider disableAnimation>
+          <ThemeProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </ThemeProvider>
+        </HeroUIProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </BrowserRouter>
