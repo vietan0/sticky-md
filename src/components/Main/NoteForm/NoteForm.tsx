@@ -53,7 +53,7 @@ export default function NoteForm({
   const createNoteMutation = useMutation({
     mutationFn: insertNoteToDb,
     onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       // refetch labels too (later)
     },
   });
@@ -61,7 +61,7 @@ export default function NoteForm({
   const updateNoteMutation = useMutation({
     mutationFn: updateNoteToDb,
     onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       // refetch labels too (later)
     },
   });
@@ -75,12 +75,12 @@ export default function NoteForm({
 
     if (existingNote) {
       // prevent duplicate requests
-      if (!updateNoteMutation.isLoading)
+      if (!updateNoteMutation.isPending)
         updateNoteMutation.mutate();
     }
     else {
       // prevent duplicate requests
-      if (!createNoteMutation.isLoading)
+      if (!createNoteMutation.isPending)
         createNoteMutation.mutate();
     }
   }

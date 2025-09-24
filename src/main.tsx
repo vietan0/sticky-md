@@ -12,7 +12,7 @@ import './index.css';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // default: true
+      staleTime: 1000 * 60 * 3,
     },
   },
 });

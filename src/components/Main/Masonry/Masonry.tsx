@@ -3,11 +3,11 @@ import type Dimension from '../../../types/Dimension';
 import type NoteDbData from '../../../types/NoteDbData';
 import type Nudge from '../../../types/Nudge';
 import { Spinner } from '@heroui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { UserContext } from '../../../contexts';
-import { getAllNotes } from '../../../supabase/notes';
+import useNotes from '../../../hooks/useNotes';
 import cn from '../../../utils/cn';
+import QueryError from '../../QueryError';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
@@ -58,11 +58,7 @@ export default function Masonry() {
     };
   }, []);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['notes', currentUser.uid], // noun
-    queryFn: async () => await getAllNotes(currentUser.uid),
-  });
-
+  const { data, isLoading, error } = useNotes(currentUser?.uid);
   const allNotes = useMemo(() => (data as NoteDbData[]) || [], [data]);
 
   const [allCardDims, setAllCardDims] = useState<Dimension[]>(
@@ -182,6 +178,11 @@ export default function Masonry() {
   const masonryHeight = getMasonryHeight();
   const masonryWidth = colNum > 1 ? colNum * colWidth + (colNum - 1) * gap : '100%';
 
+  if (isLoading)
+    return <Spinner label="Getting your notes…" variant="simple" />;
+  if (error)
+    return <QueryError error={error} queryName="useNotes" />;
+
   return (
     <div
       className={cn(
@@ -196,9 +197,7 @@ export default function Masonry() {
         maxWidth: breakpoints[3],
       }}
     >
-      {isLoading
-        ? <Spinner label="Getting your notes…" variant="simple" />
-        : allCards}
+      {allCards}
     </div>
   );
 }

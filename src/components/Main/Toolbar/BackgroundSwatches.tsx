@@ -25,7 +25,7 @@ export default function BackgroundSwatches({
 
   const colorMutation = useMutation({
     mutationFn: updateNoteToDb,
-    onSuccess: () => queryClient.invalidateQueries(['notes']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes'] }),
   });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function BackgroundSwatches({
     <Button
       className={cn(bgVariantClass[color], color === selectedColor && `border border-primary`,
       )}
-      isDisabled={colorMutation.isLoading}
+      isDisabled={colorMutation.isPending}
       isIconOnly
       key={color}
       onPress={() => setSelectedColor(color)}
