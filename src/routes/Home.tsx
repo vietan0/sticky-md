@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router';
 import Nav from '../components/Nav/Nav';
 import { UserContext } from '../contexts';
 import AllLabelsProvider from '../contexts/AllLabelsProvider';

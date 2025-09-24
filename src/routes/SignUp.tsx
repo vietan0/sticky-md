@@ -1,7 +1,7 @@
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import HomeLink from '../components/HomeLink';
 import Github from '../components/icons/Github';
 import Google from '../components/icons/Google';

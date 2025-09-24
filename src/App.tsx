@@ -1,12 +1,6 @@
-import { Route, Routes } from 'react-router-dom';
-import Main from './components/Main/Main';
-import Home from './routes/Home';
-import NotFound from './routes/NotFound';
-import Profile from './routes/Profile';
-import SignIn from './routes/SignIn';
-import SignUp from './routes/SignUp';
+import { Outlet } from 'react-router';
 
-export default function App() {
+export default function App({ error }: { error?: React.ReactNode }) {
   return (
     <div
       className={`
@@ -16,15 +10,7 @@ export default function App() {
       id="App"
     >
       <h1 className="sr-only">Sticky MD</h1>
-      <Routes>
-        <Route element={<Home />} path="/">
-          <Route element={<Main />} index />
-          <Route element={<Profile />} path="profile" />
-        </Route>
-        <Route element={<SignIn />} path="/signin" />
-        <Route element={<SignUp />} path="/signup" />
-        <Route element={<NotFound />} path="*" />
-      </Routes>
+      {error ?? <Outlet />}
     </div>
   );
 }
