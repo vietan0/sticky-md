@@ -30,24 +30,18 @@ const githubProvider = new GithubAuthProvider();
 async function emailSignUp(email: string, password: string) {
   try {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    console.log('signed up with email!');
-    const { uid } = userCred.user;
-    createUser(uid);
+    createUser(userCred.user.uid);
   }
   catch (error) {
-    console.log('sign up with email failed!');
     console.log(error);
   }
 }
 
 async function emailSignIn(email: string, password: string) {
   try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    console.log('signed in with email!');
-    console.log(userCred);
+    await signInWithEmailAndPassword(auth, email, password);
   }
   catch (error) {
-    console.log('sign in with email failed!');
     console.log(error);
   }
 }
@@ -55,12 +49,9 @@ async function emailSignIn(email: string, password: string) {
 async function oAuthSignIn(provider: GoogleAuthProvider | GithubAuthProvider) {
   try {
     const result = await signInWithPopup(auth, provider);
-    console.log('signed in with oauth!');
-    const { uid } = result.user;
-    createUser(uid);
+    createUser(result.user.uid);
   }
   catch (error) {
-    console.log('sign in with oauth failed!');
     console.log(error);
   }
 }
