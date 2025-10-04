@@ -99,6 +99,12 @@ export default function NoteCard({
     </button>
   );
 
+  useEffect(() => {
+    // reset labelsToAdd state after note.labels updates
+    buttonRecord.setLabelsToAdd(labels); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labels])
+  
   const card = useRef<HTMLDivElement>(null);
   function updateAllCardDims() {
     if (card.current) {
