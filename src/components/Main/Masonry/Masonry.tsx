@@ -5,8 +5,7 @@ import ReactLoading from 'react-loading';
 import Dimension from '../../../types/Dimension';
 import Nudge from '../../../types/Nudge';
 import { getAllNotes } from '../../../supabase/notes';
-import NoteDbData from '../../../types/NoteDbData';
-import { UserContext } from '../../../contexts';
+import { SearchContext, UserContext } from '../../../contexts';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
@@ -58,7 +57,21 @@ export default function Masonry() {
     queryFn: async () => await getAllNotes(currentUser.uid),
   });
 
-  const allNotes = useMemo(() => (data as NoteDbData[]) || [], [data]);
+  const { searchValue } = useContext(SearchContext);
+  const allNotes = useMemo(() => { 
+    if (!data) return [];
+    if (!searchValue) return data;
+    
+    return data.filter((note) => {
+      const lowerCaseSearchValue = searchValue.toLowerCase();
+      
+      return note.title.toLowerCase().includes(lowerCaseSearchValue) ||
+        note.content.toLowerCase().includes(lowerCaseSearchValue) ||
+        note.bg_color.toLowerCase().includes(lowerCaseSearchValue) ||
+        note.labels.some(label => label.toLowerCase().includes(lowerCaseSearchValue));
+    })
+  }, [data, searchValue]);
+
   const [allCardDims, setAllCardDims] = useState<Dimension[]>(
     // initialize
     allNotes.map(
