@@ -6,9 +6,21 @@ type ImageViewProps = {
   url: string;
   setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
   inNoteCard: boolean;
+  updateAllCardDims?: () => void;
 };
-function ImageView({ url, setImageUrls, inNoteCard }: ImageViewProps) {
+function ImageView({ url, setImageUrls, inNoteCard, updateAllCardDims }: ImageViewProps) {
   const [hover, setHover] = useState(false);
+
+  useEffect(() => {
+    // update dimensions when image is removed
+    return () => {
+      if (inNoteCard && updateAllCardDims)
+        updateAllCardDims();
+    }
+    // because inNoteCard is true will ensure updateAllCardDims exists
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inNoteCard])
+  
   return (
     <a
       href={url}
@@ -18,7 +30,10 @@ function ImageView({ url, setImageUrls, inNoteCard }: ImageViewProps) {
       onMouseLeave={() => setHover(false)}
       className={`${inNoteCard ? 'pointer-events-none' : ''} relative flex-auto`}
     >
-      <img src={url} alt="" className="h-full w-full object-cover" />
+      <img onLoad={() => {
+        if (inNoteCard && updateAllCardDims) 
+          updateAllCardDims();
+      }} src={url} alt="" className="h-full w-full object-cover" />
       {hover && !inNoteCard && (
         <button
           onClick={(e) => {
@@ -39,12 +54,14 @@ type ImagesContainerProps = {
   imageUrls: string[];
   setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
   updateNoteToDb?: () => Promise<void>;
+  updateAllCardDims?: () => void;
   inNoteCard?: boolean;
 };
 export default function ImagesContainer({
   imageUrls,
   setImageUrls,
   updateNoteToDb,
+  updateAllCardDims,
   inNoteCard = false,
 }: ImagesContainerProps) {
   const queryClient = useQueryClient();
@@ -62,7 +79,13 @@ export default function ImagesContainer({
   return (
     <div className="flex rounded-t-lg">
       {imageUrls.map((url) => (
-        <ImageView url={url} setImageUrls={setImageUrls} inNoteCard={inNoteCard} key={url} />
+        <ImageView 
+          url={url} 
+          setImageUrls={setImageUrls} 
+          inNoteCard={inNoteCard} 
+          key={url}
+          updateAllCardDims={updateAllCardDims}
+         />
       ))}
     </div>
   );

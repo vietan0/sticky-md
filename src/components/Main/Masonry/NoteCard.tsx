@@ -173,7 +173,12 @@ export default function NoteCard({
             bg_color,
           )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
-          <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls} inNoteCard />
+          <ImagesContainer 
+            imageUrls={imageUrls} 
+            setImageUrls={setImageUrls} 
+            inNoteCard
+            updateAllCardDims={updateAllCardDims}
+           />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
               <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold [&_*]:text-lg">
