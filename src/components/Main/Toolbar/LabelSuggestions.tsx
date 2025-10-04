@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import * as Checkbox from '@radix-ui/react-checkbox';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Label from '../../icons/Label';
 import { RecordReturn } from '../../../hooks/useRecordLabel';
 import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
@@ -28,7 +29,14 @@ export default function LabelSuggestions({
   const allLabels = useContext(AllLabelsContext);
   const [value, setValue] = useState('');
   const renderCount = useRef(1);
+  const queryClient = useQueryClient();
 
+  const updateNoteMutation = useMutation({
+    mutationFn: updateNoteToDb,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notes']);
+    },
+  }); 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.value.startsWith(' ')) {
       // prevent starting with space
@@ -42,7 +50,8 @@ export default function LabelSuggestions({
   }, [record, value]);
 
   useEffect(() => {
-    if (inNoteCard && updateNoteToDb) updateNoteToDb();
+    if (inNoteCard && updateNoteToDb) 
+      updateNoteMutation.mutate();
     // if <LabelSug> is in <NoteCard>,
     // changes to labelsToAdd should send Supabase request immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
