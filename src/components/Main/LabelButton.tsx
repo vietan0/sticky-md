@@ -11,8 +11,7 @@ export default function LabelButton({
 }) {
   const [hovering, setHovering] = useState(false);
   return (
-    <button
-      type="button"
+    <div
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -33,6 +32,6 @@ export default function LabelButton({
           </div>
         </TooltipWrapper>
       )}
-    </button>
+    </div>
   );
 }
