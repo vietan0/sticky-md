@@ -104,6 +104,11 @@ export default function NoteCard({
     buttonRecord.setLabelsToAdd(labels); 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [labels])
+
+  useEffect(() => {
+    // reset imageUrls state after note.image_urls updates
+    setImageUrls(image_urls); 
+  }, [image_urls])
   
   const card = useRef<HTMLDivElement>(null);
   function updateAllCardDims() {
@@ -168,7 +173,7 @@ export default function NoteCard({
             bg_color,
           )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
         >
-          <ImagesContainer imageUrls={image_urls} setImageUrls={setImageUrls} inNoteCard />
+          <ImagesContainer imageUrls={imageUrls} setImageUrls={setImageUrls} inNoteCard />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
               <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold [&_*]:text-lg">
