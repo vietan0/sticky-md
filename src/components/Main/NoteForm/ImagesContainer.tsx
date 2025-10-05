@@ -77,7 +77,7 @@ export default function ImagesContainer({
   }, [imageUrls]);
 
   return (
-    <div className="flex rounded-t-lg">
+    <div className="flex rounded-t-lg overflow-hidden">
       {imageUrls.map((url) => (
         <ImageView 
           url={url} 

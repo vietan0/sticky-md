@@ -77,7 +77,7 @@ export default function LinkPreviews({
   const linkCards = noDups.map((link) => <LinkCard url={link} note={note} key={link} />);
 
   return (
-    <div className={`${inNoteCard ? 'rounded-t-none' : ''} overflow-hidden rounded-md`}>
+    <div className={`${inNoteCard ? 'rounded-t-none' : ''} overflow-hidden rounded-lg`}>
       {linkCards}
     </div>
   );
