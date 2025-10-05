@@ -1,35 +1,39 @@
 import { Bg_Color } from '../types/Bg_Color';
 
 export default function getTwBgClasses(bg_color: Bg_Color) {
-  let bgClasses;
+  const commonClasses = 'outline outline-2';
+  let colorClasses;
+
   // can't interpolate because of tailwind
   // https://tailwindcss.com/docs/content-configuration#dynamic-class-names
   switch (bg_color) {
     case 'blue':
-      bgClasses =
-        'bg-card-blue-light border-t-2 border-card-blue-light dark:border-card-blue-dark dark:bg-card-blue-dark';
+      colorClasses =
+        'bg-card-blue-light dark:bg-card-blue-dark outline-card-blue-light dark:outline-card-blue-dark';
       break;
     case 'red':
-      bgClasses =
-        'bg-card-red-light border-t-2 border-card-red-light dark:border-card-red-dark dark:bg-card-red-dark';
+      colorClasses =
+        'bg-card-red-light dark:bg-card-red-dark outline-card-red-light dark:outline-card-red-dark';
       break;
     case 'pink':
-      bgClasses =
-        'bg-card-pink-light border-t-2 border-card-pink-light dark:border-card-pink-dark dark:bg-card-pink-dark';
+      colorClasses =
+        'bg-card-pink-light dark:bg-card-pink-dark outline-card-pink-light dark:outline-card-pink-dark';
       break;
     case 'yellow':
-      bgClasses =
-        'bg-card-yellow-light border-t-2 border-card-yellow-light dark:border-card-yellow-dark dark:bg-card-yellow-dark';
+      colorClasses =
+        'bg-card-yellow-light dark:bg-card-yellow-dark outline-card-yellow-light dark:outline-card-yellow-dark';
       break;
     case 'green':
-      bgClasses =
-        'bg-card-green-light border-t-2 border-card-green-light dark:border-card-green-dark dark:bg-card-green-dark';
+      colorClasses =
+        'bg-card-green-light dark:bg-card-green-dark outline-card-green-light dark:outline-card-green-dark';
       break;
     case '':
-      bgClasses =
-        'bg-white dark:bg-neutral-950 outline outline-1 outline-neutral-300 dark:outline-neutral-700';
+      colorClasses =
+        'bg-white dark:bg-neutral-950 outline-neutral-300 dark:outline-neutral-700';
       break;
   }
+
+  const bgClasses = commonClasses + ' ' + colorClasses;
 
   return bgClasses;
 }

@@ -39,8 +39,8 @@ function LinkCard({ url, note }: { url: string; note: NoteDbData }) {
       target="_blank"
       rel="noreferrer"
       className={`${
-        note.bg_color ? 'bg-white/60' : 'bg-black/[.05]'
-      } relative flex h-14 border-t-2 border-black/10 hover:bg-transparent dark:border-white/10 dark:bg-white/[0.13]`}
+        note.bg_color ? 'bg-white/40 hover:bg-white/75' :  'bg-black/[.05] hover:bg-black/10'
+      } relative flex h-14 border-t-2 border-black/10 dark:border-white/10 dark:bg-white/[.08] dark:hover:bg-white/[0.13]`}
     >
       {image ? (
         <div className="flex h-14 flex-shrink-0 basis-14 bg-white/30 dark:bg-white/[.07]">

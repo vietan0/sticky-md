@@ -129,7 +129,7 @@ export default function LabelSuggestions({
         placeholder="Search for labels…"
         className="w-full border-b-2 border-neutral-300 bg-white px-4 py-2 text-left text-[13px] placeholder:text-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-950"
       />
-      <div className="grid grid-cols-1 divide-y divide-neutral-300 pb-1 dark:divide-neutral-700">
+      <div className={`${labelElems.length > 0 ? 'pb-1' : 'pb-0'} grid grid-cols-1 divide-y divide-neutral-300 dark:divide-neutral-700`}>
         {labelElems}
       </div>
     </Popover.Content>

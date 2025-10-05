@@ -122,7 +122,7 @@ export default function NoteForm({
             tabIndex={1}
             maxLength={400}
             placeholder="Title"
-            className="max-h-20 w-full resize-none bg-transparent font-mono text-lg font-medium tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-32 w-full resize-none bg-transparent text-lg font-semibold placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
           />
         </ToggleMdRaw>
         <ToggleMdRaw
@@ -138,7 +138,7 @@ export default function NoteForm({
             maxRows={15}
             tabIndex={2}
             placeholder="Write something…"
-            className="max-h-52 w-full resize-none bg-transparent font-mono text-sm tracking-tight placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
+            className="max-h-80 w-full resize-none bg-transparent text-[15px] placeholder:text-neutral-700 focus:outline-none dark:placeholder:text-neutral-400"
           />
         </ToggleMdRaw>
         <div className="mt-4 flex items-end justify-between gap-8">
@@ -149,7 +149,7 @@ export default function NoteForm({
           </div>
           {existingNote && (
             <p
-              className="min-w-fit text-right text-xs"
+              className="min-w-fit text-right text-xs opacity-60"
               title={DateTime.fromISO(existingNote.last_modified_at).toLocaleString(
                 DateTime.DATETIME_MED,
               )}

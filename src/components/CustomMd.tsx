@@ -53,7 +53,7 @@ export default function CustomMd({
           />
         ),
         pre: ({ node, ...props }) => (
-          <pre {...props} className="myPre max-h-64 overflow-y-scroll" />
+          <pre {...props} className="myPre flex-shrink-0 overflow-y-scroll" />
         ),
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || '');
@@ -61,15 +61,16 @@ export default function CustomMd({
             <SyntaxHighlighter
               style={style}
               customStyle={{
-                borderRadius: '4px',
+                borderRadius: '8px',
+                padding: '0.8em',
                 margin: 0,
                 width: '100%',
                 border: htmlHasDark
                   ? '1px solid hsl(0 100% 100% / 0.15)'
                   : '1px solid hsl(0 0% 0% / 0.1)',
-                backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.9)' : 'hsl(0 100% 100% / 0.75)',
+                backgroundColor: htmlHasDark ? 'hsl(0 0% 12% / 0.6)' : 'hsl(0 100% 100% / 0.5)',
               }} // affect parent of <code>
-              codeTagProps={{ className: 'text-[14px] overflow-hidden tracking-tight' }} // affect <code> itself, overrides style
+              codeTagProps={{ className: 'text-[13px] overflow-hidden tracking-tight' }} // affect <code> itself, overrides style
               language={match[1]}
             >
               {String(children).replace(/\n$/, '')}

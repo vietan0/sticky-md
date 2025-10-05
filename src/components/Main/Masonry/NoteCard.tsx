@@ -171,7 +171,7 @@ export default function NoteCard({
           }}
           className={`${getTwBgClasses(
             bg_color,
-          )} cursor-pointer rounded-lg transition-transform duration-75 hover:outline hover:outline-1 hover:outline-neutral-500 dark:hover:outline-neutral-500`}
+          )} cursor-pointer rounded-lg transition-transform duration-75`}
         >
           <ImagesContainer 
             imageUrls={imageUrls} 
@@ -181,12 +181,12 @@ export default function NoteCard({
            />
           <div className="NoteCard-main-content flex flex-col gap-3 p-4 pt-2">
             {title && (
-              <CustomMd className="max-h-20 overflow-y-auto text-lg font-semibold [&_*]:text-lg">
+              <CustomMd className="max-h-32 overflow-y-auto text-lg font-semibold [&_*]:text-lg">
                 {title}
               </CustomMd>
             )}
             {content && (
-              <CustomMd className="flex max-h-52 flex-col gap-2 overflow-y-auto text-[15px]">
+              <CustomMd className="flex max-h-80 flex-col gap-2 overflow-y-auto text-[15px]">
                 {content}
               </CustomMd>
             )}
