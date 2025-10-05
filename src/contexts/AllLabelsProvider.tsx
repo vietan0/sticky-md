@@ -60,6 +60,7 @@ export default function AllLabelsProvider({ children }: { children: JSX.Element 
               // then there is no note with this label
               // delete label from `labels`
               await deleteLabelById(deletedLabelId);
+              await fetchLabels();
             }
           },
         )
