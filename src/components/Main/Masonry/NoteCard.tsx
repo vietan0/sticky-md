@@ -190,7 +190,7 @@ export default function NoteCard({
                 {content}
               </CustomMd>
             )}
-            <div className="flex flex-wrap gap-2">{labelButtons}</div>
+            {labelButtons.length > 0 && <div className="flex flex-wrap gap-2">{labelButtons}</div>}
             <Toolbar
               existingNote={note}
               buttonRecord={buttonRecord}
