@@ -88,7 +88,7 @@ export default function NoteCard({
   ));
   const deleteButton = (
     <button
-      title="Delte note"
+      title="Delete note"
       onClick={(e) => {
         e.stopPropagation();
         deleteNoteMutation.mutate(note_id);
