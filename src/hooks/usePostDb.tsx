@@ -14,6 +14,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
   const allLabels = useContext(AllLabelsContext);
 
   async function updateNoteToDb() {
+    if (!existingNote) return;
     const {
       title,
       content,
