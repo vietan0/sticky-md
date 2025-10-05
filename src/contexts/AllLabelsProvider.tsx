@@ -51,7 +51,6 @@ export default function AllLabelsProvider({ children }: { children: JSX.Element 
             event: 'DELETE',
             schema: 'public',
             table: 'notes_labels',
-            filter: `user_id=eq.${currentUser.uid}`,
           },
           async (payload) => {
             const deletedLabelId = payload.old.label_id;
