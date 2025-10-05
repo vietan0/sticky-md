@@ -116,6 +116,7 @@ export default function NoteForm({
           existingNote={existingNote}
         >
           <TextareaAutosize
+            autoFocus
             minRows={1}
             maxRows={3}
             tabIndex={1}
