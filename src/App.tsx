@@ -3,7 +3,6 @@ import Home from './routes/Home';
 import SignIn from './routes/SignIn';
 import SignUp from './routes/SignUp';
 import Main from './components/Main/Main';
-import Profile from './routes/Profile';
 import NotFound from './routes/NotFound';
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />}>
           <Route index element={<Main />} />
-          <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
