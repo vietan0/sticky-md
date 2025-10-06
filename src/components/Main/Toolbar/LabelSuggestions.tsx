@@ -28,8 +28,8 @@ export default function LabelSuggestions({
   inNoteCard?: boolean;
   updateNoteToDb?: () => Promise<void>;
 }) {
-  const currentUser = useContext(UserContext) as User;
-  const { data: labels } = useLabels(currentUser.uid)
+  const currentUser = useContext(UserContext);
+  const { data: labels } = useLabels(currentUser?.uid)
   const allLabels = useMemo(() => {
     return labels || [];
   }, [labels]);

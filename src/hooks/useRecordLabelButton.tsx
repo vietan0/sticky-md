@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { User } from 'firebase/auth';
 import { UserContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
 import useLabels from './queries/useLabels';
@@ -17,8 +16,8 @@ export default function useRecordLabelButton(
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
   // use a button to trigger popup
-  const currentUser = useContext(UserContext) as User;
-  const { data: labels } = useLabels(currentUser.uid)
+  const currentUser = useContext(UserContext);
+  const { data: labels } = useLabels(currentUser?.uid)
   const allLabels = useMemo(() => {
     return labels || [];
   }, [labels]);

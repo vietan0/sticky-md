@@ -12,15 +12,15 @@ import shallowCompare from '../utils/shallowCompare';
 import useLabels from './queries/useLabels';
 
 export default function usePostDb(noteUploadData: NoteUploadData, existingNote?: NoteDbData) {
-  const currentUser = useContext(UserContext) as User;
-  const { data: labels } = useLabels(currentUser.uid)
+  const currentUser = useContext(UserContext);
+  const { data: labels } = useLabels(currentUser?.uid);
   const allLabels = useMemo(() => {
     return labels || [];
   }, [labels]);
 
   const queryClient = useQueryClient();
   async function updateNoteToDb() {
-    if (!existingNote) return;
+    if (!existingNote || !currentUser) return;
     const {
       title,
       content,
@@ -75,7 +75,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
   }
 
   async function insertNoteToDb() {
-    if (noteUploadData.title || noteUploadData.content) {
+    if (currentUser && (noteUploadData.title || noteUploadData.content)) {
       // only create note if title or content exists
       // 1. insert to notes
       const result = (await createNote(noteUploadData)) as NoteDbData[];
