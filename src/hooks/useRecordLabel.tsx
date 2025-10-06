@@ -68,12 +68,12 @@ export default function useRecordLabel(
           if (typeof target === 'string') {
             return prev.includes(target) ? prev : [...prev, target];
           } else {
-            return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
+            return prev.includes(target.label_name) ? prev.filter(x => x !== target.label_name) : [...prev, target.label_name];
           }
         } else {
           // when only # is typed and there's no text after it
           const target = labelsList[focusedLabelIndex] as LabelDbData;
-          return prev.includes(target.label_name) ? prev : [...prev, target.label_name];
+          return prev.includes(target.label_name) ? prev.filter(x => x !== target.label_name) : [...prev, target.label_name];
         }
       });
       setIsRecordingLabel(false);
