@@ -28,7 +28,7 @@ export default function ThemeToggle() {
       >
         {themeIcon}
       </Trigger>
-      <Portal className="outline outline-1 outline-black">
+      <Portal>
         <Content
           align="end"
           className="z-50 flex flex-col rounded bg-white p-1 text-sm drop-shadow-[0_0_4px_rgba(0,0,0,0.1)] dark:bg-neutral-900"

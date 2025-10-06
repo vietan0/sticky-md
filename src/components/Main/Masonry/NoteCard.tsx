@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { nanoid } from 'nanoid';
 import { User } from 'firebase/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -209,7 +210,10 @@ export default function NoteCard({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-20 bg-black/40" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Content aria-describedby={undefined} className="fixed left-[50%] top-[50%] z-30 w-full max-w-xl translate-x-[-50%] translate-y-[-50%] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+          <VisuallyHidden>
+            <Dialog.Title>Dialog Title</Dialog.Title>
+          </VisuallyHidden>
           <NoteForm setFormOpen={setEditFormOpen} existingNote={note} />
         </Dialog.Content>
       </Dialog.Portal>
