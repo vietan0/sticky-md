@@ -11,7 +11,7 @@ import ThemeProvider from './contexts/ThemeProvider';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // default: true
+      refetchOnWindowFocus: false,
     },
   },
 });

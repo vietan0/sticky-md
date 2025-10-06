@@ -2,8 +2,6 @@ import supabase from './connect';
 import { deleteNotesLabels } from './notes_labels';
 
 async function getAllLabels(uid: string) {
-  // console.count('getAllLabels gets called!');
-  // console.log('uid', uid);
   const { data, error } = await supabase
     .from('labels')
     .select('*')

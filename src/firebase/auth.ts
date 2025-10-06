@@ -8,10 +8,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { createUser } from '../supabase/users';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyDs20kHJAATZRNHvalLK3zzO5qhR7Hzjeg',
   authDomain: 'sticky-md.firebaseapp.com',
@@ -44,7 +41,6 @@ async function emailSignIn(email: string, password: string) {
   try {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     console.log('signed in with email!');
-    console.log(userCred);
     const { user } = userCred; // The signed-in user info
   } catch (error) {
     console.log('sign in with email failed!');

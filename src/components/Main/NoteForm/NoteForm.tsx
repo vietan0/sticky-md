@@ -57,7 +57,6 @@ export default function NoteForm({
     mutationFn: insertNoteToDb,
     onSuccess: () => {
       queryClient.invalidateQueries(['notes']);
-      // refetch labels too (later)
     },
   });
 
@@ -65,7 +64,6 @@ export default function NoteForm({
     mutationFn: updateNoteToDb,
     onSuccess: () => {
       queryClient.invalidateQueries(['notes']);
-      // refetch labels too (later)
     },
   });
 

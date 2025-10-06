@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import Search from '../icons/Search';
 import { SearchContext } from '../../contexts';
 import Close from '../icons/Close';

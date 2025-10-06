@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AllLabelsContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
-import NoteDbData from '../types/NoteDbData';
 
 export type RecordReturn = {
   fieldChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
@@ -39,9 +38,6 @@ export default function useRecordLabel(
   let labelsList = [...filteredLabels] as (LabelDbData | string)[];
   if (extractedLabel) labelsList = [...filteredLabels, extractedLabel];
 
-  // const fieldKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-  //   if (e.key === '#') setIsRecordingLabel(true);
-  // };
   const fieldChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setValue(e.target.value);
     const cursorIndex = inputRef.current?.selectionStart as number; // cursor after typed

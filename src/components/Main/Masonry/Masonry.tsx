@@ -53,7 +53,7 @@ export default function Masonry() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['notes'], // noun
+    queryKey: ['notes'],
     queryFn: async () => await getAllNotes(currentUser.uid),
   });
 
