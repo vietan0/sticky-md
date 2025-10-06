@@ -42,7 +42,7 @@ export default function BackgroundSwatches({
 
   const colorMutation = useMutation({
     mutationFn: updateNoteToDb,
-    onSuccess: () => queryClient.invalidateQueries(['notes']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes']}),
   });
 
   useEffect(() => {

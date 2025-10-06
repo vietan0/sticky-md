@@ -35,7 +35,7 @@ export default function UploadImages({
   const queryClient = useQueryClient();
   const imageMutation = useMutation({
     mutationFn: updateNoteToDb,
-    onSuccess: () => queryClient.invalidateQueries(['notes']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes']}),
   })
   
   useEffect(() => {

@@ -34,7 +34,7 @@ export default function LabelSuggestions({
   const updateNoteMutation = useMutation({
     mutationFn: updateNoteToDb,
     onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
+      queryClient.invalidateQueries({ queryKey: ['notes']});
     },
   }); 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

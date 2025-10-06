@@ -56,14 +56,14 @@ export default function NoteForm({
   const createNoteMutation = useMutation({
     mutationFn: insertNoteToDb,
     onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
+      queryClient.invalidateQueries({ queryKey: ['notes']});
     },
   });
 
   const updateNoteMutation = useMutation({
     mutationFn: updateNoteToDb,
     onSuccess: () => {
-      queryClient.invalidateQueries(['notes']);
+      queryClient.invalidateQueries({ queryKey: ['notes']});
     },
   });
 
