@@ -8,7 +8,6 @@ import Dimension from '../../../types/Dimension';
 import NoteDbData from '../../../types/NoteDbData';
 import Nudge from '../../../types/Nudge';
 import { UserContext } from '../../../contexts';
-import { removeLabelFromNote } from '../../../supabase/labels';
 import { deleteNote } from '../../../supabase/notes';
 import CustomMd from '../../CustomMd';
 import Close from '../../icons/Close';
@@ -23,6 +22,7 @@ import usePostDb from '../../../hooks/usePostDb';
 import LinkPreviews from '../LinkPreviews';
 import shallowCompare from '../../../utils/shallowCompare';
 import ImagesContainer from '../NoteForm/ImagesContainer';
+import useRemoveLabelFromNoteMutation from '../../../hooks/mutation/useRemoveLabelFromNoteMutation';
 
 export default function NoteCard({
   note,
@@ -76,19 +76,13 @@ export default function NoteCard({
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes']}),
   });
 
-  const deleteLabelMutation = useMutation({
-    mutationFn: (label: string) => removeLabelFromNote(note_id, label, currentUser.uid),
-    onSuccess: () => { 
-      queryClient.invalidateQueries({ queryKey: ['notes']});
-      queryClient.invalidateQueries({ queryKey: ['labels']}); 
-    }
-  });
-  const deleteLabel = (label: string) => {
-    deleteLabelMutation.mutate(label);
+  const removeLabelFromNoteMutation = useRemoveLabelFromNoteMutation();
+  const removeLabel = (label: string) => {
+    removeLabelFromNoteMutation.mutate({ note_id, label, userId: currentUser.uid });
   };
 
   const labelButtons = labels.map((label) => (
-    <LabelButton label={label} removeLabel={deleteLabel} key={nanoid()} />
+    <LabelButton label={label} removeLabel={removeLabel} key={nanoid()} />
   ));
   const deleteButton = (
     <button

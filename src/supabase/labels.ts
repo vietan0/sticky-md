@@ -1,6 +1,6 @@
 import LabelDbData from '../types/LabelDbData';
 import supabase from './connect';
-import { deleteNotesLabels } from './notes_labels';
+import { deleteNotesLabels, getNotesLabels } from './notes_labels';
 
 async function getAllLabels(uid: string | undefined) {
   const { data, error } = await supabase
@@ -39,17 +39,25 @@ async function createLabels(newLabelsOnly: string[], user_id: string) {
   if (error) console.error(error);
 }
 
-async function removeLabelFromNote(note_id: string, targetLabel: string, user_id: string) {
+async function removeLabelFromNote(note_id: string, label_name: string, user_id: string) {
   // 1. delete label name from column 'labels' inside a row in table 'notes'
   const { data, error } = await supabase.from('notes').select('labels').eq('note_id', note_id);
   if (error) console.error(error);
   if (data) {
     const currentLabels = data[0].labels;
-    const updatedLabels = currentLabels.filter((n: string) => n != targetLabel);
+    const updatedLabels = currentLabels.filter((n: string) => n != label_name);
     await supabase.from('notes').update({ labels: updatedLabels }).eq('note_id', note_id).select();
 
     // 2. delete a row from join table 'notes_labels'
-    await deleteNotesLabels(note_id, targetLabel, user_id);
+    await deleteNotesLabels(note_id, label_name, user_id);
+
+    // 3. if there's no row in notes_labels with this label_id
+    // then this label is unused -> delete
+    const removedLabelId = await getLabelId(label_name, user_id);
+    const notesLabelsWithThisLabelId = await getNotesLabels(removedLabelId);
+    if (notesLabelsWithThisLabelId && notesLabelsWithThisLabelId.length === 0) {
+      deleteLabelById(removedLabelId);
+    }
   }
 }
 

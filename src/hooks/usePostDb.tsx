@@ -1,9 +1,10 @@
 import { useContext, useMemo } from 'react';
 import { User } from 'firebase/auth';
+import { useQueryClient } from '@tanstack/react-query';
 import { UserContext } from '../contexts';
 import { createNote, deleteNote, updateNote } from '../supabase/notes';
-import { createLabels, getLabelId, getLabelIds } from '../supabase/labels';
-import { createNotesLabels, deleteNotesLabels } from '../supabase/notes_labels';
+import { createLabels, getLabelId, getLabelIds, removeLabelFromNote } from '../supabase/labels';
+import { createNotesLabels } from '../supabase/notes_labels';
 import NoteDbData from '../types/NoteDbData';
 import NoteUploadData from '../types/NoteUploadData';
 import labelExists from '../utils/labelExists';
@@ -17,6 +18,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
     return labels || [];
   }, [labels]);
 
+  const queryClient = useQueryClient();
   async function updateNoteToDb() {
     if (!existingNote) return;
     const {
@@ -44,7 +46,9 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
         });
         // 2. update to labels
         const newLabels = noteUploadData.labels.filter((label) => !labelExists(label, allLabels));
-        await createLabels(newLabels, currentUser.uid);
+        if (newLabels.length > 0) { 
+          await createLabels(newLabels, currentUser.uid);
+        }
         // 3. update to notes_labels
         // these labels aren't in note before editing (but exist in Supabase)
         const newLabelsOfNote = noteUploadData.labels.filter(
@@ -58,7 +62,9 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
         existingLabels.forEach(async (existingLabel) => {
           if (!noteUploadData.labels.includes(existingLabel)) {
             // an old label was removed --> delete from notes_labels
-            await deleteNotesLabels(note_id, existingLabel, currentUser.uid);
+            await removeLabelFromNote(note_id, existingLabel, currentUser.uid);
+            await queryClient.invalidateQueries({ queryKey: ['notes']});
+            await queryClient.invalidateQueries({ queryKey: ['labels']});
           }
         });
       } else {
