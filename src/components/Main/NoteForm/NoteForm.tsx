@@ -93,7 +93,7 @@ export default function NoteForm({
         formSubmit();
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Escape') formSubmit();
+        if (e.ctrlKey && e.key === 'Enter') formSubmit();
       }}
       className={`${getTwBgClasses(
         existingNote ? existingNote.bg_color : selectedBgColor,
