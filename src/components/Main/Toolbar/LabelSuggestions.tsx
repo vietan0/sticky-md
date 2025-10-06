@@ -100,12 +100,13 @@ export default function LabelSuggestions({
     <button
       key={label_name}
       type="button"
-      onClick={() =>
+      onClick={(e) => { 
+        e.stopPropagation();
         record.setLabelsToAdd((prev) => (prev.includes(label_name) ? prev : [...prev, label_name]))
-      }
+      }}
       className={`${
         record.focusedLabelIndex === i && 'bg-neutral-200 dark:bg-neutral-800'
-      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 focus:outline-none dark:hover:bg-neutral-900`}
+      } flex items-center gap-2 px-4 py-2 text-left text-[13px] hover:bg-neutral-200 active:bg-neutral-300 focus:outline-none dark:hover:bg-neutral-900 dark:active:bg-neutral-950`}
     >
       <Plus className="h-4 w-4" />
       <span>
