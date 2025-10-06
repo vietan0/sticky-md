@@ -2,7 +2,7 @@ import NoteDbData from '../types/NoteDbData';
 import NoteUploadData from '../types/NoteUploadData';
 import supabase from './connect';
 
-async function getAllNotes(uid: string) {
+async function getAllNotes(uid: string | undefined) {
   const { data, error } = await supabase
     .from('notes')
     .select('*')

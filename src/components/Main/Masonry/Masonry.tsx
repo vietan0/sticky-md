@@ -1,11 +1,10 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { User } from 'firebase/auth';
 import ReactLoading from 'react-loading';
 import Dimension from '../../../types/Dimension';
 import Nudge from '../../../types/Nudge';
-import { getAllNotes } from '../../../supabase/notes';
 import { SearchContext, UserContext } from '../../../contexts';
+import useNotes from '../../../hooks/queries/useNotes';
 import NoteCard from './NoteCard';
 
 const abs = { left: 32, top: 200 } as const;
@@ -52,11 +51,7 @@ export default function Masonry() {
     };
   }, []);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['notes'],
-    queryFn: async () => await getAllNotes(currentUser.uid),
-  });
-
+  const { data, isLoading } = useNotes(currentUser?.uid);
   const { searchValue } = useContext(SearchContext);
   const allNotes = useMemo(() => { 
     if (!data) return [];
