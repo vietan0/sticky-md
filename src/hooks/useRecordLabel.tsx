@@ -1,6 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { AllLabelsContext } from '../contexts';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { User } from 'firebase/auth';
+import { UserContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
+import useLabels from './queries/useLabels';
 
 export type RecordReturn = {
   fieldChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
@@ -19,7 +21,11 @@ export default function useRecordLabel(
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
   // should work for both <input> and <textarea>
-  const allLabels = useContext(AllLabelsContext);
+  const currentUser = useContext(UserContext) as User;
+  const { data: labels } = useLabels(currentUser.uid)
+  const allLabels = useMemo(() => {
+    return labels || [];
+  }, [labels]);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
   const [extractedLabel, setExtractedLabel] = useState('');
   const [liveHashtagIndex, setLiveHashtagIndex] = useState(-1);

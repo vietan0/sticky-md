@@ -1,6 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { AllLabelsContext } from '../contexts';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { User } from 'firebase/auth';
+import { UserContext } from '../contexts';
 import LabelDbData from '../types/LabelDbData';
+import useLabels from './queries/useLabels';
 
 export type RecordButtonReturn = {
   searchKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -15,7 +17,11 @@ export default function useRecordLabelButton(
   setLabelsToAdd: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
   // use a button to trigger popup
-  const allLabels = useContext(AllLabelsContext);
+  const currentUser = useContext(UserContext) as User;
+  const { data: labels } = useLabels(currentUser.uid)
+  const allLabels = useMemo(() => {
+    return labels || [];
+  }, [labels]);
   const [isRecordingLabel, setIsRecordingLabel] = useState(false);
   const [extractedLabel, setExtractedLabel] = useState('');
   const [focusedLabelIndex, setFocusedLabelIndex] = useState(0);

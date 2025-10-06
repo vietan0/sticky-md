@@ -1,15 +1,17 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { User } from 'firebase/auth';
 import Label from '../../icons/Label';
 import { RecordReturn } from '../../../hooks/useRecordLabel';
 import { RecordButtonReturn } from '../../../hooks/useRecordLabelButton';
-import { AllLabelsContext } from '../../../contexts';
+import { UserContext } from '../../../contexts';
 import labelExists from '../../../utils/labelExists';
 import Check from '../../icons/Check';
 import Plus from '../../icons/Plus';
 import NoteDbData from '../../../types/NoteDbData';
+import useLabels from '../../../hooks/queries/useLabels';
 
 export default function LabelSuggestions({
   record,
@@ -26,7 +28,11 @@ export default function LabelSuggestions({
   inNoteCard?: boolean;
   updateNoteToDb?: () => Promise<void>;
 }) {
-  const allLabels = useContext(AllLabelsContext);
+  const currentUser = useContext(UserContext) as User;
+  const { data: labels } = useLabels(currentUser.uid)
+  const allLabels = useMemo(() => {
+    return labels || [];
+  }, [labels]);
   const [value, setValue] = useState('');
   const renderCount = useRef(1);
   const queryClient = useQueryClient();
@@ -35,6 +41,7 @@ export default function LabelSuggestions({
     mutationFn: updateNoteToDb,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes']});
+      queryClient.invalidateQueries({ queryKey: ['labels']});
     },
   }); 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

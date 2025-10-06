@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { User } from 'firebase/auth';
-import { UserContext, AllLabelsContext } from '../contexts';
+import { UserContext } from '../contexts';
 import { createNote, deleteNote, updateNote } from '../supabase/notes';
 import { createLabels, getLabelId, getLabelIds } from '../supabase/labels';
 import { createNotesLabels, deleteNotesLabels } from '../supabase/notes_labels';
@@ -8,10 +8,14 @@ import NoteDbData from '../types/NoteDbData';
 import NoteUploadData from '../types/NoteUploadData';
 import labelExists from '../utils/labelExists';
 import shallowCompare from '../utils/shallowCompare';
+import useLabels from './queries/useLabels';
 
 export default function usePostDb(noteUploadData: NoteUploadData, existingNote?: NoteDbData) {
   const currentUser = useContext(UserContext) as User;
-  const allLabels = useContext(AllLabelsContext);
+  const { data: labels } = useLabels(currentUser.uid)
+  const allLabels = useMemo(() => {
+    return labels || [];
+  }, [labels]);
 
   async function updateNoteToDb() {
     if (!existingNote) return;

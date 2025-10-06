@@ -1,9 +1,7 @@
 import { createContext } from 'react';
-import LabelDbData from '../types/LabelDbData';
 import { auth } from '../firebase/auth';
 
 export const UserContext = createContext(auth.currentUser);
-export const AllLabelsContext = createContext<LabelDbData[]>([]);
 export const SearchContext = createContext<{
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;

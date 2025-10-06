@@ -1,6 +1,5 @@
 import { useEffect, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import AllLabelsProvider from '../contexts/AllLabelsProvider';
 import Nav from '../components/Nav/Nav';
 import { UserContext } from '../contexts';
 import SearchProvider from '../contexts/SearchProvider';
@@ -15,12 +14,10 @@ export default function Home() {
 
   return (
     <SearchProvider>
-        <AllLabelsProvider>
-          <div id="Home" className="min-h-screen">
-            <Nav />
-            <Outlet />
-          </div>
-        </AllLabelsProvider>
+      <div id="Home" className="min-h-screen">
+        <Nav />
+        <Outlet />
+      </div>
     </SearchProvider>
   );
 }

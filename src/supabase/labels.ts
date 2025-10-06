@@ -1,14 +1,15 @@
+import LabelDbData from '../types/LabelDbData';
 import supabase from './connect';
 import { deleteNotesLabels } from './notes_labels';
 
-async function getAllLabels(uid: string) {
+async function getAllLabels(uid: string | undefined) {
   const { data, error } = await supabase
     .from('labels')
     .select('*')
     .eq('user_id', uid)
     .order('label_name', { ascending: true });
   if (error) console.error(error);
-  return data;
+  return data as LabelDbData[];
 }
 
 async function getLabelId(label_name: string, user_id: string) {
