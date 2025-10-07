@@ -1,6 +1,7 @@
 import NoteDbData from '../types/NoteDbData';
 import NoteUploadData from '../types/NoteUploadData';
 import supabase from './connect';
+import { cleanupUnusedLabel } from './labels';
 
 async function getAllNotes(uid: string | undefined) {
   const { data, error } = await supabase
@@ -32,8 +33,16 @@ async function updateNote(id: string, changedFields: object) {
     .select();
 }
 
-async function deleteNote(id: string) {
-  const { data, error } = await supabase.from('notes').delete().eq('note_id', id);
+async function deleteNote(id: string, userId: string) {
+  const { data, error } = await supabase.from('notes').delete().eq('note_id', id).select();
+  if (error) console.error(error);
+  if (data) {
+    const deletedNote = data[0] as NoteDbData;
+    const { labels } = deletedNote;
+    labels.forEach((label) => {
+      cleanupUnusedLabel(label, userId);
+    })
+  }
 }
 
 export { getAllNotes, getNote, createNote, updateNote, deleteNote };

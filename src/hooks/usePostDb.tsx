@@ -68,8 +68,7 @@ export default function usePostDb(noteUploadData: NoteUploadData, existingNote?:
           }
         });
       } else {
-        // delete note
-        await deleteNote(note_id);
+        await deleteNote(note_id, currentUser?.uid);
       }
     }
   }

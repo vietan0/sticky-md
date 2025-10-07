@@ -50,14 +50,7 @@ async function removeLabelFromNote(note_id: string, label_name: string, user_id:
 
     // 2. delete a row from join table 'notes_labels'
     await deleteNotesLabels(note_id, label_name, user_id);
-
-    // 3. if there's no row in notes_labels with this label_id
-    // then this label is unused -> delete
-    const removedLabelId = await getLabelId(label_name, user_id);
-    const notesLabelsWithThisLabelId = await getNotesLabels(removedLabelId);
-    if (notesLabelsWithThisLabelId && notesLabelsWithThisLabelId.length === 0) {
-      deleteLabelById(removedLabelId);
-    }
+    await cleanupUnusedLabel(label_name, user_id);
   }
 }
 
@@ -71,6 +64,20 @@ async function deleteLabelById(label_id: string) {
   if (error) console.error(error);
 }
 
+/**
+ * If a label isn't used by any note, delete it from DB.
+ * Run after: 
+ * 1. A label is removed from a note.
+ * 2. A note is deleted.
+ */
+async function cleanupUnusedLabel(label_name: string, user_id: string) {
+  const labelId = await getLabelId(label_name, user_id);
+  const notesLabelsWithThisLabelId = await getNotesLabels(labelId);
+  if (notesLabelsWithThisLabelId && notesLabelsWithThisLabelId.length === 0) {
+    await deleteLabelById(labelId);
+  }
+}
+
 export {
   getAllLabels,
   getLabelId,
@@ -79,4 +86,5 @@ export {
   removeLabelFromNote,
   deleteLabelByName,
   deleteLabelById,
+  cleanupUnusedLabel
 };

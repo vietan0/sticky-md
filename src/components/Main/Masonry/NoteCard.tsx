@@ -72,8 +72,11 @@ export default function NoteCard({
   const queryClient = useQueryClient();
 
   const deleteNoteMutation = useMutation({
-    mutationFn: (note_id: string) => deleteNote(note_id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes']}),
+    mutationFn: (note_id: string) => deleteNote(note_id, currentUser?.uid),
+    onSuccess: () => { 
+      queryClient.invalidateQueries({ queryKey: ['notes']});
+      queryClient.invalidateQueries({ queryKey: ['labels']}); 
+    },
   });
 
   const removeLabelFromNoteMutation = useRemoveLabelFromNoteMutation();
