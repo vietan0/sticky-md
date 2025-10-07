@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Logo from './icons/Logo';
 
 interface HomeLinkProps {
   className?: string;
@@ -12,8 +11,8 @@ export default function HomeLink({ className }: HomeLinkProps) {
       onClick={() => window.location.reload()}
       className={`flex items-center gap-2 ${className}`}
     >
-      <Logo />
-      <span className="whitespace-nowrap hidden sm:block font-medium tracking-tight">Sticky MD</span>
+      <img className='w-5' src="favicon.png" alt="Logo" />
+      <span className="whitespace-nowrap hidden leading-tight font-semibold sm:block tracking-[-0.35px] text-neutral-700 dark:text-neutral-200">Sticky MD</span>
     </Link>
   );
 }
