@@ -5,42 +5,33 @@
 
 :root {
   color-scheme: light dark;
+  --hole: #3186ff10
+}
+
+:root.dark {
+  --hole: rgba(10, 10, 10)
 }
 
 body {
   @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-200;
 }
 
-#demo-sign-in {
-  position: relative;
-  @apply bg-white outline outline-1 outline-blue-300 dark:bg-gradient-to-r dark:from-blue-600 dark:to-indigo-900 dark:outline-none;
+#gradient {
+  @apply rounded-md;
+  content: '';
+  position: absolute;
+  height: 340px;
+  width: 340px;
+  z-index: -5;
+  animation: animate 10s infinite linear;
+  background: conic-gradient(var(--hole) 0deg,#34a853 43deg,#ffd314 65deg,#ff4641 105deg,#3186ff 144deg,#3186ff 180deg,var(--hole) 324deg,var(--hole) 360deg);
 }
 
-#demo-sign-in:before {
-  content: '';
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  @apply bg-gradient-to-r from-blue-200 to-indigo-300 blur-lg dark:from-blue-500 dark:to-indigo-900;
-  transform: translate3d(2px, 0px, 0);
-  transition: opacity 0.3s;
-  border-radius: inherit;
+@keyframes animate {
+  0% {transform: rotate(0)}
+  100% {transform: rotate(360deg)}
 }
 
-#demo-sign-in::after {
-  content: '';
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: inherit;
-  border-radius: inherit;
-}
 
 .task-list-item input[type='checkbox'] {
   @apply relative mr-1 h-2.5 w-2.5 cursor-default rounded-sm bg-black/10 outline outline-1 outline-black/50 dark:bg-white/10 dark:outline-white/50;
