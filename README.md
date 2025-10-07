@@ -2,7 +2,7 @@
 
 [Sticky MD](https://sticky-md.web.app/) is (an attempt at) a note app like Google Keep but with Markdown support.
 
-![screenshot](screenshot.jpg)
+![screenshot](screenshot.png)
 
 ## Features
 
@@ -11,12 +11,12 @@
 - 📔 Syntax highlighting for code blocks
 - 🪄 Preview for external URLs
 - 🏷️ Organize notes by labels
-- 📸 Can contain images (`.jpg`, `.png`, `.gif`)
+- 📸 Can contain images (`.jpg`, `.png`, `.gif`, etc.)
 
 ## Built with
 
-- React
-- TypeScript
-- React-Markdown
-- Radix UI
-- Supabase
+- [React](https://react.dev/)
+- [Tanstack Query](https://tanstack.com/query/latest) - Async State Management
+- [Radix UI](https://www.radix-ui.com/) - Component Library
+- [Supabase](https://supabase.com/) - Database
+- [Firebase](https://firebase.google.com/) - Auth & Hosting
