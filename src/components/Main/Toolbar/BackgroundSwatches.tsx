@@ -31,9 +31,9 @@ export default function BackgroundSwatches({
         onClick={(e) => e.stopPropagation()}
         className={`${getTwBgClasses(
           color,
-        )} dark:border-1 h-8 w-8 cursor-pointer rounded-full dark:border dark:border-neutral-800`}
+        )} dark:outline-2 h-8 w-8 cursor-pointer rounded-full dark:outline-white/15 -outline-offset-1`}
       >
-        <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-1 after:outline-neutral-700 after:content-[''] dark:after:outline-neutral-300" />
+        <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-full after:w-full after:rounded-full after:outline after:outline-2 after:outline-neutral-500 after:content-[''] dark:after:outline-neutral-300 after:-outline-offset-1" />
       </RadioGroup.Item>
     );
   });
